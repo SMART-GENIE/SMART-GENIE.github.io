@@ -12,7 +12,6 @@ function Controlpanel() {
       <div className="con">
         <h1 className="office">Office</h1>
         <div className="control">
-            
           <div className="CoverDiv">
             <div class="contentcard_tabs_active">
               <div class="contentcard_tabs_info">
@@ -74,12 +73,18 @@ function Controlpanel() {
               </div>
               <div class="contentcard_tabs_label">Coin Earned</div>
             </div>
-
           </div>
         </div>
+
+
+        <div className="ChartDiv">
+        <Chart />
+        </div>
+        
         {/* <Slidecontent /> */}
 
-        <div className="charts">
+
+        {/* <div className="charts">
           <div className="graph1">
             <Chart />
           </div>
@@ -87,7 +92,8 @@ function Controlpanel() {
           <div className="graph1">
             <Chart2 />
           </div>
-        </div>
+        </div> */}
+       
       </div>
       <br />
       <br />

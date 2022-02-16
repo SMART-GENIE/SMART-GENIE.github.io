@@ -1,78 +1,81 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import "./Chart.css";
-function Chart(){
-    const data = [
-        {
-          name: 'D1',
-          Referrals: 9,
-        },
-        {
-          name: 'D2',
-          Referrals: 5,
-        },
-        {
-          name: 'D3',
-          Referrals: 7,
-        },
-        {
-          name: 'D4',
-          Referrals: 9,
-        },
-        {
-          name: 'D5',
-          Referrals: 5,
-        },
-        {
-          name: 'D6',
-          Referrals: 11,
-        },
-        {
-          name: 'D7',
-          Referrals: 3,
-        },
-        {
-            name: 'D8',
-            Referrals: 3,
-        },
-        {
-            name: 'D9',
-            Referrals: 14,
-        },
-        {
-            name: 'D10',
-            Referrals: 15,
-        },
-        {
-            name: 'D11',
-            Referrals: 17,
-        },
-        {
-            name: 'D12',
-            Referrals: 15,
-        },
-        {
-            name: 'D13',
-            Referrals: 2,
-        },
-      ];
-    return(
-        <div className="chartclass">
-        <ResponsiveContainer >
-        <LineChart className="line"
-          
-          data={data}
-        >
-          <CartesianGrid horizontal="true" vertical="true"/>
-          <XAxis dataKey="name" />
-          <YAxis startOffset={2} tickCount={10} start/>
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="Referrals" stroke="blue" activeDot={{ r: 8 }} />
-        </LineChart>
-      </ResponsiveContainer>
-      </div>
+import React, { useEffect } from "react";
+import { render } from "react-dom";
+import { Line } from "react-chartjs-2";
 
-    )
+const data = {
+  labels: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul"],
+  datasets: [
+    {
+      fill: false,
+      lineTension: 0.2,
+      // backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "#54cc7d",
+      borderCapStyle: "butt",
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: "miter",
+      pointBorderColor: "#54cc7d",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: "#54cc7d",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [1500000, 3900000, 3000000, 4100000, 2300000, 1800000, 2000000],
+      fill: "start",
+      backgroundColor: "#54cc7d14"
+    },
+  ],
+};
+
+const lineOptions = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+    gridLines: {
+      display: false,
+    },
+  },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+    },
+    y: {
+      grid: {
+        display: false,
+      },
+    },
+  },
+  legend: {
+    display: false,
+  },
+  tooltips: {
+    mode: 'index',
+    intersect: false
+},
+hover: {
+    mode: 'index',
+    intersect: false
 }
+};
+
+const styles = {
+  fontFamily: "sans-serif",
+  textAlign: "center",
+};
+
+const Chart = () => {
+ 
+  return (
+    <div style={styles}>
+      <Line width={900} height={300} data={data} options={lineOptions} />
+    </div>
+  );
+};
 
 export default Chart;
