@@ -19,10 +19,10 @@ function Sidenavbar() {
           </div>
           <ul className="sidebarlist">
             <Link
-            className="Link"
+              className="Link"
               to="/"
               style={{
-                width:"240px !important",
+                width: "240px !important",
                 textDecoration: "none",
                 color: "black",
                 display: "flex",
@@ -44,16 +44,15 @@ function Sidenavbar() {
             </Link>
 
             <Link
-            className="Link"
+              className="Link"
               to="/Partners"
               style={{
-                width:"240px !important",
+                width: "240px !important",
                 textDecoration: "none",
                 color: "black",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-               
               }}
             >
               <li className="sidebaritems">
@@ -64,10 +63,10 @@ function Sidenavbar() {
               </li>
             </Link>
             <Link
-            className="Link"
+              className="Link"
               to="/Uplines"
               style={{
-                width:"240px !important",
+                width: "240px !important",
                 textDecoration: "none",
                 color: "black",
                 display: "flex",
@@ -83,10 +82,10 @@ function Sidenavbar() {
               </li>
             </Link>
             <Link
-            className="Link"
+              className="Link"
               to="/Lostprofits"
               style={{
-                width:"240px !important",
+                width: "240px !important",
                 textDecoration: "none",
                 color: "black",
                 display: "flex",
@@ -109,10 +108,10 @@ function Sidenavbar() {
             </li>
 
             <Link
-            className="Link"
+              className="Link"
               to="/auth"
               style={{
-                width:"240px !important",
+                width: "240px !important",
                 textDecoration: "none",
                 color: "black",
                 display: "flex",

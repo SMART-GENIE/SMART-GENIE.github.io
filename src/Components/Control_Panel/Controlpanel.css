@@ -1,137 +1,136 @@
-.controlpanel {
-    padding: 0px 40px 250px 20px;
-  }
-  .office {
-    font-weight: normal;
-    margin-left: 20px;
-    margin-block: 32px;
-    font-family: Montserrat, sans-serif;
-    color: #131339;
-    font-size: 30px;
-    line-height: 24px;
-    font-weight: 700;
-  }
-  
-  .CoverDiv {
-    width: auto;
-    background-color: white;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    border-color: #fff #ededed #fff #fff;
-    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 5%);
-  }
-  
-  #LevelImage {
-    filter: hue-rotate(-224deg) saturate(2.8);
-  }
-  
-  .control {
-    display: flex;
-  }
-  .details-1 {
-    display: flex;
-    width: 500px;
-    margin-bottom: 33px;
-  }
-  
-  .contentcard_tabs_active {
-    display: -webkit-box;
-    display: -webkit-flex;
-    color: #333352;
-    /* margin-right: 10px; */
-    display: -ms-flexbox;
-    display: flex;
-    width: 340px;
-    height: 100px;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: start;
-    -webkit-align-items: flex-start;
-    -ms-flex-align: start;
-    align-items: flex-start;
-    -webkit-align-self: center;
-    -ms-flex-item-align: center;
-    align-self: center;
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 auto;
-    -ms-flex: 0 auto;
-    flex: 0 auto;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #fff #ededed #fff #fff;
-    border-radius: 4px 4px 0px 0px;
-    background-color: #fff;
-  }
-  
-  .contentcard_tabs_info {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: start;
-    -webkit-justify-content: flex-start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-  .contentcard_tabs_active_circle--green {
-    margin-right: 8px;
-    margin-left: 8px;
-    -webkit-align-self: auto;
-    -ms-flex-item-align: auto;
-    -ms-grid-row-align: auto;
-    align-self: auto;
-    -webkit-box-flex: 0;
-    -webkit-flex: 0 0 auto;
-    -ms-flex: 0 0 auto;
-    flex: 0 0 auto;
-  }
-  .contentcard_tabs_active_text_price {
-    margin-bottom: 4px;
-    font-family: "mark ot bold", sans-serif;
-    font-weight: 700;
-  }
-  .contentcard_tabs_label {
-    margin-left: 58px;
-    font-family: "mark ot normal", sans-serif;
-    line-height: 14px;
-    font-weight: 400;
-    letter-spacing: 0px;
-  }
-  
-  .bold-text-2 {
-    font-size: 24px;
-  }
-  
-  .top1 {
-    text-align: center;
-    margin-left: 600px;
-    font-size: larger;
-  }
-  
-  .ChartDiv {
-    max-width: 1330px;
-    min-width: 1330px;
-    background-color: white;
-    margin-left: 20px;
-    margin-bottom: 20px;
-    padding: 20px;
-    border-color: #fff #ededed #fff #fff;
-    box-shadow: 0 2px 10px 0 rgb(0 0 0 / 5%);
-    overflow: hidden;
-  }
-  
+.panel {
+  padding: 0px 40px 250px 20px;
+}
+.office {
+  font-weight: normal;
+  margin-left: 20px;
+  margin-block: 32px;
+  font-family: Montserrat, sans-serif;
+  color: #131339;
+  font-size: 30px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.CoverDiv {
+  width: auto;
+  background-color: white;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  border-color: #fff #ededed #fff #fff;
+  box-shadow: 0 2px 10px 0 rgb(0 0 0 / 5%);
+}
+
+#LevelImage {
+  filter: hue-rotate(-224deg) saturate(2.8);
+}
+
+.control {
+  display: flex;
+}
+.details-1 {
+  display: flex;
+  width: 500px;
+  margin-bottom: 33px;
+}
+
+.contentcard_tabs_active {
+  display: -webkit-box;
+  display: -webkit-flex;
+  color: #333352;
+  /* margin-right: 10px; */
+  display: -ms-flexbox;
+  display: flex;
+  width: 340px;
+  height: 100px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 auto;
+  -ms-flex: 0 auto;
+  flex: 0 auto;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #fff #ededed #fff #fff;
+  border-radius: 4px 4px 0px 0px;
+  background-color: #fff;
+}
+
+.contentcard_tabs_info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+.contentcard_tabs_active_circle--green {
+  margin-right: 8px;
+  margin-left: 8px;
+  -webkit-align-self: auto;
+  -ms-flex-item-align: auto;
+  -ms-grid-row-align: auto;
+  align-self: auto;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+.contentcard_tabs_active_text_price {
+  margin-bottom: 4px;
+  font-family: "mark ot bold", sans-serif;
+  font-weight: 700;
+}
+.contentcard_tabs_label {
+  margin-left: 58px;
+  font-family: "mark ot normal", sans-serif;
+  line-height: 14px;
+  font-weight: 400;
+  letter-spacing: 0px;
+}
+
+.bold-text-2 {
+  font-size: 24px;
+}
+
+.top1 {
+  text-align: center;
+  margin-left: 600px;
+  font-size: larger;
+}
+
+.ChartDiv {
+  max-width: 1330px;
+  min-width: 1330px;
+  background-color: white;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-color: #fff #ededed #fff #fff;
+  box-shadow: 0 2px 10px 0 rgb(0 0 0 / 5%);
+  overflow: hidden;
+}

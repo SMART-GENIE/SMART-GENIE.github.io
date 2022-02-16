@@ -8,9 +8,9 @@ import { AiFillBell } from "react-icons/ai";
 
 function Controlpanel() {
   return (
-    <div className="controlpanel">
+    <div className="panel">
       <div className="con">
-        <h1 className="office">Office</h1>
+        <h1 className="header">Office</h1>
         <div className="control">
           <div className="CoverDiv">
             <div class="contentcard_tabs_active">
