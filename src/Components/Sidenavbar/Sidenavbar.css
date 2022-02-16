@@ -63,7 +63,9 @@
 }
 
 
-.sidebaritems:hover {
+
+
+.Link:hover {
   background-color: rgba(185, 182, 182, 0.164);
   transition: background-color 200ms ease;
 

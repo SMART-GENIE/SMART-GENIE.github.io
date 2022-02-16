@@ -76,13 +76,11 @@ function Controlpanel() {
           </div>
         </div>
 
-
         <div className="ChartDiv">
-        <Chart />
+          <Chart />
         </div>
-        
-        {/* <Slidecontent /> */}
 
+        {/* <Slidecontent /> */}
 
         {/* <div className="charts">
           <div className="graph1">
@@ -93,7 +91,6 @@ function Controlpanel() {
             <Chart2 />
           </div>
         </div> */}
-       
       </div>
       <br />
       <br />

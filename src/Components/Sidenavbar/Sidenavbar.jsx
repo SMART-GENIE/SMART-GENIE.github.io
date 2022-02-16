@@ -18,20 +18,19 @@ function Sidenavbar() {
             <div className="hline"></div>
           </div>
           <ul className="sidebarlist">
-            <li className="sidebaritems">
-              <Link
-                to="/"
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+            <Link
+            className="Link"
+              to="/"
+              style={{
+                width:"240px !important",
+                textDecoration: "none",
+                color: "black",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <li className="sidebaritems">
                 <span className="icon">
                   <img
                     src="https://uploads-ssl.webflow.com/5c30d30a32c1877cbb03e545/5c56c4a24ed7964135f087b1_Account%20dark.svg"
@@ -41,87 +40,93 @@ function Sidenavbar() {
                   />
                 </span>
                 Control Panel
-              </Link>
-            </li>
+              </li>
+            </Link>
 
-            <li className="sidebaritems">
-              <Link
-                to="/Partners"
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+            <Link
+            className="Link"
+              to="/Partners"
+              style={{
+                width:"240px !important",
+                textDecoration: "none",
+                color: "black",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+               
+              }}
+            >
+              <li className="sidebaritems">
                 <span className="icon">
                   <FaNetworkWired size={24} />
                 </span>
                 Partners
-              </Link>
-            </li>
-            <li className="sidebaritems">
-              <Link
-                to="/Uplines"
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+              </li>
+            </Link>
+            <Link
+            className="Link"
+              to="/Uplines"
+              style={{
+                width:"240px !important",
+                textDecoration: "none",
+                color: "black",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <li className="sidebaritems">
                 <span className="icon">
-                  <FaUsers  size={24} />
+                  <FaUsers size={24} />
                 </span>
                 Uplines
-              </Link>
-            </li>
-            <li className="sidebaritems">
-              <Link
-                to="/Lostprofits"
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+              </li>
+            </Link>
+            <Link
+            className="Link"
+              to="/Lostprofits"
+              style={{
+                width:"240px !important",
+                textDecoration: "none",
+                color: "black",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <li className="sidebaritems">
                 <span className="icon">
-                  <FaSearchDollar  size={24} />
+                  <FaSearchDollar size={24} />
                 </span>
                 Lost profits
-              </Link>
-            </li>
+              </li>
+            </Link>
             <li className="sidebaritems">
               <span className="icon">
-                <IoIosSend  size={24} />
+                <IoIosSend size={24} />
               </span>
               promo
             </li>
 
-            <li className="sidebaritems">
-              <Link
-                to="/auth"
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                }}
-              >
+            <Link
+            className="Link"
+              to="/auth"
+              style={{
+                width:"240px !important",
+                textDecoration: "none",
+                color: "black",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <li className="sidebaritems">
                 <span className="icon">
-                  <BsBoxArrowRight  size={24} />
+                  <BsBoxArrowRight size={24} />
                 </span>
                 Logout
-              </Link>
-            </li>
+              </li>
+            </Link>
           </ul>
         </div>
       </div>
