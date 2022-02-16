@@ -1,0 +1,152 @@
+.Part-head{
+    display: flex;
+}
+
+.ph2{
+    margin-left: 500px;
+    color: rgba(0, 0, 0, 0.582);
+    font-size: large;
+}
+
+.pnoti{
+    margin-right: 7px;
+}
+
+.ph1{
+    text-align: center;
+    margin-left: 600px;
+    font-size: larger;
+}
+
+.pheading{
+    margin-left: 20px;
+    font-size: 30px;
+
+}
+
+.linkbox1{
+    background-color: white;
+    margin-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    
+}
+
+.about{
+    background-color: white;
+    margin-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 20px;
+}
+
+.structure{
+        background-color: white;
+        margin-left: 20px;
+        padding-top: 5px;
+        padding-bottom: 20px;
+        margin-top: 20px;
+        padding-left: 20px;
+        height: fit-content;
+}
+
+.search{
+    display: flex;
+    margin-top: 450px;
+    margin-bottom: 20px;
+    position: absolute;
+}
+
+.searchinp{
+    width: 700px;
+    height: 30px;
+}
+
+.inp{
+    margin-left: 10px;
+}
+
+.ic{
+    position: relative;
+    left: 700px;
+    top: 10px;
+}
+
+.rec{
+
+    background-color: white;
+    margin-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    margin-top: 500px;
+    padding-left: 20px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+.con{
+    color: rgba(0, 0, 0, 0.466);
+}
+
+
+.linkbox{
+    display: flex;
+}
+
+.links{
+    border: rgba(0, 0, 0, 0.116) 2px solid;
+    padding: 2px;
+}
+
+.link1{
+    border: rgba(0, 0, 0, 0.116) 2px solid;
+    padding-left: 20px;
+    height: 18px;
+    width: 500px;
+    margin-bottom: 20px;
+}
+
+
+.linkleft{
+    width: 500px;
+    padding-left: 20px;
+}
+
+.linkright{
+    width: 800px;
+    padding-left: 20px;
+    margin-left: 70px;
+}
+
+.copybtn{
+    background-color: rgba(0, 0, 255, 0.699);
+    color: white;
+    text-align: center;
+    width: 500px;
+    height: 40px;
+    font-size: large;
+}
+
+.copybtn2{
+    background-color: rgba(0, 0, 255, 0.699);
+    color: white;
+    text-align: center;
+    width: 800px;
+    height: 40px;
+    font-size: large;
+}
+
+.linkname{
+    color: black;
+    font-weight: bold;
+    font-size: 15px;
+    margin-left: 20px;
+}
+
+.linkname1{
+    color: black;
+    font-weight: bold;
+    font-size: 15px;
+}
+

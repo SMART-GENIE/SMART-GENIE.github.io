@@ -1,0 +1,54 @@
+.level{
+    display: block;
+}
+.row1,.row2{
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+}
+
+.spl{
+    color: red;
+    font-weight: bold;
+}
+
+.levelval{
+    font-size: large;
+}
+
+.btn{
+    width: 200px;
+    height: 30px;
+    border-radius: 3px;
+    border-color: None;
+    background-color: rgba(97, 106, 230, 0.705);
+    margin-bottom: 5px;
+    margin-top: 5px;
+    color: white;
+}
+
+.btn:hover{
+    background-color: rgb(97, 106, 230);
+}
+
+.days{
+    color: rgba(0, 0, 0, 0.288);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.lvl{
+    color: rgba(0, 0, 0, 0.39);
+    font-weight: bold;
+}
+
+.line{
+    color: rgba(0, 0, 0, 0.205);
+}
+
+.level1{
+    background-color: white;
+    margin-right: 20px;
+    height: 160px;
+    width: 240px;
+}

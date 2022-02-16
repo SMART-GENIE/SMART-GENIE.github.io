@@ -1,0 +1,109 @@
+
+.Login{
+    display: flex;
+}
+.login1{
+    margin-top: 100px;
+    margin-left: 350px;
+    width: 250px;
+    background-color: white;
+    padding-right: 130px;
+    padding-left: 130px;
+    padding-top: 50px;
+    padding-bottom: 80px;
+}
+
+.logh1{
+    font-weight: normal;
+}
+
+.logh5{
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.767);
+    font-size: 15px;
+}
+.loginp{
+    height:40px;
+    width: 250px;
+    font-size: 15px;
+}
+.logbtn{
+    height: 35px;
+    width: 260px;
+    color: white;
+    background-color: rgb(5, 148, 117);
+    border: 0px white none;
+    border-radius: 3px;
+}
+
+.login2{
+    width: 250px;
+    margin-top: 100px;
+    background-color: rgb(6, 72, 126);
+    padding-right: 130px;
+    padding-left: 130px;
+    padding-top: 50px;
+    padding-bottom: 80px;
+    color: white;
+}
+
+.log2h2{
+    font-weight: normal;
+    font-size: 30px;
+}
+
+.social{
+    font-size: 15px;
+    color: rgba(226, 224, 224, 0.945);
+    padding-top: 0px;
+}
+.icdiv{
+    display: flex;
+    cursor: pointer;
+}
+
+.iccircle{
+    background-color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 20px;
+    padding-top: 10px;
+    padding-left: 13px;
+}
+
+.log2btn{
+    background-color: rgb(6, 72, 126);
+    border: 3px rgb(235, 239, 241) solid;
+    height: 50px;
+    width: 260px;
+    color: white;
+    padding:7px;
+}
+
+.send{
+    background-color: white;
+    border-radius: 50%;
+    padding:3px;
+    margin-right: 5px;
+}
+
+.log2con{
+    color: white;
+    font-size: 15px;
+    padding-left: 35px;
+}
+
+.log2con1{
+    color: white;
+    font-size: 12px;
+}
+
+.open{
+    display: flex;
+}
+
+.open2{
+    padding-left: 5px;
+    cursor: pointer;
+}
