@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Controlpanel.css";
 import Chart from "./Chart";
 import Slidecontent from "./Slidecontent";
 import Levels from "./Levels";
 import Chart2 from "./chart2";
 import { AiFillBell } from "react-icons/ai";
+import ScrollToTop from "../../Tools/ScrollToTop";
 
 function Controlpanel() {
+
+
   return (
     <div className="panel">
       <div className="con">

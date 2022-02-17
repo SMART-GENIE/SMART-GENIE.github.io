@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ScrollToTop from './Tools/ScrollToTop';
+import ScrollMemory$1 from 'react-router-scroll-memory';
 
 ReactDOM.render(
   <React.StrictMode>
