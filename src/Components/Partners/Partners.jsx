@@ -3,6 +3,7 @@ import "./Partners.css";
 import { AiFillBell } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import Table from "../Table/Table";
+import Tree from "../Tree/Tree";
 function Partners() {
   return (
     <div className="panel">
@@ -57,11 +58,12 @@ function Partners() {
 
       <div className="structure">
         <p className="linkname1">Your structure</p>
-        <a href="#">To expand\collapse all</a>
-        <div className="TreeDiv"></div>
+        {/* <a href="#">To expand\collapse all</a> */}
+        <div className="TreeDiv">
+            <Tree/>
+        </div>
 
-        <Table/>
-        
+        <Table />
       </div>
     </div>
   );
