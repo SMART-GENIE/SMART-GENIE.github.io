@@ -1,36 +1,16 @@
 import React from "react";
-import Topbar from "./Components/topbar/Topbar";
-import Sidenavbar from "./Components/Sidenavbar/Sidenavbar";
 import "./App.css";
-import Controlpanel from "./Components/Control_Panel/Controlpanel";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Message from "./Components/Message/Message";
-import Partners from "./Components/Partners/Partners";
-import Uplines from "./Components/Uplines/Uplines";
-import Lostprofits from "./Components/Lostprofits/Lostprofits";
-import Login from "./Components/Login/Login";
+import Auth from "./Routes/Auth";
+import Console from "./Routes/Console";
+import Wallets from "./Components/Wallets/Wallets";
 const App = () => {
   return (
-    
     <BrowserRouter>
-      <div className="App">
-        <Sidenavbar />
-
-        <div className="ControlPanel">
-          <Topbar />
-
-          <div className="MainDiv">
-
-            <Route component={Controlpanel} exact path="/" />
-            <Route component={Message} path="/Message" />
-            <Route component={Partners} path="/Partners" />
-            <Route component={Uplines} path="/Uplines" />
-            <Route component={Lostprofits} path="/Lostprofits" />
-
-            <Route component={Login} path="/auth" />
-          </div>
-        </div>
-      </div>
+     <BrowserRouter>
+      {/* {access ? <Redirect to={"/"} /> : <Redirect to={"/login"} />} */}
+      <Route to={"/auth"} render={() => (false ? <Console /> : <Wallets />)} />
+    </BrowserRouter>
     </BrowserRouter>
   );
 };
