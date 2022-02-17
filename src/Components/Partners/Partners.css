@@ -168,8 +168,6 @@
   min-height: 150px;
 }
 
-
-
 .structure {
   background-color: white;
   margin-left: 20px;
@@ -203,18 +201,37 @@
 }
 
 .search {
-    display: flex;
-    margin-bottom: 20px;
-  }
-  
-  .inp{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-  }
+  display: flex;
+  margin-bottom: 20px;
+}
 
-  .inp .copybtn{
-      width: 120px;
-      margin-left: 15px;
-  }
+.inp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
+.inp .copybtn {
+  width: 120px;
+  margin-left: 15px;
+}
+
+.recdiv th,
+td {
+  background-color: white;
+  padding: 10px;
+}
+
+th {
+  text-align: left;
+}
+
+th,
+td {
+  border: 1px solid rgba(0, 0, 0, 0.116);
+}
+
+table {
+  border-collapse: collapse;
+  overflow: hidden;
+}
