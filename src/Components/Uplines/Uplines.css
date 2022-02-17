@@ -1,35 +1,21 @@
-.upline-head{
+.Uplines {
+    padding: 0px 40px 250px 20px;
+    overflow: hidden;
+  }
+
+.Uplines .Table{
+    width: fit-content;
     display: flex;
-}
-
-.uh2{
-    margin-left: 500px;
-    color: rgba(0, 0, 0, 0.582);
-    font-size: large;
-}
-
-.unoti{
-    margin-right: 7px;
-}
-
-.uh1{
-    text-align: center;
-    margin-left: 600px;
-    font-size: larger;
-}
-
-.uheading{
-    margin-left: 20px;
-    font-size: 30px;
-
-}
-
-.uplinecontent{
+    flex-direction: row;
+    height: 100%;
     background-color: white;
-    margin: 20px;
-    height: 100px;
+    margin-left: 20px;
+    overflow: hidden;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.ucon{
-    color: rgba(0, 0, 0, 0.534);
+.Uplines .TableDivWrap{
+    width: auto;
 }
+  

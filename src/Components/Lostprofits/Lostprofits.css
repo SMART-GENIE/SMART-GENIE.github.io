@@ -1,54 +1,21 @@
-.Lp-head{
+.Lostprofits {
+    padding: 0px 40px 250px 20px;
+    overflow: hidden;
+  }
+
+.Lostprofits .Table{
+    width: fit-content;
     display: flex;
-}
-
-.Lph2{
-    margin-left: 500px;
-    color: rgba(0, 0, 0, 0.582);
-    font-size: large;
-}
-
-.Lpnoti{
-    margin-right: 7px;
-}
-
-.Lph1{
-    text-align: center;
-    margin-left: 600px;
-    font-size: larger;
-}
-
-.Lpheading{
-    margin-left: 20px;
-    font-size: 30px;
-
-}
-
-.Lpcontent{
+    flex-direction: row;
+    height: 100%;
     background-color: white;
-    margin: 20px;
-    height: 100px;
-    width: 1400px;
+    margin-left: 20px;
+    overflow: hidden;
+    padding: 20px;
+    border-radius: 10px;
 }
 
-.Lpcon{
-    color: rgba(0, 0, 0, 0.534);
+.Lostprofits .TableDivWrap{
+    width: auto;
 }
-
-.Lpsearch{
-    display: flex;
-    position: absolute;
-}
-
-
-
-.Lpsearchinp{
-    width: 1400px;
-    height: 30px;
-}
-
-.Lpc{
-    position: relative;
-    left: 1400px;
-    top: 10px;
-}
+  
