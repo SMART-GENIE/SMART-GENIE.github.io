@@ -8,7 +8,7 @@ const App = () => {
     <BrowserRouter>
      <BrowserRouter>
       {/* {access ? <Redirect to={"/"} /> : <Redirect to={"/login"} />} */}
-      <Route to={"/auth"} render={() => (false ? <Console /> : <Auth />)} />
+      <Route to={"/"} render={() => (false ? <Console /> : <Auth />)} />
     </BrowserRouter>
     </BrowserRouter>
   );

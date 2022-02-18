@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import "./Login.css";
-import logimg from "./logimg.jpg";
-import logm from "./logm.jpg";
+import "./Register.css";
 import { GrSend } from "react-icons/gr";
 import { FiTwitter } from "react-icons/fi";
 import { BsInstagram } from "react-icons/bs";
@@ -16,17 +14,17 @@ import ConnectWallet from "../Wallets/ConnectWallet";
 import useWindowDimensions from "../../Tools/WindowDimensions";
 import { FaBullseye } from "react-icons/fa";
 
-const Login = () => {
+const Register = () => {
   const { height, width } = useWindowDimensions();
 
-  const [Register,setRegister] = useState(FaBullseye)
+  const [Register, setRegister] = useState(FaBullseye);
 
   const [loginId, setloginId] = useState("");
   const [password, setpassword] = useState("");
   const [alert, setalert] = useState(false);
   const [alertdata, setalertdata] = useState(null);
   const [Loader, setLoader] = useState(false);
-  
+
   let TOKEN = localStorage.getItem("access_token");
 
   // const Login =()=>{
@@ -50,11 +48,10 @@ const Login = () => {
       <div className="Cover-Div">
         <div className="Outer-Div">
           <div className="Inner-Div">
-            
             <div className="Double-Div">
               <div className={"Form-Box-Inside"}>
                 <div className="Logo-Div">
-                  <p>Connect To Wallet</p>
+                  <p>Registration</p>
                   {/* <img style={{ width: "221px", height: "67px" }} src={Logo} /> */}
                 </div>
                 <div hidden={!alert} className="Form-Alert-Div">
@@ -74,8 +71,9 @@ const Login = () => {
 
                 <ConnectWallet />
 
-                <div className="Divider">
-                  Or you can enter manually, enter the number of your ETH purse
+                <div style={{ paddingInline: "20px" }} className="Divider">
+                  Enter Address/Referer Id of Upline or leave it empty to get
+                  automatically
                 </div>
                 <div className="Inside-Form-Div">
                   <Form onSubmit={(e) => HandleSubmit(e)}>
@@ -83,7 +81,7 @@ const Login = () => {
                       <Form.Control
                         name="email"
                         className="Input"
-                        placeholder="Enter Address or Referal Id"
+                        placeholder="Enter Address or Referal Id Upline"
                         value={loginId}
                         onChange={(e) => {
                           setloginId(e.target.value);
@@ -98,11 +96,18 @@ const Login = () => {
                         style={{ opacity: Loader ? 0.5 : 1 }}
                         className="Button"
                       >
-                        
                         {false ? null : ( // /> //   margin={3} //   size={8} //   css={Loadercss} //   loading={true} //   color={"white"} // <PulseLoader
-                          <p>Enter App (Preview Mode)</p>
+                          <p>Purchase Level 1 to Register</p>
                         )}
                       </button>
+                    </div>
+
+                    <div className="Back-Button-Div">
+                      <Link to={"/login"} style={{textDecoration:"none"}}>
+                      <button className="Back-Button">
+                       Back
+                      </button>
+                      </Link>
                     </div>
                   </Form>
                 </div>
@@ -162,7 +167,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
 
 // function Login(){
 //     return(

@@ -295,7 +295,7 @@
 
 .Login-Main .Wallet-Div {
   width: 100%;
-  height: 150px;
+  height: 30%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -362,8 +362,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.5vw;
+  margin-top: 0.8vw;
 }
+
+.Back-Button:hover {
+color: #051c4f;
+transition: all 0.1s ease;
+}
+
 
 .Back-Button {
   display: flex;
@@ -511,7 +517,8 @@ button {
   }
 
   .Back-Button{
-    margin-top: 1vw;
+    margin-top: 1vw !important;
+    font-size: 1.7vw;
   }
 }
 
@@ -574,6 +581,6 @@ button {
 
   .Back-Button{
     font-size: 4vw;
-    margin-top: 2vw;
+    margin-top: 3vw !important;
   }
 }
