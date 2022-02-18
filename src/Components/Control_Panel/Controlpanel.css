@@ -166,6 +166,11 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+
+  }
+  .contentcard_tabs_active {
+    border-color: #ededed #fff #fff #fff !important;
+
   }
 }
 
@@ -173,6 +178,8 @@
   .contentcard_tabs_active {
     width: 100%;
     height: 30vw;
+    border-color: #ededed #fff #fff #fff !important;
+
   }
 
   .card {
