@@ -4,7 +4,10 @@ import logo from "./logo.png";
 import { RiProfileLine } from "react-icons/ri";
 import { BsFillSuitDiamondFill } from "react-icons/bs";
 import britain from "./britain.png";
+import useWindowDimensions from "../../Tools/WindowDimensions";
 function Topbar() {
+  const { height, width } = useWindowDimensions();
+
   var val = 1234;
   return (
     <div className="topbar">
@@ -12,6 +15,13 @@ function Topbar() {
         {/* <div className="leftcontent">
                         <img src={logo} alt="logo" className="logo"></img>
                 </div> */}
+
+        {width <= 850 && (
+          <div className="div0">
+            <div className="menu">
+            <img src="https://img.icons8.com/material-outlined/48/000000/menu--v1.png"/>      </div>
+          </div>
+        )}
         <div className="div1">
           <div className="contentDiv">
             <span className="address">Id : 58889</span>

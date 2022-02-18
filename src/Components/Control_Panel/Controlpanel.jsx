@@ -6,8 +6,11 @@ import Levels from "./Levels";
 import Chart2 from "./chart2";
 import { AiFillBell } from "react-icons/ai";
 import ScrollToTop from "../../Tools/ScrollToTop";
+import useWindowDimensions from "../../Tools/WindowDimensions";
 
 function Controlpanel() {
+
+  const { height, width } = useWindowDimensions();
 
 
   return (

@@ -1,6 +1,7 @@
 .sidenav {
   width: 240px;
   height: 100%;
+  overflow: hidden;
   position: sticky;
   top: 50px;
   background-color: white;
