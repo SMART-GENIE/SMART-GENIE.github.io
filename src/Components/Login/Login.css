@@ -1,448 +1,534 @@
-
-
-.login2{
-    width: 100%;
-    height: 100%;
-    background-color: #0368fc;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.login2 {
+  width: 100%;
+  height: 100%;
+  background-color: #0368fc;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.log2h2{
-    font-size: 28px;
-    width: 100%;
-    text-align: center;
-    font-weight: bold;
-    padding-top: 45px;
-    font-family: sans-serif;
+.log2h2 {
+  font-size: 28px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding-top: 45px;
+  font-family: sans-serif;
 }
 
-.social{
-    font-size: 15px;
-    color: rgba(226, 224, 224, 0.945);
-    padding-top: 0px;
-    text-align: center;
+.social {
+  font-size: 15px;
+  color: rgba(226, 224, 224, 0.945);
+  padding-top: 0px;
+  text-align: center;
 }
-.icdiv{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.iccircle{
-    background-color: white;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 50%;
-    margin-right: 20px;
-
+.icdiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
-.log2btn{
-    background-color: #0368fc;
-    border: 3px rgb(235, 239, 241) solid;
-    border-radius: 10px;
-    height: 45px;
-    width: 250px;
-    color: white;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding:7px;
-    font-size: 19px;
-    margin-bottom: 15px;
-    font-weight: bold;
-    transition: all 0.1s ease;
-
+.iccircle {
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  margin-right: 20px;
 }
 
-.log2btn:hover{
-    color: #0368fc;
-    background-color: white;
-    transition: all 0.1s ease;
+.log2btn {
+  background-color: #0368fc;
+  border: 3px rgb(235, 239, 241) solid;
+  border-radius: 10px;
+  height: 45px;
+  width: 250px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 7px;
+  font-size: 19px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  transition: all 0.1s ease;
 }
 
-.send{
-    background-color: white;
-    border-radius: 50%;
-    padding:3px;
-    margin-right: 5px;
+.log2btn:hover {
+  color: #0368fc;
+  background-color: white;
+  transition: all 0.1s ease;
 }
 
-.log2con{
-    color: white;
-    font-size: 15px;
+.send {
+  background-color: white;
+  border-radius: 50%;
+  padding: 3px;
+  margin-right: 5px;
 }
 
-.log2con1{
-    color: white;
-    font-size: 12px;
+.log2con {
+  color: white;
+  font-size: 15px;
 }
 
-.open{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    cursor: pointer;
-
+.log2con1 {
+  color: white;
+  font-size: 12px;
 }
 
-.Bottom{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding-bottom: 30px;
-    align-items: center;
+.open {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-.Bottom p{
-    margin: 0;
+.Bottom {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 30px;
+  align-items: center;
 }
 
-
-
-
-
+.Bottom p {
+  margin: 0;
+}
 
 .Login-Main {
-    width: 100vw;
-    height: 100vh;
-    background-color: white;
-  }
-  
-  .Login-Main .Triangle {
-    position: absolute;
-    height: 100vh;
-    left: 0px;
-    right: 0px;
-    top: -40vh;
-    bottom: 0;
-    z-index: 0;
-    transform: skewY(-20deg);
-    background-color: #f7fafc;
-  }
-  
-  .Login-Main .Upper-Nav {
-    position: absolute;
-    width: 100%;
-    height: 69px;
-    /* border: 1px dashed #eceef4;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+}
+
+.Login-Main .Triangle {
+  position: absolute;
+  height: 100vh;
+  left: 0px;
+  right: 0px;
+  top: -40vh;
+  bottom: 0;
+  z-index: 0;
+  transform: skewY(-20deg);
+  background-color: #f7fafc;
+}
+
+.Login-Main .Upper-Nav {
+  position: absolute;
+  width: 100%;
+  height: 69px;
+  /* border: 1px dashed #eceef4;
       border-top-width: 0; */
-    padding-inline: 30px;
-    z-index: 1000;
-    
-  }
-  
-  .Login-Main .Option-Div {
-    width: auto;
-    height: inherit;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    font-size: 16px;
-    font-weight: bold;
-    color: #506d85;
-    float: right;
-  }
-  
-  .Login-Main .Nav-Button {
-    width: 94px;
-    height: 36px;
-    border: 2px solid #2f66fc;
-    border-radius: 4px;
-    color: #2f66fc;
-    font-size: 16px;
-    font-weight: bold;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.1s ease-in-out;
-    margin-left: 20px;
-  }
-  
-  .Login-Main .Nav-Button:hover {
-    background-color: #2f66fc;
-    color: white;
-    transition: all 0.1s ease-in-out;
-  }
-  
-  .Login-Main .Cover-Div {
-    width: 100vw;
-    height: 100vh;
-    background-color: transparent;
-    z-index: 1;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
+  padding-inline: 30px;
+  z-index: 1000;
+}
+
+.Login-Main .Option-Div {
+  width: auto;
+  height: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 16px;
+  font-weight: bold;
+  color: #506d85;
+  float: right;
+}
+
+.Login-Main .Nav-Button {
+  width: 94px;
+  height: 36px;
+  border: 2px solid #2f66fc;
+  border-radius: 4px;
+  color: #2f66fc;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease-in-out;
+  margin-left: 20px;
+}
+
+.Login-Main .Nav-Button:hover {
+  background-color: #2f66fc;
+  color: white;
+  transition: all 0.1s ease-in-out;
+}
+
+.Login-Main .Cover-Div {
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  overflow: hidden;
+  z-index: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Login-Main .Outer-Div {
+  width: 65%;
+  height: 100vh;
+  background-color: transparent;
+  z-index: 1000000;
+  position: relative;
+  border: 1px dashed #eceef4;
+  border-top-width: 0;
+  border-block-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Login-Main .Vertical-Line {
+  width: 1px;
+  height: 100vh;
+  position: absolute;
+  border: 1px dotted #eceef4;
+  z-index: 1;
+  margin-left: 50vw;
+}
+
+.Double-Div {
+  width: 900px;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%);
+}
+
+.Login-Main .Inner-Div {
+  width: auto;
+  min-width: 900px;
+  height: 100vh;
+  background-color: transparent;
+  z-index: 10000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed #eceef4;
+  border-top-width: 0;
+  border-block-width: 0;
+}
+
+.Login-Main .Form-Box-Outer-Div {
+  width: 100%;
+  height: 480px;
+  background-color: white;
+  box-shadow: 0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%);
+  padding: 10px;
+  transition: all 0.1s ease;
+}
+
+.Login-Main .Form-Box-Inside {
+  width: 100%;
+  height: 480px;
+  background-color: white;
+  transition: all 0.1s ease;
+}
+
+.Login-Main .Form-Box-Outer-Div-Alert {
+  width: 100%;
+  height: 520px;
+  background-color: white;
+  box-shadow: 0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%);
+  padding: 10px;
+  transition: all 0.1s ease;
+}
+
+.Logo-Div {
+  width: 100%;
+  height: 18%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  font-size: 28px;
+  text-align: center;
+  color: #051c4f;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.Logo-Div p {
+  margin: 0;
+}
+
+.Login-Main .Form-Alert-Div {
+  width: auto;
+  height: auto;
+  padding: 10px;
+  margin-inline: 8%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 13px;
+  font-weight: bold;
+  border: 1px solid #ed5f74;
+  background-color: #ed5f741e;
+  border-radius: 4px;
+  transition: height 0.5 ease;
+}
+
+.Login-Main .Inside-Form-Div {
+  width: 100%;
+  padding-inline: 40px;
+  margin-top: 20px;
+}
+
+.Login-Main .Wallet-Div {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.Wallet-Circle {
+  width: 60px;
+  height: 60px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100vw;
+  margin-inline: 10px;
+  border: 1px solid #b6bed688;
+  transition: all 0.5 ease;
+  cursor: pointer;
+}
+
+.Wallet-Circle:hover {
+  background-color: rgba(0, 0, 0, 0.055);
+  transition: all 0.5 ease;
+}
+
+.Login-Main .form-group {
+  color: #506d85;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.Login-Main .Divider {
+  color: #506d85dc;
+  font-size: 13px;
+  text-align: center;
+}
+
+.Login-Main .Input {
+  height: 50px;
+  font-size: 17px;
+}
+
+.Login-Main .form-group input {
+  height: 45px;
+  border-radius: 4px;
+}
+
+.Login-Main .Button-Div {
+  width: inherit;
+  height: auto;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  align-items: center;
+  margin-top: 40px;
+  cursor: pointer;
+}
+
+button {
+  border-style: none;
+}
+
+.Login-Main .Button {
+  width: 100%;
+  height: 48px;
+  border-radius: 4px;
+  background-color: #0368fc;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.1s ease-in-out;
+}
+
+.Login-Main .Button:hover {
+  background-color: #045ce0;
+  transition: all 0.1s ease-in-out;
+}
+
+.Login-Main .Button p {
+  font-size: 15px;
+  color: white;
+  font-weight: bold;
+  margin: 0;
+  cursor: default;
+}
+
+@media only screen and (max-width: 880px) {
   .Login-Main .Outer-Div {
-    width: 65%;
+    width: 100%;
     height: 100vh;
     background-color: transparent;
-    z-index: 1000000;
-    position: relative;
-    border: 1px dashed #eceef4;
-    border-top-width: 0;
-    border-block-width: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .Login-Main .Vertical-Line {
-    width: 1px;
-    height: 100vh;
-    position: absolute;
-    border: 1px dotted #eceef4;
     z-index: 1;
-    margin-left: 50vw;
-  }
-
-  .Double-Div{
-      width: 900px;
-      display: flex;
-      flex-direction: row;
-      box-shadow: 0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%);
-
-  }
-  
-  .Login-Main .Inner-Div {
-    width: auto;
-    min-width: 900px;
-    height: 100vh;
-    background-color: transparent;
-    z-index: 10000;
+    position: relative;
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     border: 1px dashed #eceef4;
     border-top-width: 0;
     border-block-width: 0;
-    
   }
-  
-  
-  
-  .Login-Main .Form-Box-Outer-Div {
-    width: 100%;
-    height: 480px;
-    background-color: white;
-    box-shadow: 0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%);
-    padding: 10px;
-    transition: all 0.1s ease;
-  
-  }
-
-  .Login-Main .Form-Box-Inside {
-    width: 100%;
-    height: 480px;
-    background-color: white;
-    transition: all 0.1s ease;
-
-  
-  }
-  
-  .Login-Main .Form-Box-Outer-Div-Alert {
-    width: 100%;
-    height: 520px;
-    background-color: white;
-    box-shadow: 0 15px 35px 0 rgb(60 66 87 / 8%), 0 5px 15px 0 rgb(0 0 0 / 12%);
-    padding: 10px;
-    transition: all 0.1s ease;
-  }
-  
-  
-  
- 
-
-  .Logo-Div{
-    width: 100%;
-    height: 18%;
+  .Login-Main .Inner-Div {
+    width: 90vw;
+    height: 100vh;
+    background-color: transparent;
+    z-index: 1;
+    position: relative;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    font-size: 28px;
-    text-align: center;
-    color: #051c4f;
-    font-weight: bold;
-    font-family: sans-serif;
-  }
-
-  .Logo-Div p{
-      margin: 0;
-  }
-  
-  .Login-Main .Form-Alert-Div {
-    width: auto;
-    height: auto;
-    padding: 10px;
-    margin-inline: 8%;
-    margin-top: 20px;
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    font-size: 13px;
-    font-weight: bold;
-    border: 1px solid #ed5f74;
-    background-color: #ed5f741e;
-    border-radius: 4px;
-    transition: height 0.5 ease;
+    border: 1px dashed #eceef4;
+    border-top-width: 0;
+    border-block-width: 0;
   }
-  
   .Login-Main .Inside-Form-Div {
-    width: 100%;
-    padding-inline: 40px;
-    margin-top: 20px;
+    padding-inline: 20px;
+  }
+  .Login-Main .Form-Box-Outer-Div {
+    height: 500px;
   }
 
-  .Login-Main .Wallet-Div{
-      width: 100%;
-      height: 150px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
+  .Double-Div {
+    width: 90vw;
+    height: 60vw;
   }
 
-  .Wallet-Circle{
-      width: 60px;
-      height: 60px;
-      background-color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 100vw;
-      margin-inline: 10px;
-      border: 1px solid #b6bed688;
-      transition: all 0.5 ease;
-      cursor: pointer;
-
+  .Form-Box-Inside {
+    height: auto !important;
   }
 
-  .Wallet-Circle:hover{
-    background-color: rgba(0, 0, 0, 0.055);
-    transition: all 0.5 ease;
-
-  }
-  
-  .Login-Main .form-group {
-    color: #506d85;
-    font-size: 13px;
-    font-weight: bold;
+  .Divider {
+    font-size: 1.4vw !important;
   }
 
-  .Login-Main .Divider{
-    color: #506d85dc;
-    font-size: 13px;
-    text-align: center;
+  .Logo-Div {
+    font-size: 3vw;
   }
 
-  .Login-Main .Input{
-      height: 50px;
-      font-size: 17px;
-  }
-  
-  .Login-Main .form-group input {
-    height: 45px;
-    border-radius: 4px;
-  }
-  
-
-  
-  .Login-Main .Button-Div {
-    width: inherit;
-    height: auto;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    align-items: center;
-    margin-top: 40px;
+  .Wallet-Circle {
+    width: 8vw;
+    height: 8vw;
   }
 
-  button{
-      border-style: none;
-      
+  .Input,
+  .Button-Div {
+    font-size: 2vw !important;
+    height: 6vw !important;
   }
-  
-  .Login-Main .Button {
-    width: 100%;
-    height: 48px;
-    border-radius: 4px;
-    background-color: #0368fc;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.1s ease-in-out;
-   
 
+  .Button-Div {
+    margin-top: 4vw !important;
   }
-  
-  .Login-Main .Button:hover {
-    background-color: #045ce0;
-    transition: all 0.1s ease-in-out;
+
+  .Button-Div p {
+    font-size: 2vw !important;
   }
-  
-  .Login-Main .Button p {
-    font-size: 15px;
-    color: white;
-    font-weight: bold;
-    margin: 0;
-    cursor: default;
+
+  .log2h2 {
+    font-size: 3vw !important;
   }
-  
-  @media only screen and (max-width: 788px) {
-    .Login-Main .Outer-Div {
-      width: 100%;
-      height: 100vh;
-      background-color: transparent;
-      z-index: 1;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1px dashed #eceef4;
-      border-top-width: 0;
-      border-block-width: 0;
-    }
-    .Login-Main .Inner-Div {
-      width: 90vw;
-      height: 100vh;
-      background-color: transparent;
-      z-index: 1;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1px dashed #eceef4;
-      border-top-width: 0;
-      border-block-width: 0;
-    }
-    .Login-Main .Inside-Form-Div {
-      padding-inline: 20px;
-    }
-    .Login-Main .Form-Box-Outer-Div {
-      height: 500px;
-    }
+
+  .social {
+    font-size: 1.8vw !important;
   }
+
+  .iccircle {
+    width: 5vw;
+    height: 5vw;
+  }
+
+  .log2btn {
+    height: 7vw;
+    width: 30vw;
+    font-size: 2vw;
+  }
+
+  .log2con {
+    font-size: 2vw;
+  }
+  .open {
+    font-size: 1.5vw;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .Double-Div{
+    width: 100vw;
+    height: 100vw !important;
+  }
+
+  .Form-Box-Inside {
+    height: auto !important;
+  }
+
+  .Divider {
+    font-size: 3vw !important;
+    padding: 2vw;
+  }
+
+  .Logo-Div {
+    font-size: 5.5vw;
+  }
+
+  .Wallet-Div{
+    height: 20% !important;
+  }
+
+  .Wallet-Circle {
+    width: 15vw;
+    height: 15vw;
+  }
+
+  .Wallet-Circle img {
+    width: 10vw;
+    height: 10vw;
+  }
+
+  .Input,
+  .Button-Div {
+    font-size: 4vw !important;
+    height: 12vw !important;
+  }
+
+  .Button-Div {
+    margin-top: 4vw !important;
+    height: 13vw !important;
+  }
+
+  .Button-Div p {
+    font-size: 4vw !important;
+  }
+
+
+}

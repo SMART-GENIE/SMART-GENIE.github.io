@@ -3,13 +3,12 @@ import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Auth from "./Routes/Auth";
 import Console from "./Routes/Console";
-import Wallets from "./Components/Wallets/Wallets";
 const App = () => {
   return (
     <BrowserRouter>
      <BrowserRouter>
       {/* {access ? <Redirect to={"/"} /> : <Redirect to={"/login"} />} */}
-      <Route to={"/auth"} render={() => (false ? <Console /> : <Wallets />)} />
+      <Route to={"/auth"} render={() => (false ? <Console /> : <Auth />)} />
     </BrowserRouter>
     </BrowserRouter>
   );

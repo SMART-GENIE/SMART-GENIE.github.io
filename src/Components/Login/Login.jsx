@@ -12,9 +12,14 @@ import { BsBoxArrowUpRight } from "react-icons/bs";
 
 // import Logo from "../../Assets/Logos/Classfresh(logo).png";
 import { Form, Button } from "react-bootstrap";
-import Wallets from "../Wallets/Wallets";
+import ConnectWallet from "../Wallets/ConnectWallet";
+import useWindowDimensions from "../../Tools/WindowDimensions";
 
 const Login = () => {
+
+  const { height, width } = useWindowDimensions();
+
+
   const [loginId, setloginId] = useState("");
   const [password, setpassword] = useState("");
   const [alert, setalert] = useState(false);
@@ -64,40 +69,8 @@ const Login = () => {
                   </svg>
                 </div>
 
-<Wallets/>
 
-                <div className="Wallet-Div">
-                  <div className="Wallet-Circle">
-                    <img
-                      width={25}
-                      src="https://opensea.io/static/images/logos/metamask-alternative.png"
-                    />
-                  </div>
-                  <div className="Wallet-Circle">
-                    <img
-                      width={25}
-                      src="https://trustwallet.com/assets/images/media/assets/TWT.png"
-                    />
-                  </div>
-                  <div className="Wallet-Circle">
-                    <img
-                      width={25}
-                      src="https://app.compound.finance/compound-components/assets/icn-coinbase-wallet.svg"
-                    />
-                  </div>
-                  <div className="Wallet-Circle">
-                    <img
-                      width={25}
-                      src="https://storage.opensea.io/static/wallets/walletconnect/walletconnect-alternative.png"
-                    />
-                  </div>
-                  <div className="Wallet-Circle">
-                    <img
-                      width={25}
-                      src="https://static.opensea.io/logos/fortmatic-alternative.png"
-                    />
-                  </div>
-                </div>
+                <ConnectWallet/>
 
                 <div className="Divider">
                   Or you can enter manually, enter the number of your ETH purse
@@ -124,13 +97,16 @@ const Login = () => {
                         className="Button"
                       >
                         {false ? null : ( // /> //   margin={3} //   size={8} //   css={Loadercss} //   loading={true} //   color={"white"} // <PulseLoader
-                          <p>Login</p>
+                          <p>Enter App (Preview Mode)</p>
                         )}
                       </button>
                     </div>
                   </Form>
                 </div>
               </div>
+
+{width >= 630 && (
+
 
               <div className={"Form-Box-Inside"}>
                 <div className="login2">
@@ -176,6 +152,7 @@ const Login = () => {
                   </div>
                 </div>
               </div>
+              )}
             </div>
           </div>
         </div>
