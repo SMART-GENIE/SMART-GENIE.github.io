@@ -75,8 +75,7 @@ function Levels() {
             <button className="btn"><p>Restore</p></button>
           </center>
         </div>
-      </div>
-      <div className="row2">
+   
         <div className="card-expired">
           <center>
             <div className="lvl">Level 6</div>

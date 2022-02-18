@@ -11,10 +11,8 @@ function Lostprofits() {
         <p className="header">Lostprofits</p>
       </div>
 
-      <div className="Table">
       <Table />
 
-      </div>
 
      
     </div>

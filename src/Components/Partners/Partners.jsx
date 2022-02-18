@@ -4,7 +4,10 @@ import { AiFillBell } from "react-icons/ai";
 import { FaSearch } from "react-icons/fa";
 import Table from "../Table/Table";
 import Tree from "../Tree/Tree";
+import useWindowDimensions from "../../Tools/WindowDimensions";
 function Partners() {
+  const { height, width } = useWindowDimensions();
+
   return (
     <div className="panel">
       <div>
@@ -27,16 +30,38 @@ function Partners() {
           </div>
         </div>
 
-        <div style={{ marginLeft: "30px" }} className="linkInside">
+        <div
+          style={{
+            marginLeft: width >= 1100 ? "30px" : "0",
+            marginTop: width >= 1100 ? "0" : "20px",
+          }}
+          className="linkInside"
+        >
           <div className="content">
-            <p className="linkname1">Data about partner</p>
-            <br />
-            <div className="Inline">
-              <input className="link2" />
-              <span>
-                <button className="copybtn">Search</button>
-              </span>
-            </div>
+            {width >= 1100 ? (
+              <>
+                <p className="linkname1">Data about partner</p>
+                <br />
+                <div className="Inline">
+                  <input className={"link2" } />
+                  <span>
+                    <button className="copybtn">Search</button>
+                  </span>
+                </div>
+              </>
+            ) : (
+              
+                <div style={{width:"100%"}} >
+                  <p className="linkname1">Data about partner</p>
+                  <br/>
+                  <input style={{width:"100%"}} className={"link1"} />
+                  <span>
+                    <button style={{marginTop:"10px"}} className="copybtn">Search</button>
+                    </span>
+
+                </div>
+            )}
+
             <br />
             <div className="PartnerList">
               {/* <span>Id:45845</span><span style={{marginLeft:"25px"}} >Level:1</span><span style={{marginLeft:"25px"}} >Address:0xfewfwfwfwfefewfwe<span><i class="fa fa-external-link-alt"></i></span></span> */}
@@ -60,7 +85,7 @@ function Partners() {
         <p className="linkname1">Your structure</p>
         {/* <a href="#">To expand\collapse all</a> */}
         <div className="TreeDiv">
-            <Tree/>
+          <Tree />
         </div>
 
         <Table />

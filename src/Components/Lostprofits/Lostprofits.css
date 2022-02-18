@@ -3,8 +3,10 @@
     overflow: hidden;
   }
 
+
 .Lostprofits .Table{
-    width: fit-content;
+    width: 100%;
+    max-width: fit-content;
     display: flex;
     flex-direction: row;
     height: 100%;
@@ -14,6 +16,19 @@
     padding: 20px;
     border-radius: 10px;
 }
+
+.Lostprofits .rec{
+    width: 100%;
+    max-width: fit-content;
+    background-color: white;
+    margin-left: 20px;
+    overflow: hidden;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+
+
 
 .Lostprofits .TableDivWrap{
     width: auto;

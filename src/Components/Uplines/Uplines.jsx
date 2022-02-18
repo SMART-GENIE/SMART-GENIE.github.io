@@ -11,10 +11,8 @@ function Uplines() {
         <p className="header">Uplines</p>
       </div>
 
-      <div className="Table">
       <Table />
 
-      </div>
 
      
     </div>
