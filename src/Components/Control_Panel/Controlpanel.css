@@ -12,7 +12,6 @@
   font-weight: 700;
 }
 
-
 #LevelImage {
   filter: hue-rotate(-224deg) saturate(2.8);
 }
@@ -25,7 +24,6 @@
   width: 500px;
   margin-bottom: 33px;
 }
-
 
 .CoverDiv {
   width: fit-content;
@@ -43,7 +41,6 @@
   display: -webkit-box;
   display: -webkit-flex;
   color: #333352;
-  /* margin-right: 10px; */
   display: -ms-flexbox;
   display: flex;
   width: 300px;
@@ -138,8 +135,32 @@
   overflow: hidden;
 }
 
+@media only screen and (max-width: 919px) {
+
+
+  .contentcard_tabs_active {
+    border-color: #fff #fff #fff #fff;
+    background-color: #fff;
+  }
+
+
+  .row1 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    margin-right: 0 !important;
+  }
+  .card-expired {
+    margin-right: 0 !important;
+  }
+}
+
 @media only screen and (max-width: 850px) {
-  .row1{
+  .row1 {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -148,62 +169,56 @@
   }
 }
 
-
 @media only screen and (max-width: 380px) {
-  .contentcard_tabs_active{
+  .contentcard_tabs_active {
     width: 100%;
     height: 30vw;
   }
 
-  .card{
+  .card {
     width: 10% !important;
     margin-right: 0 !important;
     min-width: 50vw !important;
     height: 50vw !important;
   }
 
-  .card-expired{
+  .card-expired {
     width: 10% !important;
     margin-right: 0 !important;
     min-width: 50vw !important;
     height: 50vw !important;
-
   }
 
-  .lvl{
+  .lvl {
     font-size: 5vw !important;
   }
-  .line{
+  .line {
     width: 50% !important;
   }
-  .days{
+  .days {
     font-size: 4vw !important;
   }
-  .btn{
+  .btn {
     width: 35vw !important;
     height: 12vw !important;
   }
-  .btn p{
-    font-size: 4vw !important;
-
-  }
-  .levelval{
+  .btn p {
     font-size: 4vw !important;
   }
+  .levelval {
+    font-size: 4vw !important;
+  }
 
-  .contentcard_tabs_info img{
+  .contentcard_tabs_info img {
     width: 10vw;
     height: 10vw;
   }
-  .bold-text-2{
+  .bold-text-2 {
     font-size: 7vw !important;
   }
 
-  .contentcard_tabs_label{
+  .contentcard_tabs_label {
     font-size: 5vw !important;
     margin-left: 17vw !important;
-
   }
-
 }
-

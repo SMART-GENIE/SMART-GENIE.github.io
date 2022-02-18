@@ -46,6 +46,7 @@ function Sidenavbarmobile() {
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
+                    borderRadius:"10px"
                   }}
                 >
                   <li
@@ -84,6 +85,7 @@ function Sidenavbarmobile() {
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
+                    borderRadius:"10px"
                   }}
                 >
                   <li
@@ -111,6 +113,7 @@ function Sidenavbarmobile() {
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
+                    borderRadius:"10px"
                   }}
                 >
                   <li
@@ -140,6 +143,7 @@ function Sidenavbarmobile() {
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
+                    borderRadius:"10px"
                   }}
                 >
                   <li
@@ -179,6 +183,7 @@ function Sidenavbarmobile() {
                     display: "flex",
                     flexDirection: "row",
                     alignItems: "center",
+                    borderRadius:"10px"
                   }}
                 >
                   <li className="sidebaritems">
