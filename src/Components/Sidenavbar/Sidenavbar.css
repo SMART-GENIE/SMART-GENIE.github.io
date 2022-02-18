@@ -12,13 +12,10 @@
   color: rgb(78, 76, 76);
 }
 
-.offcanvas{
+.offcanvas {
   z-index: 1000000000000000;
   width: 100% !important;
-
-
 }
-
 
 .logodiv {
   height: 105px;
@@ -52,7 +49,6 @@
   list-style: none;
   padding: 0px !important;
   margin: 0px !important;
-
 }
 
 .sidebaritems {
@@ -68,20 +64,24 @@
   text-decoration: none;
   text-transform: uppercase;
   transition: background-color 200ms ease;
-
 }
 
+.Link-Active {
+  background-image: webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#a348f6),
+    to(#442fe7)
+  );
+  background-image: linear-gradient(90deg, #a348f6, #442fe7);
 
-
+}
 
 .Link:hover {
   background-color: rgba(185, 182, 182, 0.164);
   transition: background-color 200ms ease;
-
 }
-
-
-
 .icon {
   margin-right: 10px;
 }
