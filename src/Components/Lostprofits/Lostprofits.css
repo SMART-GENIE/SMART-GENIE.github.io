@@ -33,4 +33,13 @@
 .Lostprofits .TableDivWrap{
     width: auto;
 }
+
+@media only screen and (max-width: 919px) {
+    .Lostprofits {
+        padding: 0px 40px 250px 0px;
+        overflow: hidden;
+      }
+   
+}
+
   
