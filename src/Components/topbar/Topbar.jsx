@@ -5,14 +5,17 @@ import { RiProfileLine } from "react-icons/ri";
 import { BsFillSuitDiamondFill } from "react-icons/bs";
 import britain from "./britain.png";
 import useWindowDimensions from "../../Tools/WindowDimensions";
+import { useSelector, useDispatch } from "react-redux";
+import { toogleMenu, getTooglemenu } from "../Redux/Reducer/MenuReducer";
+
 function Topbar(opensidebar,opened) {
   const { height, width } = useWindowDimensions();
-  const [openMenu, setopenMenu] = useState(true);
 
-  const MenueSwitch = () => {
-    opensidebar(!opened)
-  
-  };
+
+  const menu = useSelector(getTooglemenu);
+  const dispatch = useDispatch();
+
+
 
   var val = 1234;
   return (
@@ -24,7 +27,7 @@ function Topbar(opensidebar,opened) {
 
         {width <= 850 && (
           <div className="div0">
-            <div onClick={()=>opensidebar(!opened)} className="menu">
+            <div onClick={()=>dispatch(toogleMenu(!menu))} className="menu">
               <img src="https://img.icons8.com/material-outlined/48/000000/menu--v1.png" />{" "}
             </div>
           </div>

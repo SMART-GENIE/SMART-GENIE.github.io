@@ -9,11 +9,19 @@ import { IoIosSend } from "react-icons/io";
 import { BsBoxArrowRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { Offcanvas } from "react-bootstrap";
+
+import { useSelector, useDispatch } from "react-redux";
+import { toogleMenu, getTooglemenu } from "../Redux/Reducer/MenuReducer";
+
 function Sidenavbarmobile() {
-    const [openMenu,setopenMenu] = useState(false)
+  const [openMenu, setopenMenu] = useState(false);
+
+  const menu = useSelector(getTooglemenu);
+  const dispatch = useDispatch();
+
 
   return (
-    <Offcanvas show={openMenu} onHide={() => setopenMenu(!openMenu)}>
+    <Offcanvas show={menu} onHide={() => dispatch(toogleMenu(!menu))}>
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>Smart Genie</Offcanvas.Title>
       </Offcanvas.Header>
