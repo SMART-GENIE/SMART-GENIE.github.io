@@ -99,8 +99,6 @@ function Controlpanel() {
         </div> */}
       </div>
       <br />
-      <br />
-
       <Levels />
     </div>
   );

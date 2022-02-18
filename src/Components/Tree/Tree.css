@@ -8,6 +8,10 @@
     
 }
 
+.TreeDiv{
+    overflow: scroll !important;
+}
+
 .Tree ul{
     list-style: none;
     margin-left: 0;
