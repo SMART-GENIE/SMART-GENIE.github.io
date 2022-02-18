@@ -12,6 +12,14 @@
   color: rgb(78, 76, 76);
 }
 
+.offcanvas{
+  z-index: 1000000000000000;
+  width: 100% !important;
+
+
+}
+
+
 .logodiv {
   height: 105px;
   color: #131339;

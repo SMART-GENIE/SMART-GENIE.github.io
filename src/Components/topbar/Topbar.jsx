@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Topbar.css";
 import logo from "./logo.png";
 import { RiProfileLine } from "react-icons/ri";
 import { BsFillSuitDiamondFill } from "react-icons/bs";
 import britain from "./britain.png";
 import useWindowDimensions from "../../Tools/WindowDimensions";
-function Topbar() {
+function Topbar(opensidebar,opened) {
   const { height, width } = useWindowDimensions();
+  const [openMenu, setopenMenu] = useState(true);
+
+  const MenueSwitch = () => {
+    opensidebar(!opened)
+  
+  };
 
   var val = 1234;
   return (
@@ -18,8 +24,9 @@ function Topbar() {
 
         {width <= 850 && (
           <div className="div0">
-            <div className="menu">
-            <img src="https://img.icons8.com/material-outlined/48/000000/menu--v1.png"/>      </div>
+            <div onClick={()=>opensidebar(!opened)} className="menu">
+              <img src="https://img.icons8.com/material-outlined/48/000000/menu--v1.png" />{" "}
+            </div>
           </div>
         )}
         <div className="div1">

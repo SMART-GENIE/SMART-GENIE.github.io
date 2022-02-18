@@ -11,9 +11,12 @@ import Lostprofits from "../Components/Lostprofits/Lostprofits";
 import Login from "../Components/Login/Login";
 import ScrollMemory$1 from "react-router-scroll-memory";
 import useWindowDimensions from "../Tools/WindowDimensions";
+import Sidenavbarmobile from "../Components/Sidenavbar/Sidenavbarmobile";
 
 function Console() {
   const { height, width } = useWindowDimensions();
+
+
 
   useEffect(() => {
     document.title = "Console";
@@ -23,12 +26,16 @@ function Console() {
     <div className="App">
       <ScrollMemory$1 />
 
-      {width >= 850 ? <Sidenavbar /> : null}
+      {width >= 850 ? (
+        <Sidenavbar />
+      ) : (
+        <Sidenavbarmobile  />
+      )}
 
       <div
         className={width >= 850 ? "ControlPanel" : "ControlPanel-SmallScreen "}
       >
-        <Topbar />
+        <Topbar/>
 
         <div className="MainDiv">
           <Route component={Controlpanel} exact path="/" />
