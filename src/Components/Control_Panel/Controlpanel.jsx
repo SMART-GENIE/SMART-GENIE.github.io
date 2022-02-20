@@ -31,6 +31,8 @@ function Controlpanel() {
 
   useEffect(() => {
     CONNECT_WALLET();
+    FetchCoinCurrecy();
+
   }, []);
 
   const FetchCoinCurrecy = async () => {
@@ -50,7 +52,6 @@ function Controlpanel() {
         [],
         0
       ).then(async (e) => {
-        FetchCoinCurrecy();
         setloadingNumbers(false);
       });
     } catch (e) {
@@ -75,7 +76,7 @@ function Controlpanel() {
   };
 
   let MAX_LEVEL = 5;
-  let LEVEL = 0;
+  let LEVEL = -1;
 
   let countLoading = 0;
 
@@ -86,7 +87,7 @@ function Controlpanel() {
       .then(async (items) => {
         ++LEVEL;
 
-        if (LEVEL == MAX_LEVEL) {
+        if (LEVEL > MAX_LEVEL) {
           setcoinsCount(coins);
           setpartnersList(partners);
           // console.log(coins, partners);
@@ -130,6 +131,8 @@ function Controlpanel() {
                     (
                       await Utils.contract.LEVEL_PRICE(level).call()
                     ).toNumber() / 1000000;
+
+
                 }
               }
             }
@@ -138,16 +141,22 @@ function Controlpanel() {
               { length: 10 },
               (_, i) => i + 1
             )) {
+              console.log(e);
+
               if (level == 3 || level == 8) {
+
                 let expiration = (
                   await Utils.contract.viewUserLevelExpired(e, level).call()
                 ).toNumber();
+
+
 
                 if (expiration != 0) {
                   tempCoin +=
                     (
                       await Utils.contract.LEVEL_PRICE(level).call()
                     ).toNumber() / 1000000;
+
                 }
               }
             }
@@ -188,7 +197,6 @@ function Controlpanel() {
               }
             }
           }
-
           ++countLoading;
           setpartnersList(
             Array.from({ length: countLoading }, (_, i) => i + 1)
@@ -196,6 +204,8 @@ function Controlpanel() {
           setcoinsCount(tempCoin);
           partners.push(e);
           await FetchEarning(e, partners, coins + tempCoin);
+
+         
         }
       });
   };
@@ -317,7 +327,7 @@ function Controlpanel() {
                       decimals={6}
                       duration={1}
                       className="bold-text-2"
-                      end={coinPrice}
+                      end={coinPrice*coinsCount}
                     />
                   </strong>
                 </div>
