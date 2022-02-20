@@ -10,8 +10,9 @@ import useWindowDimensions from "../../Tools/WindowDimensions";
 import Utils from "../../Utils/index";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import TronWeb from "tronweb";
-const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
+import CountUp from "react-countup";
 
+const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 
 function Controlpanel() {
   const { height, width } = useWindowDimensions();
@@ -19,8 +20,7 @@ function Controlpanel() {
   const [partnersList, setpartnersList] = useState(0);
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
-
-
+  const [loadingNumbers, setloadingNumbers] = useState(true);
 
   let Total = 0;
 
@@ -33,12 +33,15 @@ function Controlpanel() {
     CONNECT_WALLET();
   }, []);
 
-  const FetchCoinCurrecy = async()=>{
-    fetch(`https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd&include_market_cap=true`).then(res => res.json()).then((data)=>{
-      setcoinPrice(data.tron.usd)
-    })
-
-  }
+  const FetchCoinCurrecy = async () => {
+    fetch(
+      `https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd&include_market_cap=true`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setcoinPrice(data.tron.usd);
+      });
+  };
 
   const FetchData = async () => {
     try {
@@ -47,12 +50,8 @@ function Controlpanel() {
         [],
         0
       ).then(async (e) => {
-        FetchCoinCurrecy()
-        // console.log(e);
-        // setpartnersList(e.partners.length);
-        // setcoinsCount(e.coins.length)
-        // await FetchEarning(window.tronLink.tronWeb.defaultAddress.base58, []);
-        // console.log((await Utils.contract.viewUserLevelExpired("TGwri7EkjPHgguDhFrt1m9DPN1eFUpoFqJ",1).call()).toNumber());
+        FetchCoinCurrecy();
+        setloadingNumbers(false);
       });
     } catch (e) {
       console.log(e);
@@ -78,6 +77,8 @@ function Controlpanel() {
   let MAX_LEVEL = 5;
   let LEVEL = 0;
 
+  let countLoading = 0;
+
   const FetchEarning = async (id, partners, coins) => {
     return await Utils.contract
       .viewUserReferral(id)
@@ -87,7 +88,7 @@ function Controlpanel() {
 
         if (LEVEL == MAX_LEVEL) {
           setcoinsCount(coins);
-          setpartnersList(partners)
+          setpartnersList(partners);
           // console.log(coins, partners);
           return coins;
         }
@@ -188,6 +189,11 @@ function Controlpanel() {
             }
           }
 
+          ++countLoading;
+          setpartnersList(
+            Array.from({ length: countLoading }, (_, i) => i + 1)
+          );
+          setcoinsCount(tempCoin);
           partners.push(e);
           await FetchEarning(e, partners, coins + tempCoin);
         }
@@ -283,7 +289,14 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">{coinsCount} TRX</strong>
+                  <strong class="bold-text-2">
+                    <CountUp
+                      duration={1}
+                      className="bold-text-2"
+                      end={coinsCount}
+                    />{" "}
+                    TRX
+                  </strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Earned TRX</div>
@@ -298,7 +311,15 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">$ {coinPrice}</strong>
+                  <strong class="bold-text-2">
+                    {"$ "}
+                    <CountUp
+                      decimals={6}
+                      duration={1}
+                      className="bold-text-2"
+                      end={coinPrice}
+                    />
+                  </strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Earned Dollar</div>
@@ -313,7 +334,11 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">{partnersList?.length}</strong>
+                  <strong class="bold-text-2">   <CountUp
+                      duration={1}
+                      className="bold-text-2"
+                      end={partnersList?.length}
+                    /></strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Total Partners</div>
