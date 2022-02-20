@@ -10,32 +10,164 @@ import { BsInstagram } from "react-icons/bs";
 import { BsFacebook } from "react-icons/bs";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 
+import TronWeb from "tronweb";
+import Utils from "../../Utils/index";
+
 // import Logo from "../../Assets/Logos/Classfresh(logo).png";
 import { Form, Button } from "react-bootstrap";
 import ConnectWallet from "../Wallets/ConnectWallet";
 import useWindowDimensions from "../../Tools/WindowDimensions";
+
+import { useSelector, useDispatch } from "react-redux";
+import { toogleAuth, getAuth } from "../Redux/Reducer/AuthReducer";
 import { FaBullseye } from "react-icons/fa";
+
+const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 
 const Login = () => {
   const { height, width } = useWindowDimensions();
 
-  const [Register,setRegister] = useState(FaBullseye)
+  const authStatus = useSelector(getAuth);
+  const dispatch = useDispatch();
 
   const [loginId, setloginId] = useState("");
   const [password, setpassword] = useState("");
-  const [alert, setalert] = useState(false);
-  const [alertdata, setalertdata] = useState(null);
   const [Loader, setLoader] = useState(false);
-  
+
+  const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
+
   let TOKEN = localStorage.getItem("access_token");
 
-  // const Login =()=>{
-  //   window.location = "http://console.localhost:3000/"
-  // }
+  console.log(authStatus);
 
   useEffect(() => {
-    document.title = "Classfresh:Log in";
+    document.title = "Login|SmartGenie";
+    
+    CONNECT_WALLET();
   }, []);
+
+  setInterval(() => {
+    // console.log(window.tronLnk?.tronWeb);
+    if (window.tronLink?.tronWeb == false) {
+      dispatch(toogleAuth("LOGGEDOUT"));
+
+      // dispatch(toogleAuth("LOGGEDOUT"))
+      // window.location.reload();
+    }
+    if (window?.tronLink?.tronWeb) {
+      dispatch(toogleAuth("LOGGEDIN"));
+    }
+  }, 1000);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (window.tronLink?.tronWeb) {
+        dispatch(toogleAuth("LOGGEDIN"));
+      } else {
+        dispatch(toogleAuth("LOGGEDOUT"));
+      }
+
+      if (authStatus == "LOGGEDOUT") {
+        if (window.location.pathname != "/") {
+          window.location.href = "/";
+        }
+      }
+    }, 200);
+    
+  }, [tronWeb]);
+
+  const FetchData = async () => {
+    try {
+      const Count = (
+        await Utils.contract
+          .users(window.tronLink.tronWeb.defaultAddress.base58)
+          .call()
+      ).toString();
+      console.log(Count);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const CONNECT_WALLET = async () => {
+    try {
+      if (!window.tronWeb.ready) {
+        window.location.href = "http://localhost:3000/";
+      }
+
+     
+
+      new Promise((resolve) => {
+        const tronWebState = {
+          installed: !!window.tronWeb,
+          loggedIn: window.tronWeb && window.tronWeb.ready,
+        };
+
+        if (tronWebState.installed) {
+          settronWeb(tronWebState);
+
+          return resolve();
+        }
+
+        let tries = 0;
+
+        const timer = setInterval(() => {
+          if (tries >= 10) {
+            const TRONGRID_API = "https://api.trongrid.io";
+
+            window.tronWeb = new TronWeb(
+              TRONGRID_API,
+              TRONGRID_API,
+              TRONGRID_API
+            );
+
+            settronWeb({
+              installed: false,
+              loggedIn: false,
+            });
+
+            clearInterval(timer);
+            return resolve();
+          }
+
+          tronWebState.installed = !!window.tronWeb;
+          tronWebState.loggedIn = window.tronWeb && window.tronWeb.ready;
+
+          if (!tronWebState.installed) return tries++;
+
+          settronWeb(tronWebState);
+
+          resolve();
+        }, 100);
+      });
+
+      if (!tronWeb.loggedIn) {
+        // Set default address (foundation address) used for contract calls
+        // Directly overwrites the address object as TronLink disabled the
+        // function call
+        window.tronWeb.defaultAddress = {
+          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
+          base58: FOUNDATION_ADDRESS,
+        };
+
+        window.tronWeb.on("addressChanged", (e) => {
+          // console.log(e);
+          // console.log(window.tronLink.tronWeb);
+          if (tronWeb.loggedIn) return;
+
+          settronWeb({
+            tronWeb: {
+              installed: true,
+              loggedIn: true,
+            },
+          });
+        });
+      }
+      await Utils.setTronWeb(window.tronWeb);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const HandleSubmit = async (e) => {
     e.preventDefault();
@@ -50,29 +182,14 @@ const Login = () => {
       <div className="Cover-Div">
         <div className="Outer-Div">
           <div className="Inner-Div">
-            
             <div className="Double-Div">
               <div className={"Form-Box-Inside"}>
                 <div className="Logo-Div">
                   <p>Connect To Wallet</p>
                   {/* <img style={{ width: "221px", height: "67px" }} src={Logo} /> */}
                 </div>
-                <div hidden={!alert} className="Form-Alert-Div">
-                  <svg
-                    aria-hidden="true"
-                    height="15"
-                    width="15"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.115 1.308l5.635 11.269A2.365 2.365 0 0 1 13.634 16H2.365A2.365 2.365 0 0 1 .25 12.577L5.884 1.308a2.365 2.365 0 0 1 4.231 0zM8 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM8 9c.552 0 1-.32 1-.714V4.714C9 4.32 8.552 4 8 4s-1 .32-1 .714v3.572C7 8.68 7.448 9 8 9z"
-                      fill="#ed5f74"
-                    ></path>
-                  </svg>
-                </div>
 
-                <ConnectWallet />
+                <ConnectWallet Connect={CONNECT_WALLET} />
 
                 <div className="Divider">
                   Or you can enter manually, enter the number of your ETH purse
@@ -94,11 +211,11 @@ const Login = () => {
 
                     <div className="Button-Div">
                       <button
+                        onClick={FetchData}
                         disabled={Loader}
                         style={{ opacity: Loader ? 0.5 : 1 }}
                         className="Button"
                       >
-                        
                         {false ? null : ( // /> //   margin={3} //   size={8} //   css={Loadercss} //   loading={true} //   color={"white"} // <PulseLoader
                           <p>Enter App (Preview Mode)</p>
                         )}

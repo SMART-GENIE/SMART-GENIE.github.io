@@ -1,15 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Auth from "./Routes/Auth";
 import Console from "./Routes/Console";
+import { useSelector, useDispatch } from "react-redux";
+
+import { getAuth } from "./Components/Redux/Reducer/AuthReducer";
+
 const App = () => {
+  const authStatus = useSelector(getAuth);
+  console.log(authStatus);
+
+  useEffect(() => {
+    if (authStatus == "LOGGEDOUT") {
+      if (window.location.pathname != "/") {
+        window.location.href = "/";
+      }
+    }
+  }, [authStatus]);
+
   return (
     <BrowserRouter>
-     <BrowserRouter>
-      {/* {access ? <Redirect to={"/"} /> : <Redirect to={"/login"} />} */}
-      <Route to={"/"} render={() => (true ? <Console /> : <Auth />)} />
-    </BrowserRouter>
+      <BrowserRouter>
+        {/* {access ? <Redirect to={"/"} /> : <Redirect to={"/login"} />} */}
+        <Route
+          to={"/"}
+          render={() => (authStatus == "LOGGEDIN" ? <Console /> : <Auth />)}
+        />
+      </BrowserRouter>
     </BrowserRouter>
   );
 };

@@ -7,7 +7,7 @@ import Register from "../Components/Register/Register";
 function Auth() {
   return (
     <div>
-      <Route component={Login} exact path="/login" />
+      <Route component={Login} exact path="/" />
       <Route component={Register} path="/register" />
 
     </div>

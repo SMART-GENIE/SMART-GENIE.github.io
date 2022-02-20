@@ -50,7 +50,7 @@ function Topbar(opensidebar,opened) {
                   alt=""
                   width="25"
                   height="25"
-                  src="https://avatars.githubusercontent.com/u/64833303?v=4"
+                  src="https://avatars.githubusercontent.com/u/64833303?s=96&v=4"
                 />
               </div>
             </span>

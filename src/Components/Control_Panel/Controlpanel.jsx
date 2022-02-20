@@ -28,10 +28,10 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">€ 3492,02</strong>
+                  <strong class="bold-text-2">3492,02 TRX</strong>
                 </div>
               </div>
-              <div class="contentcard_tabs_label">Coin Earned</div>
+              <div class="contentcard_tabs_label">Earned TRX</div>
             </div>
 
             <div class="contentcard_tabs_active">
@@ -43,10 +43,10 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">€ 3492,02</strong>
+                  <strong class="bold-text-2">$ 3492.02</strong>
                 </div>
               </div>
-              <div class="contentcard_tabs_label">Coin Earned</div>
+              <div class="contentcard_tabs_label">Earned Dollar</div>
             </div>
 
             <div class="contentcard_tabs_active">
@@ -58,10 +58,10 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">€ 3492,02</strong>
+                  <strong class="bold-text-2">446</strong>
                 </div>
               </div>
-              <div class="contentcard_tabs_label">Coin Earned</div>
+              <div class="contentcard_tabs_label">Total Partner</div>
             </div>
 
             <div class="contentcard_tabs_active">
@@ -74,10 +74,10 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">€ 3492,02</strong>
+                  <strong class="bold-text-2">1</strong>
                 </div>
               </div>
-              <div class="contentcard_tabs_label">Coin Earned</div>
+              <div class="contentcard_tabs_label">Current Level</div>
             </div>
           </div>
         </div>
