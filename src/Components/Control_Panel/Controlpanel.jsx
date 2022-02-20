@@ -76,7 +76,7 @@ function Controlpanel() {
   };
 
   let MAX_LEVEL = 5;
-  let LEVEL = -1;
+  let LEVEL = 0;
 
   let countLoading = 0;
 
@@ -87,7 +87,7 @@ function Controlpanel() {
       .then(async (items) => {
         ++LEVEL;
 
-        if (LEVEL > MAX_LEVEL) {
+        if (LEVEL == MAX_LEVEL) {
           setcoinsCount(coins);
           setpartnersList(partners);
           // console.log(coins, partners);
@@ -197,6 +197,7 @@ function Controlpanel() {
               }
             }
           }
+
           ++countLoading;
           setpartnersList(
             Array.from({ length: countLoading }, (_, i) => i + 1)
@@ -204,8 +205,6 @@ function Controlpanel() {
           setcoinsCount(tempCoin);
           partners.push(e);
           await FetchEarning(e, partners, coins + tempCoin);
-
-         
         }
       });
   };
