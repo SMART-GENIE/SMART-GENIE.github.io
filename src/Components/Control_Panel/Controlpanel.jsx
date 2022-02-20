@@ -1,17 +1,140 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./Controlpanel.css";
 import Chart from "./Chart";
 import Slidecontent from "./Slidecontent";
 import Levels from "./Levels";
 import Chart2 from "./chart2";
-import { AiFillBell } from "react-icons/ai";
+import { AiFillBell, AiFillFileExclamation } from "react-icons/ai";
 import ScrollToTop from "../../Tools/ScrollToTop";
 import useWindowDimensions from "../../Tools/WindowDimensions";
+import Utils from "../../Utils/index";
+import { Hex_to_base58 } from "../../Utils/Converter";
+import TronWeb from "tronweb";
+const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
+
 
 function Controlpanel() {
-
   const { height, width } = useWindowDimensions();
 
+  const [partnerCount, setpartnerCount] = useState(0);
+  let Total = 0;
+
+  let partners = [];
+  let id = window.tronLink.tronWeb.defaultAddress.base58;
+
+  const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
+
+ 
+  useEffect(() => {
+    CONNECT_WALLET()
+
+  }, []);
+
+  const FetchData = async () => {
+    try {
+      await FetchPartners(window.tronLink.tronWeb.defaultAddress.base58,[]).then((e)=>{
+        setpartnerCount(e.length)
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
+  const FetchPartners = async(id, partners) => {
+    return await Utils.contract.viewUserReferral(id).call().then(async(items)=>{
+      for await (const item of items) {
+        let e = await Hex_to_base58(item);
+        if (e == undefined || !e) return;
+        partners.push(e);
+        await FetchPartners(e, partners);
+      }
+      return partners
+    })
+  };
+
+  const CONNECT_WALLET = async () => {
+    try {
+      if (!window.tronWeb.ready) {
+        window.location.href = "http://localhost:3000/";
+      }
+
+     
+
+      new Promise((resolve) => {
+        const tronWebState = {
+          installed: !!window.tronWeb,
+          loggedIn: window.tronWeb && window.tronWeb.ready,
+        };
+
+        if (tronWebState.installed) {
+          settronWeb(tronWebState);
+
+          return resolve();
+        }
+
+        let tries = 0;
+
+        const timer = setInterval(() => {
+          if (tries >= 10) {
+            const TRONGRID_API = "https://api.trongrid.io";
+
+            window.tronWeb = new TronWeb(
+              TRONGRID_API,
+              TRONGRID_API,
+              TRONGRID_API
+            );
+
+            settronWeb({
+              installed: false,
+              loggedIn: false,
+            });
+
+            clearInterval(timer);
+            return resolve();
+          }
+
+          tronWebState.installed = !!window.tronWeb;
+          tronWebState.loggedIn = window.tronWeb && window.tronWeb.ready;
+
+          if (!tronWebState.installed) return tries++;
+
+          settronWeb(tronWebState);
+
+          resolve();
+        }, 100);
+      });
+
+      if (!tronWeb.loggedIn) {
+        // Set default address (foundation address) used for contract calls
+        // Directly overwrites the address object as TronLink disabled the
+        // function call
+        window.tronWeb.defaultAddress = {
+          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
+          base58: FOUNDATION_ADDRESS,
+        };
+
+        window.tronWeb.on("addressChanged", (e) => {
+          if (tronWeb.loggedIn) return;
+
+          settronWeb({
+            tronWeb: {
+              installed: true,
+              loggedIn: true,
+            },
+          });
+        });
+      }
+      await Utils.setTronWeb(window.tronWeb).then(()=>{
+        FetchData()
+      })
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+ 
+ 
 
   return (
     <div className="panel">
@@ -58,10 +181,10 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">446</strong>
+                  <strong class="bold-text-2">{partnerCount}</strong>
                 </div>
               </div>
-              <div class="contentcard_tabs_label">Total Partner</div>
+              <div class="contentcard_tabs_label">Total Partners</div>
             </div>
 
             <div class="contentcard_tabs_active">

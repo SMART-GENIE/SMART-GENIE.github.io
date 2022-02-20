@@ -21,6 +21,7 @@ import useWindowDimensions from "../../Tools/WindowDimensions";
 import { useSelector, useDispatch } from "react-redux";
 import { toogleAuth, getAuth } from "../Redux/Reducer/AuthReducer";
 import { FaBullseye } from "react-icons/fa";
+import { Hex_to_base58 } from "../../Utils/Converter";
 
 const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 
@@ -78,15 +79,25 @@ const Login = () => {
 
   const FetchData = async () => {
     try {
-      const Count = (
-        await Utils.contract
-          .users(window.tronLink.tronWeb.defaultAddress.base58)
-          .call()
-      ).toString();
-      console.log(Count);
+      await FetchPartners(window.tronLink.tronWeb.defaultAddress.base58,[]).then((e)=>{
+        alert(e.length);
+      })
     } catch (e) {
       console.log(e);
     }
+  };
+
+
+  const FetchPartners = async(id, partners) => {
+    return await Utils.contract.viewUserReferral(id).call().then(async(items)=>{
+      for await (const item of items) {
+        let e = await Hex_to_base58(item);
+        if (e == undefined || !e) return;
+        partners.push(e);
+        await FetchPartners(e, partners);
+      }
+      return partners
+    })
   };
 
   const CONNECT_WALLET = async () => {
@@ -151,9 +162,6 @@ const Login = () => {
         };
 
         window.tronWeb.on("addressChanged", (e) => {
-          alert("CHANGED")
-          // console.log(e);
-          // console.log(window.tronLink.tronWeb);
           if (tronWeb.loggedIn) return;
 
           settronWeb({
