@@ -90,17 +90,21 @@
   height: 45px;
   border-radius: 100px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #f3f4f7;
   position: relative;
   padding-inline: 20px;
 }
 .address {
+  
   font-size: 15px;
   font-weight: bold;
   text-align: start;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .div3 {
   height: 100%;

@@ -19,6 +19,14 @@ const App = () => {
     }
   }, [authStatus]);
 
+  if (window?.tronWeb) {
+    window?.tronWeb.on("addressChanged", (e) => {
+      window.location.reload();
+      // console.log(e);
+      // console.log(window.tronLink.tronWeb);
+    });
+  }
+
   return (
     <BrowserRouter>
       <BrowserRouter>

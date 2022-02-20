@@ -151,6 +151,7 @@ const Login = () => {
         };
 
         window.tronWeb.on("addressChanged", (e) => {
+          alert("CHANGED")
           // console.log(e);
           // console.log(window.tronLink.tronWeb);
           if (tronWeb.loggedIn) return;

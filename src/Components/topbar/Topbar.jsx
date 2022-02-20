@@ -40,7 +40,7 @@ function Topbar(opensidebar,opened) {
 
         <div className="div2">
           <div className="contentDiv">
-            <span className="address">Address :</span>
+            <span style={{width:"calc(100% - 25px)"}} className="address">Address: {window?.tronLink?.tronWeb?.defaultAddress?.base58}</span>
             <span style={{ float: "right", position: "absolute", right: 10 }}>
               <div
                 style={{ overflow: "hidden", width: 30, height: 30 }}
