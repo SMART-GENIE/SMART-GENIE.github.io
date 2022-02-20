@@ -12,11 +12,15 @@ import { Hex_to_base58 } from "../../Utils/Converter";
 import TronWeb from "tronweb";
 const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 
+
 function Controlpanel() {
   const { height, width } = useWindowDimensions();
 
   const [partnersList, setpartnersList] = useState(0);
   const [coinsCount, setcoinsCount] = useState(0);
+  const [coinPrice, setcoinPrice] = useState(0);
+
+
 
   let Total = 0;
 
@@ -29,6 +33,13 @@ function Controlpanel() {
     CONNECT_WALLET();
   }, []);
 
+  const FetchCoinCurrecy = async()=>{
+    fetch(`https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=usd&include_market_cap=true`).then(res => res.json()).then((data)=>{
+      setcoinPrice(data.tron.usd)
+    })
+
+  }
+
   const FetchData = async () => {
     try {
       await FetchEarning(
@@ -36,7 +47,8 @@ function Controlpanel() {
         [],
         0
       ).then(async (e) => {
-        console.log(e);
+        FetchCoinCurrecy()
+        // console.log(e);
         // setpartnersList(e.partners.length);
         // setcoinsCount(e.coins.length)
         // await FetchEarning(window.tronLink.tronWeb.defaultAddress.base58, []);
@@ -286,7 +298,7 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">$ 3492.02</strong>
+                  <strong class="bold-text-2">$ {coinPrice}</strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Earned Dollar</div>
@@ -301,7 +313,7 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">{partnersList}</strong>
+                  <strong class="bold-text-2">{partnersList?.length}</strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Total Partners</div>
