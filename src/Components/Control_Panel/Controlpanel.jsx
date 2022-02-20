@@ -15,7 +15,9 @@ const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 function Controlpanel() {
   const { height, width } = useWindowDimensions();
 
-  const [partnerCount, setpartnerCount] = useState(0);
+  const [partnersList, setpartnersList] = useState(0);
+  const [coinsCount, setcoinsCount] = useState(0);
+
   let Total = 0;
 
   let partners = [];
@@ -29,11 +31,16 @@ function Controlpanel() {
 
   const FetchData = async () => {
     try {
-      await FetchPartners(
+      await FetchEarning(
         window.tronLink.tronWeb.defaultAddress.base58,
-        []
-      ).then((e) => {
-        setpartnerCount(e.length);
+        [],
+        0
+      ).then(async (e) => {
+        console.log(e);
+        // setpartnersList(e.partners.length);
+        // setcoinsCount(e.coins.length)
+        // await FetchEarning(window.tronLink.tronWeb.defaultAddress.base58, []);
+        // console.log((await Utils.contract.viewUserLevelExpired("TGwri7EkjPHgguDhFrt1m9DPN1eFUpoFqJ",1).call()).toNumber());
       });
     } catch (e) {
       console.log(e);
@@ -51,7 +58,127 @@ function Controlpanel() {
           partners.push(e);
           await FetchPartners(e, partners);
         }
+
         return partners;
+      });
+  };
+
+  let MAX_LEVEL = 5;
+  let LEVEL = 0;
+
+  const FetchEarning = async (id, partners, coins) => {
+    return await Utils.contract
+      .viewUserReferral(id)
+      .call()
+      .then(async (items) => {
+        ++LEVEL;
+
+        if (LEVEL == MAX_LEVEL) {
+          setcoinsCount(coins);
+          setpartnersList(partners)
+          // console.log(coins, partners);
+          return coins;
+        }
+
+        let tempCoin = coins;
+        for await (const item of items) {
+          let e = await Hex_to_base58(item);
+          if (e == undefined || !e) return;
+          if (LEVEL == 1) {
+            for await (const level of Array.from(
+              { length: 10 },
+              (_, i) => i + 1
+            )) {
+              if (level == 1 || level == 6) {
+                let expiration = (
+                  await Utils.contract.viewUserLevelExpired(e, level).call()
+                ).toNumber();
+
+                if (expiration != 0) {
+                  tempCoin +=
+                    (
+                      await Utils.contract.LEVEL_PRICE(level).call()
+                    ).toNumber() / 1000000;
+                }
+              }
+            }
+          } else if (LEVEL == 2) {
+            for await (const level of Array.from(
+              { length: 10 },
+              (_, i) => i + 1
+            )) {
+              if (level == 2 || level == 7) {
+                let expiration = (
+                  await Utils.contract.viewUserLevelExpired(e, level).call()
+                ).toNumber();
+
+                if (expiration != 0) {
+                  tempCoin +=
+                    (
+                      await Utils.contract.LEVEL_PRICE(level).call()
+                    ).toNumber() / 1000000;
+                }
+              }
+            }
+          } else if (LEVEL == 3) {
+            for await (const level of Array.from(
+              { length: 10 },
+              (_, i) => i + 1
+            )) {
+              if (level == 3 || level == 8) {
+                let expiration = (
+                  await Utils.contract.viewUserLevelExpired(e, level).call()
+                ).toNumber();
+
+                if (expiration != 0) {
+                  tempCoin +=
+                    (
+                      await Utils.contract.LEVEL_PRICE(level).call()
+                    ).toNumber() / 1000000;
+                }
+              }
+            }
+          } else if (LEVEL == 4) {
+            for await (const level of Array.from(
+              { length: 10 },
+              (_, i) => i + 1
+            )) {
+              if (level == 4 || level == 9) {
+                let expiration = (
+                  await Utils.contract.viewUserLevelExpired(e, level).call()
+                ).toNumber();
+
+                if (expiration != 0) {
+                  tempCoin +=
+                    (
+                      await Utils.contract.LEVEL_PRICE(level).call()
+                    ).toNumber() / 1000000;
+                }
+              }
+            }
+          } else if (LEVEL == 5) {
+            for await (const level of Array.from(
+              { length: 10 },
+              (_, i) => i + 1
+            )) {
+              if (level == 5 || level == 10) {
+                let expiration = (
+                  await Utils.contract.viewUserLevelExpired(e, level).call()
+                ).toNumber();
+
+                if (expiration != 0) {
+                  tempCoin +=
+                    (
+                      await Utils.contract.LEVEL_PRICE(level).call()
+                    ).toNumber() / 1000000;
+                }
+              }
+            }
+          }
+
+          partners.push(e);
+          await FetchEarning(e, partners, coins + tempCoin);
+        }
       });
   };
 
@@ -144,7 +271,7 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">3492,02 TRX</strong>
+                  <strong class="bold-text-2">{coinsCount} TRX</strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Earned TRX</div>
@@ -174,7 +301,7 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">{partnerCount}</strong>
+                  <strong class="bold-text-2">{partnersList}</strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Total Partners</div>
