@@ -12,7 +12,6 @@ import { Hex_to_base58 } from "../../Utils/Converter";
 import TronWeb from "tronweb";
 const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 
-
 function Controlpanel() {
   const { height, width } = useWindowDimensions();
 
@@ -24,43 +23,40 @@ function Controlpanel() {
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
 
- 
   useEffect(() => {
-    CONNECT_WALLET()
-
+    CONNECT_WALLET();
   }, []);
 
   const FetchData = async () => {
     try {
-      await FetchPartners(window.tronLink.tronWeb.defaultAddress.base58,[]).then((e)=>{
-        setpartnerCount(e.length)
-      })
+      await FetchPartners(
+        window.tronLink.tronWeb.defaultAddress.base58,
+        []
+      ).then((e) => {
+        setpartnerCount(e.length);
+      });
     } catch (e) {
       console.log(e);
     }
   };
 
-
-  const FetchPartners = async(id, partners) => {
-    return await Utils.contract.viewUserReferral(id).call().then(async(items)=>{
-      for await (const item of items) {
-        let e = await Hex_to_base58(item);
-        if (e == undefined || !e) return;
-        partners.push(e);
-        await FetchPartners(e, partners);
-      }
-      return partners
-    })
+  const FetchPartners = async (id, partners) => {
+    return await Utils.contract
+      .viewUserReferral(id)
+      .call()
+      .then(async (items) => {
+        for await (const item of items) {
+          let e = await Hex_to_base58(item);
+          if (e == undefined || !e) return;
+          partners.push(e);
+          await FetchPartners(e, partners);
+        }
+        return partners;
+      });
   };
 
   const CONNECT_WALLET = async () => {
     try {
-      if (!window.tronWeb.ready) {
-        window.location.href = "http://localhost:3000/";
-      }
-
-     
-
       new Promise((resolve) => {
         const tronWebState = {
           installed: !!window.tronWeb,
@@ -125,16 +121,13 @@ function Controlpanel() {
           });
         });
       }
-      await Utils.setTronWeb(window.tronWeb).then(()=>{
-        FetchData()
-      })
+      await Utils.setTronWeb(window.tronWeb).then(() => {
+        FetchData();
+      });
     } catch (e) {
       console.log(e);
     }
   };
-
- 
- 
 
   return (
     <div className="panel">

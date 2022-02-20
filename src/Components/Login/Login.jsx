@@ -103,7 +103,7 @@ const Login = () => {
   const CONNECT_WALLET = async () => {
     try {
       if (!window.tronWeb.ready) {
-        window.location.href = "http://localhost:3000/";
+        window.location.href = "/";
       }
 
      
