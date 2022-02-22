@@ -51,7 +51,7 @@ function Controlpanel() {
         []
       ).then(async (e) => {
         setpartnersList(e);
-        console.log(e);
+        // console.log(e);
         return await FetchEarning(
           window.tronLink.tronWeb.defaultAddress.base58,
           e.length
@@ -63,12 +63,17 @@ function Controlpanel() {
   };
 
   const FetchPartners = async (id, partners) => {
+    // console.log(id);
     return await Utils.contract
       .viewUserReferral(id)
       .call()
       .then(async (items) => {
-       
-
+        for await (const item of items) {
+          let e = await Hex_to_base58(item);
+          if (e == undefined || !e) return;
+          partners.push(e);
+          await FetchPartners(e, partners);
+        }
         return partners;
       });
   };
@@ -477,8 +482,8 @@ function Controlpanel() {
           });
         });
       }
-      await Utils.setTronWeb(window.tronWeb).then(() => {
-        FetchData();
+      await Utils.setTronWeb(window.tronWeb).then(async () => {
+        await FetchData();
       });
     } catch (e) {
       console.log(e);
