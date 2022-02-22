@@ -46,12 +46,12 @@ function Controlpanel() {
 
   const FetchData = async () => {
     try {
-      await FetchPartners(
+      return await FetchPartners(
         window.tronLink.tronWeb.defaultAddress.base58,
         []
       ).then(async (e) => {
         setpartnersList(e);
-        await FetchEarning(
+        return await FetchEarning(
           window.tronLink.tronWeb.defaultAddress.base58,
           e.length
         );
@@ -152,23 +152,23 @@ function Controlpanel() {
   //             }
   //           }
   //         } else if (LEVEL == 4) {
-            // for await (const level of Array.from(
-            //   { length: 10 },
-            //   (_, i) => i + 1
-            // )) {
-            //   if (level == 4 || level == 9) {
-            //     let expiration = (
-            //       await Utils.contract.viewUserLevelExpired(e, level).call()
-            //     ).toNumber();
+  // for await (const level of Array.from(
+  //   { length: 10 },
+  //   (_, i) => i + 1
+  // )) {
+  //   if (level == 4 || level == 9) {
+  //     let expiration = (
+  //       await Utils.contract.viewUserLevelExpired(e, level).call()
+  //     ).toNumber();
 
-            //     if (expiration != 0) {
-            //       tempCoin +=
-            //         (
-            //           await Utils.contract.LEVEL_PRICE(level).call()
-            //         ).toNumber() / 1000000;
-            //     }
-            //   }
-            // }
+  //     if (expiration != 0) {
+  //       tempCoin +=
+  //         (
+  //           await Utils.contract.LEVEL_PRICE(level).call()
+  //         ).toNumber() / 1000000;
+  //     }
+  //   }
+  // }
   //         } else if (LEVEL == 5) {
   //           for await (const level of Array.from(
   //             { length: 10 },
@@ -201,57 +201,54 @@ function Controlpanel() {
   //     });
   // };
 
-  var PartnersArray = [];
-  var LevelJSON = {};
+  let PartnersArray = [];
+  let LevelJSON = {};
 
   let MAX_LEVEL = 5;
-  let LEVEL = 0;
+  var LEVEL = 0;
 
   let countLoading = 0;
 
-  const FetchEarning = async (id,count) => {
-    await Utils.contract
-      .viewUserReferral(id)
-      .call()
-      .then(async (items) => {
-        ++LEVEL;
+  const FetchEarning = async (id, count) => {
+    ++LEVEL;
 
-        PartnersArray = [...PartnersArray, ...items];
-
-        if (LEVEL == 1) {
-          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-        } else if (LEVEL == 2) {
-          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-        } else if (LEVEL == 3) {
-          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-        } else if (LEVEL == 4) {
-          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-        } else if (LEVEL == 5) {
-          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-        }
-
-        if (count== PartnersArray.length) {
-          console.log(LevelJSON);
-          await calculate_CoinsFromLevels(LevelJSON);
-        }
-
-        // console.log(LEVEL, MAX_LEVEL);
-        // if (LEVEL > MAX_LEVEL) {
-        //   console.log(LevelJSON);
-        //   // setpartnersList(PartnersArray);
-        //   return LevelJSON;
-        // }
-
-        // console.log(PartnersArray);
-        // console.log(LevelJSON);
-
-        for await (const item of items) {
-          let e = await Hex_to_base58(item);
-          if (e == undefined || !e) return;
-
-          await FetchEarning(e,count);
-        }
+    if (count == PartnersArray.length) {
+      // console.log(count, PartnersArray.length);
+      // console.log(LevelJSON);
+      // console.log(LEVEL);
+      return await calculate_CoinsFromLevels(LevelJSON).then((res) => {
+        setcoinsCount(res);
       });
+      // return;
+    } else {
+      Utils.contract
+        .viewUserReferral(id)
+        .call()
+        .then(async (items) => {
+          PartnersArray = [...PartnersArray, ...items];
+
+          if (LEVEL == 1) {
+            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+          } else if (LEVEL == 2) {
+            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+          } else if (LEVEL == 3) {
+            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+          } else if (LEVEL == 4) {
+            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+          } else if (LEVEL == 5) {
+            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+          }
+
+          if (items.length > 0) {
+            for await (const item of items) {
+              let e = await Hex_to_base58(item);
+              if (e == undefined || !e) return;
+
+              await FetchEarning(e, count);
+            }
+          }
+        });
+    }
   };
 
   const calculate_CoinsFromLevels = async (data) => {
@@ -266,6 +263,25 @@ function Controlpanel() {
     if (LEVEL1 != undefined) {
       for await (const id of LEVEL1) {
         // LEVEL 1
+
+        let expiration0 = (
+          await Utils.contract.viewUserLevelExpired(id, 1).call()
+        ).toNumber();
+
+        if (expiration0 != 0) {
+          Totalcoins +=
+            (await Utils.contract.LEVEL_PRICE(1).call()).toNumber() / 1000000;
+        }
+
+        // LEVEL 6
+        let expiration01 = (
+          await Utils.contract.viewUserLevelExpired(id, 6).call()
+        ).toNumber();
+
+        if (expiration01 != 0) {
+          Totalcoins +=
+            (await Utils.contract.LEVEL_PRICE(6).call()).toNumber() / 1000000;
+        }
 
         let expiration1 = (
           await Utils.contract.viewUserLevelExpired(id, 2).call()
@@ -387,9 +403,9 @@ function Controlpanel() {
         }
       }
 
-      setcoinsCount(Totalcoins);
-      return Totalcoins;
+      // setcoinsCount(Totalcoins);
     }
+    return Totalcoins;
   };
 
   const ConverttoHexArray = async (items) => {
