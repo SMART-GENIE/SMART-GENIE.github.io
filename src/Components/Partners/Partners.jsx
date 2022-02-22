@@ -17,6 +17,7 @@ function Partners() {
   const [coinsCount, setcoinsCount] = useState(0);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
+  const [treeData, settreeData] = useState([]);
 
   useEffect(() => {
     CONNECT_WALLET();
@@ -60,18 +61,19 @@ function Partners() {
   };
 
   const ProccessTreeData = async (data, id, temp) => {
+    const id_to_num = await Utils.contract.users(id).call();
+    const resId = await Promise.resolve(id_to_num[1].toNumber())
     temp = {
-      name: id,
+      name: resId,
     };
     if (id in data) {
       const fetch = data[id].map(async (i) => {
         return ProccessTreeData(data, i, temp);
       });
       const response = await Promise.all(fetch);
-      temp["children"] = response
+      temp["children"] = response;
     } else {
-      temp["name"] = id
-
+      temp["name"] = resId;
     }
 
     console.log(temp);
@@ -156,8 +158,10 @@ function Partners() {
               e,
               window.tronLink.tronWeb.defaultAddress.base58,
               {}
-            );
-            // console.log(e);
+            ).then((res) => {
+              settreeData([res]);
+              // console.log(res);
+            });
           }
         );
       });
@@ -243,7 +247,7 @@ function Partners() {
         <p className="linkname1">Your structure</p>
         {/* <a href="#">To expand\collapse all</a> */}
         <div className="TreeDiv">
-          <Tree />
+          <Tree data={treeData} />
         </div>
 
         <Table />

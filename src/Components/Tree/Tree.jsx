@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import "./Tree.css";
@@ -95,8 +95,14 @@ function TreeList({ item, tree, funcs }) {
   );
 }
 
-function Tree() {
-  const [tree, setTree] = useState(baseTree);
+function Tree({data}) {
+  const [tree, setTree] = useState(data);
+
+  useEffect(()=>{
+    setTree(data)
+  },[data])
+
+  console.log(data);
 
   const toggleOpen = (item) => {
     const newTree = [...tree];
