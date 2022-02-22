@@ -3,49 +3,48 @@ import ReactDOM from "react-dom";
 import styled from "styled-components";
 import "./Tree.css";
 const baseTree = [
-    {
-      "name": "item1"
-    },
-    {
-      "name": "item2",
-      "isOpen": true,
-      "children": [
-        {
-          "name": "2-item1",
-          "isOpen": true
-        }
-      ]
-    },
-    {
-      "name": "item3",
-      "isOpen": true,
-      "children": [
-        {
-          "name": "3-item1"
-        },
-        {
-          "name": "3-item2",
-          "isOpen": false,
-          "children": [{ "name": "3.2-item 1" }]
-        }
-      ]
-    },
-    {
-      "name": "item4",
-      "isOpen": true,
-      "children": [
-        {
-          "name": "4-item1"
-        },
-        {
-          "name": "4-item2",
-          "isOpen": true,
-          "children": [{ "name": "4.2-item 1" }]
-        }
-      ]
-    }
-  ]
-  
+  {
+    name: "item1",
+  },
+  {
+    name: "item2",
+    isOpen: true,
+    children: [
+      {
+        name: "2-item1",
+        isOpen: true,
+      },
+    ],
+  },
+  {
+    name: "item3",
+    isOpen: true,
+    children: [
+      {
+        name: "3-item1",
+      },
+      {
+        name: "3-item2",
+        isOpen: false,
+        children: [{ name: "3.2-item 1" }],
+      },
+    ],
+  },
+  {
+    name: "item4",
+    isOpen: true,
+    children: [
+      {
+        name: "4-item1",
+      },
+      {
+        name: "4-item2",
+        isOpen: true,
+        children: [{ name: "4.2-item 1" }],
+      },
+    ],
+  },
+];
 
 const TreeLine = styled.button`
   font-family: Menlo, Consolas, monospace;
@@ -56,7 +55,7 @@ const TreeLine = styled.button`
   font: inherit;
   cursor: pointer;
   outline: inherit;
-  text-transform:uppercase
+  text-transform: uppercase;
 `;
 
 function AddItem({ parent, funcs }) {
@@ -88,7 +87,7 @@ function TreeItem({ item, funcs }) {
 function TreeList({ item, tree, funcs }) {
   return (
     <ul>
-      {tree.map(child => (
+      {tree.map((child) => (
         <TreeItem item={child} funcs={funcs} />
       ))}
       {/* <AddItem parent={item} funcs={funcs} /> */}
@@ -99,17 +98,17 @@ function TreeList({ item, tree, funcs }) {
 function Tree() {
   const [tree, setTree] = useState(baseTree);
 
-  const toggleOpen = item => {
+  const toggleOpen = (item) => {
     const newTree = [...tree];
     item.isOpen = !item.isOpen;
     setTree(newTree);
   };
-  const makeParent = item => {
+  const makeParent = (item) => {
     const newTree = [...tree];
     item.children = [];
     setTree(newTree);
   };
-  const addChild = parent => {
+  const addChild = (parent) => {
     const newTree = [...tree];
     if (!parent) {
       newTree.push({ name: "New Item" });
@@ -122,7 +121,7 @@ function Tree() {
   const funcs = {
     toggleOpen,
     addChild,
-    makeParent
+    makeParent,
   };
   return (
     <div className="Tree">
@@ -131,6 +130,4 @@ function Tree() {
   );
 }
 
-
-
-export default Tree
+export default Tree;

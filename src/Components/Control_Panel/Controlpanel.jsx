@@ -66,14 +66,7 @@ function Controlpanel() {
       .viewUserReferral(id)
       .call()
       .then(async (items) => {
-        for await (const item of items) {
-          let e = await Hex_to_base58(item);
-          if (e == undefined || !e) {
-            return;
-          }
-          partners.push(e);
-          await FetchPartners(e, partners);
-        }
+       
 
         return partners;
       });
