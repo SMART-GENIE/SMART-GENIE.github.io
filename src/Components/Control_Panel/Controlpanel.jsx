@@ -51,6 +51,7 @@ function Controlpanel() {
         []
       ).then(async (e) => {
         setpartnersList(e);
+        console.log(e);
         return await FetchEarning(
           window.tronLink.tronWeb.defaultAddress.base58,
           e.length

@@ -60,13 +60,18 @@ function Partners() {
   };
 
   const ProccessTreeData = async (data, id, temp) => {
+    temp = {
+      name: id,
+    };
     if (id in data) {
-      temp = {
-        name: id,
-        children: data[id].map(async (i) => {
-          return ProccessTreeData(data, i, temp)
-        }),
-      };
+      const fetch = data[id].map(async (i) => {
+        return ProccessTreeData(data, i, temp);
+      });
+      const response = await Promise.all(fetch);
+      temp["children"] = response
+    } else {
+      temp["name"] = id
+
     }
 
     console.log(temp);
