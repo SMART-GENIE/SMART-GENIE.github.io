@@ -282,6 +282,15 @@ function Controlpanel() {
             (await Utils.contract.LEVEL_PRICE(6).call()).toNumber() / 1000000;
         }
 
+      
+      }
+    }
+
+    if (LEVEL2 != undefined) {
+      for await (const id of LEVEL2) {
+
+
+
         let expiration1 = (
           await Utils.contract.viewUserLevelExpired(id, 2).call()
         ).toNumber();
@@ -300,14 +309,20 @@ function Controlpanel() {
           Totalcoins +=
             (await Utils.contract.LEVEL_PRICE(7).call()).toNumber() / 1000000;
         }
+
+
+       
       }
     }
 
-    if (LEVEL2 != undefined) {
-      for await (const id of LEVEL2) {
-        // LEVEL 2
+    if (LEVEL3 != undefined) {
+      for await (const id of LEVEL3) {
 
-        let expiration3 = (
+
+
+         // LEVEL 2
+
+         let expiration3 = (
           await Utils.contract.viewUserLevelExpired(id, 3).call()
         ).toNumber();
 
@@ -325,60 +340,47 @@ function Controlpanel() {
           Totalcoins +=
             (await Utils.contract.LEVEL_PRICE(8).call()).toNumber() / 1000000;
         }
-      }
-    }
 
-    if (LEVEL3 != undefined) {
-      for await (const id of LEVEL3) {
-        // LEVEL 3
 
-        let expiration5 = (
-          await Utils.contract.viewUserLevelExpired(id, 4).call()
-        ).toNumber();
 
-        if (expiration5 != 0) {
-          Totalcoins +=
-            (await Utils.contract.LEVEL_PRICE(4).call()).toNumber() / 1000000;
-        }
 
-        // LEVEL 8
-
-        let expiration6 = (
-          await Utils.contract.viewUserLevelExpired(id, 9).call()
-        ).toNumber();
-
-        if (expiration6 != 0) {
-          Totalcoins +=
-            (await Utils.contract.LEVEL_PRICE(9).call()).toNumber() / 1000000;
-        }
+      
       }
     }
 
     if (LEVEL4 != undefined) {
       for await (const id of LEVEL4) {
-        // LEVEL 4
-        let expiration7 = (
-          await Utils.contract.viewUserLevelExpired(id, 5).call()
-        ).toNumber();
 
-        if (expiration7 != 0) {
-          Totalcoins +=
-            (await Utils.contract.LEVEL_PRICE(5).call()).toNumber() / 1000000;
-        }
 
-        // LEVEL 9
-        let expiration8 = (
-          await Utils.contract.viewUserLevelExpired(id, 10).call()
-        ).toNumber();
+          // LEVEL 3
 
-        if (expiration8 != 0) {
-          Totalcoins +=
-            (await Utils.contract.LEVEL_PRICE(10).call()).toNumber() / 1000000;
-        }
+          let expiration5 = (
+            await Utils.contract.viewUserLevelExpired(id, 4).call()
+          ).toNumber();
+  
+          if (expiration5 != 0) {
+            Totalcoins +=
+              (await Utils.contract.LEVEL_PRICE(4).call()).toNumber() / 1000000;
+          }
+  
+          // LEVEL 8
+  
+          let expiration6 = (
+            await Utils.contract.viewUserLevelExpired(id, 9).call()
+          ).toNumber();
+  
+          if (expiration6 != 0) {
+            Totalcoins +=
+              (await Utils.contract.LEVEL_PRICE(9).call()).toNumber() / 1000000;
+          }
+
+      
       }
 
       if (LEVEL5 != undefined) {
         for await (const id of LEVEL5) {
+          
+
           // LEVEL 5
           let expiration9 = (
             await Utils.contract.viewUserLevelExpired(id, 5).call()
