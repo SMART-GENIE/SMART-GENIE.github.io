@@ -46,7 +46,7 @@ function Uplines() {
         .viewUserLevelExpired(address, level)
         .call();
       const currentTimestamp = await Promise.resolve(checkLevel);
-      if (currentTimestamp.toNumber() < Date.now()) {
+      if (currentTimestamp.toNumber() < Date.now() && currentTimestamp.toNumber() != 0) {
         ++currentLevel;
       }
     }

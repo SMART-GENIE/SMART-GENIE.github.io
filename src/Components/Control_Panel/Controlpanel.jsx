@@ -22,6 +22,7 @@ function Controlpanel() {
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
   const [chartData, setchartData] = useState({labels:[],data:[]});
+  const [currentLevel,setcurrentLevel] = useState(0)
 
   let Total = 0;
 
@@ -80,7 +81,7 @@ function Controlpanel() {
         []
       ).then(async (e) => {
         setpartnersList(e);
-
+        await getcurrentLevel(window.tronLink.tronWeb.defaultAddress.base58)
         // console.log(e);
         return await FetchEarning(
           window.tronLink.tronWeb.defaultAddress.base58,
@@ -112,6 +113,23 @@ function Controlpanel() {
         return partners;
       });
   };
+
+
+  const getcurrentLevel = async (address) => {
+    let currentLevel = 0;
+    for await (const level of Array.from({ length: 10 }, (_, i) => i + 1)) {
+      const checkLevel = await Utils.contract
+        .viewUserLevelExpired(address, level)
+        .call();
+      const currentTimestamp = await Promise.resolve(checkLevel);
+      if (currentTimestamp.toNumber() < Date.now() && currentTimestamp.toNumber() != 0) {
+        ++currentLevel;
+      }
+    }
+    setcurrentLevel(currentLevel)
+    return currentLevel;
+  };
+
 
   // const FetchEarning = async (id, partners, coins) => {
   //   return await Utils.contract
@@ -588,7 +606,7 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">1</strong>
+                  <strong class="bold-text-2">{currentLevel}</strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Current Level</div>
