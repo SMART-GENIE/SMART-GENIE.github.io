@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 import "./Login.css";
 import logimg from "./logimg.jpg";
@@ -14,7 +15,7 @@ import TronWeb from "tronweb";
 import Utils from "../../Utils/index";
 
 // import Logo from "../../Assets/Logos/Classfresh(logo).png";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Toast } from "react-bootstrap";
 import ConnectWallet from "../Wallets/ConnectWallet";
 import useWindowDimensions from "../../Tools/WindowDimensions";
 
@@ -32,7 +33,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const [loginId, setloginId] = useState("");
-  const [password, setpassword] = useState("");
+  const [previewId, setpreviewId] = useState("");
   const [Loader, setLoader] = useState(false);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
@@ -53,20 +54,68 @@ const Login = () => {
   }, []);
 
   const checkUser = async () => {
-    console.log(window.tronWeb);
-    await Utils.setTronWeb(window.tronWeb).then(async() => {
+    // console.log(window.tronWeb);
+    await Utils.setTronWeb(window.tronWeb).then(async () => {
       const LoadUserExist = await Utils.contract
         .users(window.tronLink.tronWeb.defaultAddress.base58)
         .call();
       const userexist = await Promise.resolve(LoadUserExist);
-      if(userexist[0]==true){
+      if (userexist[0] == true) {
         dispatch(toogleAuth("LOGGEDIN"));
-      }else{
-        window.location.href = "/register"
-        dispatch(toogleAuth("LOGGEDOUT"))
+      } else {
+        window.location.href = "/register";
+        dispatch(toogleAuth("LOGGEDOUT"));
       }
       // console.log(userexist[0]);
     });
+  };
+
+  const PreviewMode = async () => {
+    try {
+      if (previewId.trim().length == 0) {
+        return toast.error("Please enter valid RefId/address");
+      }
+
+      setLoader(true);
+      // if string is address
+      if (/[a-zA-Z]/.test(previewId)) {
+        const LoadUserExist = await Utils.contract.users(previewId).call();
+        const userexist = await Promise.resolve(LoadUserExist);
+        setLoader(false);
+        if (userexist[0] == false) {
+          setLoader(false);
+
+          return toast.error("User does not exist");
+        }
+
+        console.log(userexist[0]);
+      } else {
+        const LoadUserAddress = await Utils.contract
+          .userList(JSON.parse(previewId))
+          .call();
+        const userAddress = await Promise.resolve(LoadUserAddress);
+
+        const LoadUserExist = await Utils.contract.users(userAddress).call();
+        const userexist = await Promise.resolve(LoadUserExist);
+        if (userexist[0] == false) {
+          setLoader(false);
+          return toast.error("User does not exist");
+        }
+        setLoader(false);
+      }
+
+      // const userexist = await Promise.resolve(LoadUserExist);
+      // console.log(userexist);
+      // if (userexist[0] == true) {
+      //   dispatch(toogleAuth("LOGGEDIN"));
+      // } else {
+      //   window.location.href = "/register";
+      //   dispatch(toogleAuth("LOGGEDOUT"));
+      // }
+    } catch (e) {
+      console.log(e);
+      setLoader(false);
+    }
   };
 
   // useEffect(() => {
@@ -221,25 +270,29 @@ const Login = () => {
                   <Form onSubmit={(e) => HandleSubmit(e)}>
                     <Form.Group controlId="formBasicEmail">
                       <Form.Control
-                        name="email"
+                        name="text"
                         className="Input"
                         placeholder="Enter Address or Referal Id"
-                        value={loginId}
+                        value={previewId}
                         onChange={(e) => {
-                          setloginId(e.target.value);
+                          setpreviewId(e.target.value);
                         }}
+                        autoComplete={"false"}
+                        autoCorrect={"false"}
                         required
                       />
                     </Form.Group>
 
                     <div className="Button-Div">
                       <button
-                        onClick={FetchData}
+                        onClick={PreviewMode}
                         disabled={Loader}
                         style={{ opacity: Loader ? 0.5 : 1 }}
                         className="Button"
                       >
-                        {false ? null : ( // /> //   margin={3} //   size={8} //   css={Loadercss} //   loading={true} //   color={"white"} // <PulseLoader
+                        {Loader ? (
+                          <p>Loading (Please wait)</p>
+                        ) : (
                           <p>Enter App (Preview Mode)</p>
                         )}
                       </button>
