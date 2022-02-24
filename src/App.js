@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Auth from "./Routes/Auth";
 import Console from "./Routes/Console";
 import { useSelector, useDispatch } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 import { getAuth, toogleAuth } from "./Components/Redux/Reducer/AuthReducer";
 
@@ -28,6 +29,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <BrowserRouter>
+      <Toaster/>
         {/* {access ? <Redirect to={"/"} /> : <Redirect to={"/login"} />} */}
         <Route
           to={"/"}

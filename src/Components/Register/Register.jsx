@@ -182,7 +182,7 @@ const Register = () => {
         toast.success("Transaction done successfully");
         setLoader(false);
         dispatch(toogleAuth("LOGGEDIN"));
-window.location.href = "/"
+        window.location.href = "/";
       } else {
         window.location.href = "/register";
         dispatch(toogleAuth("LOGGEDOUT"));

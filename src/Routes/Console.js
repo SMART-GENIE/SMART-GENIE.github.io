@@ -14,6 +14,7 @@ import useWindowDimensions from "../Tools/WindowDimensions";
 import Sidenavbarmobile from "../Components/Sidenavbar/Sidenavbarmobile";
 import { useDispatch } from "react-redux";
 import { toogleAuth } from "../Components/Redux/Reducer/AuthReducer";
+import toast, { Toaster } from "react-hot-toast";
 
 function Console() {
   const { height, width } = useWindowDimensions();
@@ -42,6 +43,7 @@ function Console() {
   return (
     <div className="App">
       <ScrollMemory$1 />
+
 
       {width >= 850 ? <Sidenavbar /> : <Sidenavbarmobile />}
 
