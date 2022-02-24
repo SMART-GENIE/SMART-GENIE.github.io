@@ -6,11 +6,16 @@ import Utils from "../../Utils/index";
 import useWindowDimensions from "../../Tools/WindowDimensions";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import TronWeb from "tronweb";
+import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
+import { useSelector } from "react-redux";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
 function Uplines() {
   const { height, width } = useWindowDimensions();
+  const previewId = useSelector(getPreviewModeId);
+  let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
+
 
   const [coinsCount, setcoinsCount] = useState(0);
 
@@ -138,7 +143,7 @@ function Uplines() {
         });
       }
       await Utils.setTronWeb(window.tronWeb).then(async () => {
-        await FetchData(window.tronLink.tronWeb.defaultAddress.base58, {}).then(
+        await FetchData(walletId, {}).then(
           async (e) => {}
         );
       });

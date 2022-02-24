@@ -10,11 +10,15 @@ import { getPartnersLevelJson } from "../Redux/Reducer/PartnersLevelJson";
 
 import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
+import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
 function Lostprofits() {
   const { height, width } = useWindowDimensions();
+  const previewId = useSelector(getPreviewModeId);
+  let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
+
 
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
@@ -43,6 +47,7 @@ function Lostprofits() {
   let TotalPartnersCount = 0;
 
   const FetchTree = async (id, TREEDATA) => {
+    console.log(id,"HI");
     await Utils.contract
       .viewUserReferral(id)
       .call()
@@ -410,8 +415,8 @@ function Lostprofits() {
         // Directly overwrites the address object as TronLink disabled the
         // function call
         window.tronWeb.defaultAddress = {
-          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
-          base58: FOUNDATION_ADDRESS,
+          hex: window.tronWeb?.address?.toHex(walletId),
+          base58: walletId,
         };
 
         window.tronWeb.on("addressChanged", (e) => {
@@ -426,16 +431,16 @@ function Lostprofits() {
         });
       }
       await Utils.setTronWeb(window.tronWeb).then(async () => {
-        await FetchTree(window.tronLink.tronWeb.defaultAddress.base58, {}).then(
+        await FetchTree(walletId, {}).then(
           async (e) => {
             await ProccessTreeData(
               e,
-              window.tronLink.tronWeb.defaultAddress.base58,
+              walletId,
               {}
             ).then(async (res) => {
               settreeData([res]);
               await FetchPayments(
-                window.tronLink.tronWeb.defaultAddress.base58,
+                walletId,
                 TotalPartnersCount
               );
               // console.log(res);

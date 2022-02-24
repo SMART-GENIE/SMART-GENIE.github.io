@@ -12,16 +12,22 @@ import Login from "../Components/Login/Login";
 import ScrollMemory$1 from "react-router-scroll-memory";
 import useWindowDimensions from "../Tools/WindowDimensions";
 import Sidenavbarmobile from "../Components/Sidenavbar/Sidenavbarmobile";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toogleAuth } from "../Components/Redux/Reducer/AuthReducer";
 import toast, { Toaster } from "react-hot-toast";
+import { getPreviewModeId } from "../Components/Redux/Reducer/PreviewMode";
 
 function Console() {
   const { height, width } = useWindowDimensions();
   const dispatch = useDispatch();
+  const previewId = useSelector(getPreviewModeId);
 
   useEffect(() => {
     document.title = "Console";
+
+    if(previewId){
+      return
+    }
 
     const DISCONNECT_EMIT = setInterval(() => {
       // console.log(window.tronLnk?.tronWeb);

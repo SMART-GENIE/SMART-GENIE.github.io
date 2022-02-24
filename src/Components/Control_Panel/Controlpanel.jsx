@@ -13,11 +13,15 @@ import CountUp from "react-countup";
 import moment from "moment";
 import "./Levels.css";
 import toast, { Toaster } from "react-hot-toast";
+import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
+import { useSelector } from "react-redux";
 
 const TEMP_ADDRESS = "TJrQX9SeYDPKVy9eKEViWGqDL2wFGUBaNJ";
 
 function Controlpanel() {
   const { height, width } = useWindowDimensions();
+  const previewId = useSelector(getPreviewModeId);
+  let id = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
   const [partnersList, setpartnersList] = useState(0);
   const [coinsCount, setcoinsCount] = useState(0);
@@ -30,7 +34,8 @@ function Controlpanel() {
   let Total = 0;
 
   let partners = [];
-  let id = window.tronLink.tronWeb.defaultAddress.base58;
+
+  console.log(previewId);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
 
@@ -79,22 +84,14 @@ function Controlpanel() {
 
   const FetchData = async () => {
     try {
-      return await FetchPartners(
-        window.tronLink.tronWeb.defaultAddress.base58,
-        []
-      ).then(async (e) => {
+      return await FetchPartners(id, []).then(async (e) => {
         setpartnersList(e);
-        await getcurrentLevel(window.tronLink.tronWeb.defaultAddress.base58);
+        await getcurrentLevel(id);
         // console.log(e);
-        return await FetchEarning(
-          window.tronLink.tronWeb.defaultAddress.base58,
-          e.length
-        ).then(async () => {
+        return await FetchEarning(id, e.length).then(async () => {
           await ProccessRefralGraphData(e).then(async (res) => {
             setchartData(res);
-            await FetchLevels(
-              window.tronLink.tronWeb.defaultAddress.base58
-            ).then((data) => {
+            await FetchLevels(id).then((data) => {
               setLevelsData(data);
             });
             // console.log(res);
@@ -526,8 +523,8 @@ function Controlpanel() {
       }
 
       window.tronWeb.defaultAddress = {
-        hex: window.tronLink.tronWeb.defaultAddress.hex,
-        base58: window.tronLink.tronWeb.defaultAddress.base58,
+        hex: window.tronWeb?.address?.toHex(id),
+        base58: id,
       };
 
       window.tronWeb.on("addressChanged", (e) => {
@@ -577,14 +574,13 @@ function Controlpanel() {
         toast.remove(buytoast);
       })
       .catch(async (err) => {
-
-        if(err.error != "Cannot find result in solidity node"){
+        if (err.error != "Cannot find result in solidity node") {
           toast.remove(buytoast);
 
-          toast.error(
-            `Transaction Failed!! Level ${level} purchase failed`,
-            { position: "bottom-center", style: { marginTop: "80px" } }
-          );
+          toast.error(`Transaction Failed!! Level ${level} purchase failed`, {
+            position: "bottom-center",
+            style: { marginTop: "80px" },
+          });
         }
 
         // Cannot find result in solidity node
@@ -593,14 +589,12 @@ function Controlpanel() {
         console.log(err);
         toast.remove(buytoast);
 
-        if(err.error == "Cannot find result in solidity node"){
+        if (err.error == "Cannot find result in solidity node") {
           toast.success(
             `Transaction confirmed successfully!! Level ${level} bought successfully`,
             { position: "bottom-center", style: { marginTop: "80px" } }
           );
         }
-
-      
       });
   };
 
@@ -663,6 +657,15 @@ function Controlpanel() {
       }
     }
     Temp[`${1}`]["disabled"] = false;
+
+    //if User in preview mode
+    if (previewId != null) {
+      for await (const i of Array.from({ length: 10 }, (_, i) => i + 1)) {
+        Temp[`${i}`]["disabled"] = true;
+
+      }
+
+    }
 
     console.log(Temp);
 
@@ -797,6 +800,7 @@ function Controlpanel() {
               <div class="levelval">300 TRX</div>
 
               <button
+              disabled={LevelsData["1"]?.disabled}
                 style={{ opacity: LevelsData["1"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(300, 1)}
                 className="btn"
@@ -828,6 +832,7 @@ function Controlpanel() {
               <div class="levelval">600 TRX</div>
 
               <button
+              disabled={LevelsData["2"]?.disabled}
                 style={{ opacity: LevelsData["2"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(600, 2)}
                 className="btn"
@@ -859,6 +864,7 @@ function Controlpanel() {
               <div class="levelval">1250 TRX</div>
 
               <button
+              disabled={LevelsData["3"]?.disabled}
                 style={{ opacity: LevelsData["3"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(1250, 3)}
                 className="btn"
@@ -890,6 +896,7 @@ function Controlpanel() {
               <div class="levelval">2500 TRX</div>
 
               <button
+              disabled={LevelsData["4"]?.disabled}
                 style={{ opacity: LevelsData["4"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(2500, 4)}
                 className="btn"
@@ -922,6 +929,7 @@ function Controlpanel() {
               <div class="levelval">5000 TRX</div>
 
               <button
+              disabled={LevelsData["5"]?.disabled}
                 style={{ opacity: LevelsData["5"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(5000, 5)}
                 className="btn"
@@ -954,6 +962,7 @@ function Controlpanel() {
               <div class="levelval">10000 TRX</div>
 
               <button
+              disabled={LevelsData["6"]?.disabled}
                 style={{ opacity: LevelsData["6"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(10000, 6)}
                 className="btn"
@@ -985,6 +994,7 @@ function Controlpanel() {
               <div class="levelval">25000 TRX</div>
 
               <button
+              disabled={LevelsData["7"]?.disabled}
                 style={{ opacity: LevelsData["7"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(25000, 7)}
                 className="btn"
@@ -1016,6 +1026,7 @@ function Controlpanel() {
               <div class="levelval">50000 TRX</div>
 
               <button
+              disabled={LevelsData["8"]?.disabled}
                 style={{ opacity: LevelsData["8"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(50000, 8)}
                 className="btn"
@@ -1047,6 +1058,7 @@ function Controlpanel() {
               <div class="levelval">100000 TRX</div>
 
               <button
+              disabled={LevelsData["9"]?.disabled}
                 style={{ opacity: LevelsData["9"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(100000, 9)}
                 className="btn"
@@ -1078,6 +1090,7 @@ function Controlpanel() {
               <div class="levelval">200000 TRX</div>
 
               <button
+              disabled={LevelsData["10"]?.disabled}
                 style={{ opacity: LevelsData["10"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(200000, 10)}
                 className="btn"

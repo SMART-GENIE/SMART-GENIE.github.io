@@ -23,6 +23,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toogleAuth, getAuth } from "../Redux/Reducer/AuthReducer";
 import { FaBullseye } from "react-icons/fa";
 import { Hex_to_base58 } from "../../Utils/Converter";
+import { tooglePreviewModeId } from "../Redux/Reducer/PreviewMode";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
@@ -88,6 +89,9 @@ const Login = () => {
           return toast.error("User does not exist");
         }
 
+        dispatch(tooglePreviewModeId(await Hex_to_base58(previewId)))
+        dispatch(toogleAuth("LOGGEDIN"));
+
         console.log(userexist[0]);
       } else {
         const LoadUserAddress = await Utils.contract
@@ -101,6 +105,10 @@ const Login = () => {
           setLoader(false);
           return toast.error("User does not exist");
         }
+        dispatch(tooglePreviewModeId(await Hex_to_base58(userAddress)))
+        dispatch(toogleAuth("LOGGEDIN"));
+
+
         setLoader(false);
       }
 

@@ -11,11 +11,15 @@ import { getPartnersLevelJson } from "../Redux/Reducer/PartnersLevelJson";
 
 import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
+import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
 function Partners() {
   const { height, width } = useWindowDimensions();
+  const previewId = useSelector(getPreviewModeId);
+  let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
+
 
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
@@ -426,16 +430,16 @@ function Partners() {
         });
       }
       await Utils.setTronWeb(window.tronWeb).then(async () => {
-        await FetchTree(window.tronLink.tronWeb.defaultAddress.base58, {}).then(
+        await FetchTree(walletId, {}).then(
           async (e) => {
             await ProccessTreeData(
               e,
-              window.tronLink.tronWeb.defaultAddress.base58,
+              walletId,
               {}
             ).then(async (res) => {
               settreeData([res]);
               await FetchPayments(
-                window.tronLink.tronWeb.defaultAddress.base58,
+                walletId,
                 TotalPartnersCount
               );
               // console.log(res);
