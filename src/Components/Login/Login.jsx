@@ -43,70 +43,73 @@ const Login = () => {
 
   useEffect(() => {
     document.title = "Login|SmartGenie";
-    
-    CONNECT_WALLET();
+
+    // CONNECT_WALLET();
   }, []);
 
-  setInterval(() => {
-    // console.log(window.tronLnk?.tronWeb);
-    if (window.tronLink?.tronWeb == false) {
-      dispatch(toogleAuth("LOGGEDOUT"));
+  // setInterval(() => {
+  //   // console.log(window.tronLnk?.tronWeb);
+  //   if (window.tronLink?.tronWeb == false) {
+  //     dispatch(toogleAuth("LOGGEDOUT"));
 
-      // dispatch(toogleAuth("LOGGEDOUT"))
-      // window.location.reload();
-    }
-    if (window?.tronLink?.tronWeb) {
-      dispatch(toogleAuth("LOGGEDIN"));
-    }
-  }, 1000);
+  //     // dispatch(toogleAuth("LOGGEDOUT"))
+  //     // window.location.reload();
+  //   }
+  //   if (window?.tronLink?.tronWeb) {
+  //     dispatch(toogleAuth("LOGGEDIN"));
+  //     // alert("YES")
+  //   }
+  // }, 1000);
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (window.tronLink?.tronWeb) {
-        dispatch(toogleAuth("LOGGEDIN"));
-      } else {
-        dispatch(toogleAuth("LOGGEDOUT"));
-      }
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (window.tronLink?.tronWeb) {
+  //       dispatch(toogleAuth("LOGGEDIN"));
+  //     } else {
+  //       dispatch(toogleAuth("LOGGEDOUT"));
+  //     }
 
-      if (authStatus == "LOGGEDOUT") {
-        if (window.location.pathname != "/") {
-          window.location.href = "/";
-        }
-      }
-    }, 200);
-    
-  }, [tronWeb]);
+  //     if (authStatus == "LOGGEDOUT") {
+  //       if (window.location.pathname != "/") {
+  //         window.location.href = "/";
+  //       }
+  //     }
+  //   }, 200);
+  // }, [tronWeb]);
 
   const FetchData = async () => {
     try {
-      await FetchPartners(window.tronLink.tronWeb.defaultAddress.base58,[]).then((e)=>{
+      await FetchPartners(
+        window.tronLink.tronWeb.defaultAddress.base58,
+        []
+      ).then((e) => {
         alert(e.length);
-      })
+      });
     } catch (e) {
       console.log(e);
     }
   };
 
-
-  const FetchPartners = async(id, partners) => {
-    return await Utils.contract.viewUserReferral(id).call().then(async(items)=>{
-      for await (const item of items) {
-        let e = await Hex_to_base58(item);
-        if (e == undefined || !e) return;
-        partners.push(e);
-        await FetchPartners(e, partners);
-      }
-      return partners
-    })
+  const FetchPartners = async (id, partners) => {
+    return await Utils.contract
+      .viewUserReferral(id)
+      .call()
+      .then(async (items) => {
+        for await (const item of items) {
+          let e = await Hex_to_base58(item);
+          if (e == undefined || !e) return;
+          partners.push(e);
+          await FetchPartners(e, partners);
+        }
+        return partners;
+      });
   };
 
   const CONNECT_WALLET = async () => {
     try {
-      if (!window.tronWeb.ready) {
+      if (!window.tronWeb.ready || window.tronLink.tronWeb == false) {
         window.location.href = "/";
       }
-
-     
 
       new Promise((resolve) => {
         const tronWebState = {
@@ -163,7 +166,6 @@ const Login = () => {
 
         window.tronWeb.on("addressChanged", (e) => {
           if (tronWeb.loggedIn) return;
-
           settronWeb({
             tronWeb: {
               installed: true,
@@ -172,7 +174,9 @@ const Login = () => {
           });
         });
       }
-      await Utils.setTronWeb(window.tronWeb);
+      await Utils.setTronWeb(window.tronWeb).then(() => {
+        dispatch(toogleAuth("LOGGEDIN"));
+      });
     } catch (e) {
       console.log(e);
     }

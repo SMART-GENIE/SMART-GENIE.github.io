@@ -12,12 +12,32 @@ import Login from "../Components/Login/Login";
 import ScrollMemory$1 from "react-router-scroll-memory";
 import useWindowDimensions from "../Tools/WindowDimensions";
 import Sidenavbarmobile from "../Components/Sidenavbar/Sidenavbarmobile";
+import { useDispatch } from "react-redux";
+import { toogleAuth } from "../Components/Redux/Reducer/AuthReducer";
 
 function Console() {
   const { height, width } = useWindowDimensions();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.title = "Console";
+
+    const DISCONNECT_EMIT = setInterval(() => {
+      console.log("LIVE");
+      // console.log(window.tronLnk?.tronWeb);
+      if (window.tronLink?.tronWeb == false) {
+        dispatch(toogleAuth("LOGGEDOUT"));
+
+        // dispatch(toogleAuth("LOGGEDOUT"))
+        // window.location.reload();
+      }
+      if (window?.tronLink?.tronWeb) {
+        dispatch(toogleAuth("LOGGEDIN"));
+        // alert("YES")
+      }
+    }, 1000);
+
+    return () => clearInterval(DISCONNECT_EMIT);
   }, []);
 
   return (

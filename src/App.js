@@ -5,11 +5,11 @@ import Auth from "./Routes/Auth";
 import Console from "./Routes/Console";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getAuth } from "./Components/Redux/Reducer/AuthReducer";
+import { getAuth, toogleAuth } from "./Components/Redux/Reducer/AuthReducer";
 
 const App = () => {
   const authStatus = useSelector(getAuth);
-  console.log(authStatus);
+ 
 
   // useEffect(() => {
   //   if (authStatus == "LOGGEDOUT") {

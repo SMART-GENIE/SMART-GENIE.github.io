@@ -8,12 +8,22 @@ import { FaSearchDollar } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
 import { BsBoxArrowRight } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
+import { toogleAuth } from "../Redux/Reducer/AuthReducer";
+import { useDispatch } from "react-redux";
+
 function Sidenavbar() {
   const location = useLocation();
+  const dispatch = useDispatch();
+
 
   const PATHNAME = () => location?.pathname?.toLowerCase();
 
   const VALIDROUTE = (path) => (PATHNAME(path) == path ? true : false);
+
+  const Logout = () => {
+    window.tronLink.tronWeb = false;
+    dispatch(toogleAuth("LOGGEDOUT"));
+  };
 
   return (
     <div className="sidenav">
@@ -150,8 +160,9 @@ function Sidenavbar() {
             </li>
 
             <Link
+              onClick={Logout}
               className={"Link"}
-              to="/auth"
+              to="/"
               style={{
                 width: "240px !important",
                 textDecoration: "none",
