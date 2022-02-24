@@ -625,14 +625,17 @@ function Controlpanel() {
     for await (const i of Array.from({ length: 10 }, (_, i) => i + 1)) {
       if (Temp[`${i}`].active == true) {
         TempActive = i+1;
-        Temp[`${TempActive}`].disabled = false;
+        if(Temp[`${TempActive}`] != undefined){
+          Temp[`${TempActive}`]["disabled"] = false;
+
+        }
 
       }
 
     }
-    Temp[`${1}`].disabled = false;
+    Temp[`${1}`]["disabled"] = false;
 
-
+console.log(Temp);
 
     return Temp;
   };
@@ -758,7 +761,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 1</div>
 
-            <div className="days">{LevelsData["1"]?.active ? "Active":"Expired"}</div>
+            <div className="days">{LevelsData["1"]?.active ? "Active":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -769,7 +772,7 @@ function Controlpanel() {
               onClick={() => Buy(300)}
               className="btn"
             >
-              <p>Buy</p>
+              <p>{LevelsData["1"]?.active ? "Extend":LevelsData["1"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -788,7 +791,7 @@ function Controlpanel() {
               onClick={() => Buy(600)}
               className="btn"
             >
-              <p>Buy</p>
+              <p>{LevelsData["2"]?.active ? "Extend":LevelsData["2"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -796,7 +799,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 3</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["3"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["3"]?.active ? "Active": LevelsData["3"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["3"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -807,7 +810,7 @@ function Controlpanel() {
               onClick={() => Buy(1250)}
               className="btn"
             >
-              <p>Buy</p>
+              <p>{LevelsData["3"]?.active ? "Extend":LevelsData["3"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -815,7 +818,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 4</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["4"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["4"]?.active ? "Active": LevelsData["4"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["4"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -826,7 +829,7 @@ function Controlpanel() {
               onClick={() => Buy(2500)}
               className="btn"
             >
-              <p>Buy</p>
+              <p>{LevelsData["4"]?.active ? "Extend":LevelsData["4"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -835,7 +838,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 5</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["5"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["5"]?.active ? "Active": LevelsData["5"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["5"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -846,7 +849,7 @@ function Controlpanel() {
               onClick={() => Buy(5000)}
               className="btn"
             >
-              <p>Restore</p>
+              <p>{LevelsData["5"]?.active ? "Extend":LevelsData["5"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -855,7 +858,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 6</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["6"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["6"]?.active ? "Active": LevelsData["6"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["6"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -866,7 +869,7 @@ function Controlpanel() {
               onClick={() => Buy(10000)}
               className="btn"
             >
-              <p>Restore</p>
+              <p>{LevelsData["6"]?.active ? "Extend":LevelsData["6"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -874,7 +877,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 7</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["7"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["7"]?.active ? "Active": LevelsData["7"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["7"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -885,7 +888,7 @@ function Controlpanel() {
               onClick={() => Buy(25000)}
               className="btn"
             >
-              <p>Restore</p>
+              <p>{LevelsData["7"]?.active ? "Extend":LevelsData["7"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -893,7 +896,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 8</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["8"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["8"]?.active ? "Active": LevelsData["8"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["8"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -904,7 +907,7 @@ function Controlpanel() {
               onClick={() => Buy(50000)}
               className="btn"
             >
-              <p>Restore</p>
+              <p>{LevelsData["8"]?.active ? "Extend":LevelsData["8"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -912,7 +915,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 9</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["9"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["9"]?.active ? "Active": LevelsData["9"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["9"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -923,7 +926,7 @@ function Controlpanel() {
               onClick={() => Buy(100000)}
               className="btn"
             >
-              <p>Restore</p>
+              <p>{LevelsData["9"]?.active ? "Extend":LevelsData["9"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
@@ -931,7 +934,7 @@ function Controlpanel() {
           <center>
             <div className="lvl">Level 10</div>
 
-            <div className="days">{LevelsData["2"]?.active ? "Active": LevelsData["10"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["2"]?.expiredAgo} days ago` }</div>
+            <div className="days">{LevelsData["10"]?.active ? "Active": LevelsData["10"]?.expired == false ? "Inactive":"Expired"+`-${LevelsData["10"]?.expiredAgo} days ago` }</div>
 
             <hr className="line" />
 
@@ -942,7 +945,7 @@ function Controlpanel() {
               onClick={() => Buy(200000)}
               className="btn"
             >
-              <p>Restore</p>
+              <p>{LevelsData["10"]?.active ? "Extend":LevelsData["10"]?.expired ? "Restore":"Buy"}</p>
             </button>
           </center>
         </div>
