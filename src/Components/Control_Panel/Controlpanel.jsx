@@ -15,6 +15,7 @@ import "./Levels.css";
 import toast, { Toaster } from "react-hot-toast";
 import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
 import { useSelector } from "react-redux";
+import { Spinner } from "react-bootstrap";
 
 const TEMP_ADDRESS = "TJrQX9SeYDPKVy9eKEViWGqDL2wFGUBaNJ";
 
@@ -29,7 +30,7 @@ function Controlpanel() {
   const [chartData, setchartData] = useState({ labels: [], data: [] });
   const [currentLevel, setcurrentLevel] = useState(0);
   const [FOUNDATION_ADDRESS, setFOUNDATION_ADDRESS] = useState(TEMP_ADDRESS);
-  const [LoadingBuy, setLoadingBuy] = useState({});
+  const [LoadingLevels, setLoadingLevels] = useState(true);
 
   let Total = 0;
 
@@ -93,6 +94,7 @@ function Controlpanel() {
             setchartData(res);
             await FetchLevels(id).then((data) => {
               setLevelsData(data);
+              setLoadingLevels(false)
             });
             // console.log(res);
           });
@@ -662,9 +664,7 @@ function Controlpanel() {
     if (previewId != null) {
       for await (const i of Array.from({ length: 10 }, (_, i) => i + 1)) {
         Temp[`${i}`]["disabled"] = true;
-
       }
-
     }
 
     console.log(Temp);
@@ -783,7 +783,10 @@ function Controlpanel() {
       </div>
       <br />
 
-      <div className="level">
+  
+      <div style={{justifyContent:LoadingLevels ? "center" : null,alignItems:LoadingLevels ? "center" : null,height:LoadingLevels ? "18vw":null}} className="level">
+        
+        {!LoadingLevels?
         <div className="row1">
           <div className={LevelsData["1"]?.expired ? "card-expired" : "card"}>
             <center>
@@ -800,7 +803,7 @@ function Controlpanel() {
               <div class="levelval">300 TRX</div>
 
               <button
-              disabled={LevelsData["1"]?.disabled}
+                disabled={LevelsData["1"]?.disabled}
                 style={{ opacity: LevelsData["1"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(300, 1)}
                 className="btn"
@@ -832,7 +835,7 @@ function Controlpanel() {
               <div class="levelval">600 TRX</div>
 
               <button
-              disabled={LevelsData["2"]?.disabled}
+                disabled={LevelsData["2"]?.disabled}
                 style={{ opacity: LevelsData["2"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(600, 2)}
                 className="btn"
@@ -864,7 +867,7 @@ function Controlpanel() {
               <div class="levelval">1250 TRX</div>
 
               <button
-              disabled={LevelsData["3"]?.disabled}
+                disabled={LevelsData["3"]?.disabled}
                 style={{ opacity: LevelsData["3"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(1250, 3)}
                 className="btn"
@@ -896,7 +899,7 @@ function Controlpanel() {
               <div class="levelval">2500 TRX</div>
 
               <button
-              disabled={LevelsData["4"]?.disabled}
+                disabled={LevelsData["4"]?.disabled}
                 style={{ opacity: LevelsData["4"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(2500, 4)}
                 className="btn"
@@ -929,7 +932,7 @@ function Controlpanel() {
               <div class="levelval">5000 TRX</div>
 
               <button
-              disabled={LevelsData["5"]?.disabled}
+                disabled={LevelsData["5"]?.disabled}
                 style={{ opacity: LevelsData["5"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(5000, 5)}
                 className="btn"
@@ -962,7 +965,7 @@ function Controlpanel() {
               <div class="levelval">10000 TRX</div>
 
               <button
-              disabled={LevelsData["6"]?.disabled}
+                disabled={LevelsData["6"]?.disabled}
                 style={{ opacity: LevelsData["6"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(10000, 6)}
                 className="btn"
@@ -994,7 +997,7 @@ function Controlpanel() {
               <div class="levelval">25000 TRX</div>
 
               <button
-              disabled={LevelsData["7"]?.disabled}
+                disabled={LevelsData["7"]?.disabled}
                 style={{ opacity: LevelsData["7"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(25000, 7)}
                 className="btn"
@@ -1026,7 +1029,7 @@ function Controlpanel() {
               <div class="levelval">50000 TRX</div>
 
               <button
-              disabled={LevelsData["8"]?.disabled}
+                disabled={LevelsData["8"]?.disabled}
                 style={{ opacity: LevelsData["8"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(50000, 8)}
                 className="btn"
@@ -1058,7 +1061,7 @@ function Controlpanel() {
               <div class="levelval">100000 TRX</div>
 
               <button
-              disabled={LevelsData["9"]?.disabled}
+                disabled={LevelsData["9"]?.disabled}
                 style={{ opacity: LevelsData["9"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(100000, 9)}
                 className="btn"
@@ -1090,7 +1093,7 @@ function Controlpanel() {
               <div class="levelval">200000 TRX</div>
 
               <button
-              disabled={LevelsData["10"]?.disabled}
+                disabled={LevelsData["10"]?.disabled}
                 style={{ opacity: LevelsData["10"]?.disabled ? 0.5 : 1 }}
                 onClick={() => Buy(200000, 10)}
                 className="btn"
@@ -1106,6 +1109,12 @@ function Controlpanel() {
             </center>
           </div>
         </div>
+
+        :
+        <Spinner variant="primary" size="100px" animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+      }
       </div>
     </div>
   );

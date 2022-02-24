@@ -12,6 +12,7 @@ import { getPartnersLevelJson } from "../Redux/Reducer/PartnersLevelJson";
 import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
 import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
+import { Spinner } from "react-bootstrap";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
@@ -20,21 +21,20 @@ function Partners() {
   const previewId = useSelector(getPreviewModeId);
   let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
-
-  const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
 
+  const [LoadingStruct, setLoadingStruct] = useState(true);
+  const [LoadingTable, setLoadingTable] = useState(true);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
   const [treeData, settreeData] = useState([]);
   const [TableData, setTableData] = useState([]);
 
-
   // const levelJson = useSelector(getPartnersLevelJson);
 
   useEffect(() => {
     CONNECT_WALLET();
-    FetchCoinCurrecy()
+    FetchCoinCurrecy();
   }, []);
 
   const FetchCoinCurrecy = async () => {
@@ -46,7 +46,6 @@ function Partners() {
         setcoinPrice(data.tron.usd);
       });
   };
-
 
   let TotalPartnersCount = 0;
 
@@ -132,7 +131,6 @@ function Partners() {
     let LEVEL3 = data["3"];
     let LEVEL4 = data["4"];
     let LEVEL5 = data["5"];
-
 
     if (LEVEL1 != undefined) {
       let Totalcoins = 0;
@@ -305,19 +303,17 @@ function Partners() {
     return TempData;
   };
 
-  const PreProcessData = async(data)=>{
+  const PreProcessData = async (data) => {
     let temp = [];
     for await (const item of data) {
-
       const id_to_num = await Utils.contract.users(item.address).call();
       const data = await Promise.resolve(id_to_num);
-  
-      const id = data[1].toNumber()
-      temp.push({address:item.address,id:id,coins:item.coins})
-    
+
+      const id = data[1].toNumber();
+      temp.push({ address: item.address, id: id, coins: item.coins });
     }
     return temp;
-  }
+  };
 
   const FetchPayments = async (id, count) => {
     ++LEVEL;
@@ -326,10 +322,11 @@ function Partners() {
       // console.log(count, PartnersArray.length);
       // console.log(LevelJSON);
       // console.log(LEVEL);
-      return await calculate_CoinsFromLevels(LevelJSON).then(async(res) => {
-        await PreProcessData(res).then((result)=>{
-          setTableData(result)
-        })
+      return await calculate_CoinsFromLevels(LevelJSON).then(async (res) => {
+        await PreProcessData(res).then((result) => {
+          setTableData(result);
+          setLoadingTable(false);
+        });
       });
       // return;
     } else {
@@ -430,22 +427,15 @@ function Partners() {
         });
       }
       await Utils.setTronWeb(window.tronWeb).then(async () => {
-        await FetchTree(walletId, {}).then(
-          async (e) => {
-            await ProccessTreeData(
-              e,
-              walletId,
-              {}
-            ).then(async (res) => {
-              settreeData([res]);
-              await FetchPayments(
-                walletId,
-                TotalPartnersCount
-              );
-              // console.log(res);
-            });
-          }
-        );
+        await FetchTree(walletId, {}).then(async (e) => {
+          await ProccessTreeData(e, walletId, {}).then(async (res) => {
+            settreeData([res]);
+            setLoadingStruct(false);
+
+            await FetchPayments(walletId, TotalPartnersCount);
+            // console.log(res);
+          });
+        });
       });
     } catch (e) {
       console.log(e);
@@ -529,10 +519,31 @@ function Partners() {
         <p className="linkname1">Your structure</p>
         {/* <a href="#">To expand\collapse all</a> */}
         <div className="TreeDiv">
-          <Tree data={treeData} />
+          {!LoadingStruct ? (
+            <Tree data={treeData} />
+          ) : (
+            <Spinner
+              variant="primary"
+              size="100px"
+              animation="border"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          )}
         </div>
-
-        <Table data={TableData}  coinprice={coinPrice} />
+        {!LoadingTable ? (
+          <Table data={TableData} coinprice={coinPrice} />
+        ) : (
+          <Spinner
+            variant="primary"
+            size="100px"
+            animation="border"
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
       </div>
     </div>
   );

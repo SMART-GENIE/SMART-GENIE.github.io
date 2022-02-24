@@ -20,7 +20,7 @@ function Lostprofits() {
   let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
 
-  const [coinsCount, setcoinsCount] = useState(0);
+  const [LoadingTable, setLoadingTable] = useState(true);
   const [coinPrice, setcoinPrice] = useState(0);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
@@ -330,6 +330,7 @@ function Lostprofits() {
         await PreProcessData(res).then((result) => {
           console.log(result);
           setTableData(result);
+          setLoadingTable(false)
         });
       });
       // return;
@@ -459,7 +460,7 @@ function Lostprofits() {
         <p className="header">Lostprofits</p>
       </div>
 
-      <Table data={TableData}  coinprice={coinPrice} />
+      <Table LoadingTable={LoadingTable} data={TableData}  coinprice={coinPrice} />
     </div>
   );
 }

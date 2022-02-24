@@ -19,6 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import TronWeb from "tronweb";
 import Utils from "../../Utils/index";
 import { getAuth, toogleAuth } from "../Redux/Reducer/AuthReducer";
+import { toogleuserId } from "../Redux/Reducer/UserId";
 
 const Register = () => {
   const { height, width } = useWindowDimensions();
@@ -152,9 +153,10 @@ const Register = () => {
             callValue: 1000000 * 300,
             shouldPollResponse: true,
           })
-          .then((res) => {
+          .then(async(res) => {
             toast.remove(toastId);
             toast.success("Transaction done successfully");
+            await FetchUserId(window.tronLink.tronWeb.defaultAddress.base58);
             dispatch(toogleAuth("LOGGEDIN"));
 
             return res;
@@ -181,6 +183,7 @@ const Register = () => {
         toast.remove(toastId);
         toast.success("Transaction done successfully");
         setLoader(false);
+        await FetchUserId(window.tronLink.tronWeb.defaultAddress.base58);
         dispatch(toogleAuth("LOGGEDIN"));
         window.location.href = "/";
       } else {
@@ -193,6 +196,12 @@ const Register = () => {
 
       // console.log(userexist[0]);
     });
+  };
+
+  const FetchUserId = async (userAddress) => {
+    const LoadUserId = await Utils.contract.users(userAddress).call();
+    const userId = await Promise.resolve(LoadUserId);
+    dispatch(toogleuserId(JSON.parse(userId[1])));
   };
 
   return (

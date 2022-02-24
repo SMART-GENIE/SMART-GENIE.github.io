@@ -17,7 +17,7 @@ function Uplines() {
   let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
 
-  const [coinsCount, setcoinsCount] = useState(0);
+  const [LoadingTable, setLoadingTable] = useState(true);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
   const [data, setdata] = useState([]);
@@ -39,6 +39,7 @@ function Uplines() {
     userAddress = await Hex_to_base58(userAddress);
     await currentLevel(userAddress).then((res) => {
       setdata([{ id: refId, address: userAddress, currentLevel: res }]);
+      setLoadingTable(false)
     });
 
     return;
@@ -158,7 +159,7 @@ function Uplines() {
         <p className="header">Uplines</p>
       </div>
 
-      <Table data={data} />
+      <Table LoadingTable={LoadingTable} data={data} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
 
-const Table = ({ data }) => {
+const Table = ({ data,LoadingTable }) => {
   const [tableData, settableData] = useState(data);
   useEffect(() => {
     settableData(data);
@@ -15,6 +16,7 @@ const Table = ({ data }) => {
           </div>
         </div>
         <div className="recdiv">
+          {!LoadingTable ?
           <table>
             <tr>
               <th style={{minWidth:"50px"}} >Line</th>
@@ -33,6 +35,17 @@ const Table = ({ data }) => {
               </tr>
             ))}
           </table>
+
+          : (
+        <Spinner
+          variant="primary"
+          size="100px"
+          animation="border"
+          role="status"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
         </div>
       </div>
     </div>
