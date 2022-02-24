@@ -44,25 +44,34 @@ const Login = () => {
   useEffect(() => {
     document.title = "Login|SmartGenie";
 
-    // CONNECT_WALLET();
+    const checklogin = setInterval(async () => {
+      if (window?.tronLink?.tronWeb) {
+        clearInterval(checklogin);
+        await checkUser();
+      }
+    }, 1000);
   }, []);
 
-  // setInterval(() => {
-  //   // console.log(window.tronLnk?.tronWeb);
-  //   if (window.tronLink?.tronWeb == false) {
-  //     dispatch(toogleAuth("LOGGEDOUT"));
-
-  //     // dispatch(toogleAuth("LOGGEDOUT"))
-  //     // window.location.reload();
-  //   }
-  //   if (window?.tronLink?.tronWeb) {
-  //     dispatch(toogleAuth("LOGGEDIN"));
-  //     // alert("YES")
-  //   }
-  // }, 1000);
+  const checkUser = async () => {
+    console.log(window.tronWeb);
+    await Utils.setTronWeb(window.tronWeb).then(async() => {
+      const LoadUserExist = await Utils.contract
+        .users(window.tronLink.tronWeb.defaultAddress.base58)
+        .call();
+      const userexist = await Promise.resolve(LoadUserExist);
+      if(userexist[0]==true){
+        dispatch(toogleAuth("LOGGEDIN"));
+      }else{
+        window.location.href = "/register"
+        dispatch(toogleAuth("LOGGEDOUT"))
+      }
+      // console.log(userexist[0]);
+    });
+  };
 
   // useEffect(() => {
   //   setTimeout(() => {
+
   //     if (window.tronLink?.tronWeb) {
   //       dispatch(toogleAuth("LOGGEDIN"));
   //     } else {
@@ -150,32 +159,33 @@ const Login = () => {
           if (!tronWebState.installed) return tries++;
 
           settronWeb(tronWebState);
-
           resolve();
         }, 100);
       });
 
-      if (!tronWeb.loggedIn) {
-        // Set default address (foundation address) used for contract calls
-        // Directly overwrites the address object as TronLink disabled the
-        // function call
-        window.tronWeb.defaultAddress = {
-          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
-          base58: FOUNDATION_ADDRESS,
-        };
+      console.log(window.tronWeb);
 
-        window.tronWeb.on("addressChanged", (e) => {
-          if (tronWeb.loggedIn) return;
-          settronWeb({
-            tronWeb: {
-              installed: true,
-              loggedIn: true,
-            },
-          });
+      // Set default address (foundation address) used for contract calls
+      // Directly overwrites the address object as TronLink disabled the
+      // function call
+      window.tronWeb.defaultAddress = {
+        hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
+        base58: FOUNDATION_ADDRESS,
+      };
+
+      window.tronWeb.on("addressChanged", (e) => {
+        if (tronWeb.loggedIn) return;
+        settronWeb({
+          tronWeb: {
+            installed: true,
+            loggedIn: true,
+          },
         });
-      }
+      });
+
       await Utils.setTronWeb(window.tronWeb).then(() => {
-        dispatch(toogleAuth("LOGGEDIN"));
+        // alert(window.tronLink.tronWeb.defaultAddress.base58);
+        // dispatch(toogleAuth("LOGGEDIN"));
       });
     } catch (e) {
       console.log(e);

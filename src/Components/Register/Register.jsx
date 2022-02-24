@@ -159,19 +159,39 @@ const Register = () => {
 
             return res;
           })
-          .catch((err) => {
+          .catch(async (err) => {
+            await checkUser(toastId);
             console.log(err);
-            setLoader(false);
-
-            toast.remove(toastId);
-            toast.error("Transaction Failed");
           });
       } catch (error) {
         console.log(error);
-        toast.error("Transaction Failed");
+        await checkUser(toastId);
+      }
+    });
+  };
+
+  const checkUser = async (toastId) => {
+    console.log(window.tronWeb);
+    await Utils.setTronWeb(window.tronWeb).then(async () => {
+      const LoadUserExist = await Utils.contract
+        .users(window.tronLink.tronWeb.defaultAddress.base58)
+        .call();
+      const userexist = await Promise.resolve(LoadUserExist);
+      if (userexist[0] == true) {
+        toast.remove(toastId);
+        toast.success("Transaction done successfully");
+        setLoader(false);
+        dispatch(toogleAuth("LOGGEDIN"));
+window.location.href = "/"
+      } else {
+        window.location.href = "/register";
+        dispatch(toogleAuth("LOGGEDOUT"));
         setLoader(false);
         toast.remove(toastId);
+        toast.error("Transaction Failed");
       }
+
+      // console.log(userexist[0]);
     });
   };
 

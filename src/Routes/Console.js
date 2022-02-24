@@ -23,7 +23,6 @@ function Console() {
     document.title = "Console";
 
     const DISCONNECT_EMIT = setInterval(() => {
-      console.log("LIVE");
       // console.log(window.tronLnk?.tronWeb);
       if (window.tronLink?.tronWeb == false) {
         dispatch(toogleAuth("LOGGEDOUT"));
