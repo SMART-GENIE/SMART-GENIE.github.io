@@ -11,6 +11,7 @@ import Utils from "../../Utils/index";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import TronWeb from "tronweb";
 import CountUp from "react-countup";
+import moment from "moment";
 
 const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
 
@@ -20,7 +21,7 @@ function Controlpanel() {
   const [partnersList, setpartnersList] = useState(0);
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
-  const [loadingNumbers, setloadingNumbers] = useState(true);
+  const [chartData, setchartData] = useState({labels:[],data:[]});
 
   let Total = 0;
 
@@ -44,6 +45,34 @@ function Controlpanel() {
       });
   };
 
+  const ProccessRefralGraphData = async (data) => {
+    let labels = [];
+    let graphData = [];
+    let Temp = "";
+
+    for await (const address of data) {
+      const joinedData = await Utils.contract.users(address).call();
+      let joined = await Promise.resolve(joinedData[3].toNumber());
+      joined = moment.unix(joined).format("DD/MM/YYYY");
+      if (Temp == joined) {
+        graphData[labels.length - 1] += 1;
+      } else {
+        labels.push(joined);
+        graphData[labels.length - 1] = 1;
+        Temp = joined;
+      }
+    }
+
+    let resData = {
+      labels: labels,
+      data: graphData,
+    };
+
+    // console.log(labels, graphData);
+
+    return resData;
+  };
+
   const FetchData = async () => {
     try {
       return await FetchPartners(
@@ -51,11 +80,17 @@ function Controlpanel() {
         []
       ).then(async (e) => {
         setpartnersList(e);
+
         // console.log(e);
         return await FetchEarning(
           window.tronLink.tronWeb.defaultAddress.base58,
           e.length
-        );
+        ).then(async() => {
+          await ProccessRefralGraphData(e).then((res) => {
+            setchartData(res)
+            // console.log(res);
+          });
+        });
       });
     } catch (e) {
       console.log(e);
@@ -281,16 +316,11 @@ function Controlpanel() {
           Totalcoins +=
             (await Utils.contract.LEVEL_PRICE(6).call()).toNumber() / 1000000;
         }
-
-      
       }
     }
 
     if (LEVEL2 != undefined) {
       for await (const id of LEVEL2) {
-
-
-
         let expiration1 = (
           await Utils.contract.viewUserLevelExpired(id, 2).call()
         ).toNumber();
@@ -309,20 +339,14 @@ function Controlpanel() {
           Totalcoins +=
             (await Utils.contract.LEVEL_PRICE(7).call()).toNumber() / 1000000;
         }
-
-
-       
       }
     }
 
     if (LEVEL3 != undefined) {
       for await (const id of LEVEL3) {
+        // LEVEL 2
 
-
-
-         // LEVEL 2
-
-         let expiration3 = (
+        let expiration3 = (
           await Utils.contract.viewUserLevelExpired(id, 3).call()
         ).toNumber();
 
@@ -340,47 +364,36 @@ function Controlpanel() {
           Totalcoins +=
             (await Utils.contract.LEVEL_PRICE(8).call()).toNumber() / 1000000;
         }
-
-
-
-
-      
       }
     }
 
     if (LEVEL4 != undefined) {
       for await (const id of LEVEL4) {
+        // LEVEL 3
 
+        let expiration5 = (
+          await Utils.contract.viewUserLevelExpired(id, 4).call()
+        ).toNumber();
 
-          // LEVEL 3
+        if (expiration5 != 0) {
+          Totalcoins +=
+            (await Utils.contract.LEVEL_PRICE(4).call()).toNumber() / 1000000;
+        }
 
-          let expiration5 = (
-            await Utils.contract.viewUserLevelExpired(id, 4).call()
-          ).toNumber();
-  
-          if (expiration5 != 0) {
-            Totalcoins +=
-              (await Utils.contract.LEVEL_PRICE(4).call()).toNumber() / 1000000;
-          }
-  
-          // LEVEL 8
-  
-          let expiration6 = (
-            await Utils.contract.viewUserLevelExpired(id, 9).call()
-          ).toNumber();
-  
-          if (expiration6 != 0) {
-            Totalcoins +=
-              (await Utils.contract.LEVEL_PRICE(9).call()).toNumber() / 1000000;
-          }
+        // LEVEL 8
 
-      
+        let expiration6 = (
+          await Utils.contract.viewUserLevelExpired(id, 9).call()
+        ).toNumber();
+
+        if (expiration6 != 0) {
+          Totalcoins +=
+            (await Utils.contract.LEVEL_PRICE(9).call()).toNumber() / 1000000;
+        }
       }
 
       if (LEVEL5 != undefined) {
         for await (const id of LEVEL5) {
-          
-
           // LEVEL 5
           let expiration9 = (
             await Utils.contract.viewUserLevelExpired(id, 5).call()
@@ -584,7 +597,7 @@ function Controlpanel() {
         </div>
 
         <div className="ChartDiv">
-          <Chart />
+          <Chart data={chartData} />
         </div>
 
         {/* <Slidecontent /> */}
