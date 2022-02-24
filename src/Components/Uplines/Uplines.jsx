@@ -7,7 +7,7 @@ import useWindowDimensions from "../../Tools/WindowDimensions";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import TronWeb from "tronweb";
 
-const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
+const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
 function Uplines() {
   const { height, width } = useWindowDimensions();

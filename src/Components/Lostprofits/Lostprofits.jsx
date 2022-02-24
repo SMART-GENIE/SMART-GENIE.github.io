@@ -11,7 +11,7 @@ import { getPartnersLevelJson } from "../Redux/Reducer/PartnersLevelJson";
 import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
 
-const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
+const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
 function Lostprofits() {
   const { height, width } = useWindowDimensions();

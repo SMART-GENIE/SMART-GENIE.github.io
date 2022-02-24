@@ -23,7 +23,7 @@ import { toogleAuth, getAuth } from "../Redux/Reducer/AuthReducer";
 import { FaBullseye } from "react-icons/fa";
 import { Hex_to_base58 } from "../../Utils/Converter";
 
-const FOUNDATION_ADDRESS = "TWiWt5SEDzaEqS6kE5gandWMNfxR2B5xzg";
+const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
 const Login = () => {
   const { height, width } = useWindowDimensions();
