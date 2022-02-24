@@ -8,6 +8,7 @@ import Utils from "../../Utils/index";
 import useWindowDimensions from "../../Tools/WindowDimensions";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import { getPartnersLevelJson } from "../Redux/Reducer/PartnersLevelJson";
+import toast, { Toaster } from "react-hot-toast";
 
 import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
@@ -22,9 +23,12 @@ function Partners() {
   let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
   const [coinPrice, setcoinPrice] = useState(0);
+  const [searchId,setsearchId] = useState("")
 
   const [LoadingStruct, setLoadingStruct] = useState(true);
   const [LoadingTable, setLoadingTable] = useState(true);
+
+  const [searchPartnerData, setsearchPartnerData] = useState({});
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
   const [treeData, settreeData] = useState([]);
@@ -442,8 +446,74 @@ function Partners() {
     }
   };
 
+  const SearchAboutPartner = async () => {
+    try {
+      
+
+      if (searchId.trim().length == 0) {
+        return toast.error("Please enter valid RefId/address",{style:{marginTop:"70px"}});
+      }
+
+
+      // if string is address
+      if (/[a-zA-Z]/.test(searchId)) {
+        const LoadUserExist = await Utils.contract.users(searchId).call();
+        const userexist = await Promise.resolve(LoadUserExist);
+        if (userexist[0] == false) {
+          return toast.error("User does not exist");
+        }
+
+        const currentLevel = await getcurrentLevel(searchId);
+        setsearchPartnerData({
+          id: userexist[1].toString(),
+          address: searchId,
+          level: currentLevel,
+        });
+
+        console.log(userexist[0]);
+      } else {
+        const LoadUserAddress = await Utils.contract
+          .userList(JSON.parse(searchId))
+          .call();
+        const userAddress = await Promise.resolve(LoadUserAddress);
+
+        const LoadUserExist = await Utils.contract.users(userAddress).call();
+        const userexist = await Promise.resolve(LoadUserExist);
+        if (userexist[0] == false) {
+          return toast.error("User does not exist",{style:{marginTop:"70px"}});
+        }
+        const currentLevel = await getcurrentLevel(userAddress);
+        setsearchPartnerData({
+          id: userexist[1].toString(),
+          address: userAddress,
+          level: currentLevel,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getcurrentLevel = async (address) => {
+    let currentLevel = 0;
+    for await (const level of Array.from({ length: 10 }, (_, i) => i + 1)) {
+      const checkLevel = await Utils.contract
+        .viewUserLevelExpired(address, level)
+        .call();
+      const currentTimestamp = await Promise.resolve(checkLevel);
+      if (
+        currentTimestamp.toNumber() < Date.now() &&
+        currentTimestamp.toNumber() != 0
+      ) {
+        ++currentLevel;
+      }
+    }
+    return currentLevel;
+  };
+
   return (
     <div className="panel">
+      <Toaster/>
       <div>
         <p className="header">Partners</p>
       </div>
@@ -477,9 +547,10 @@ function Partners() {
                 <p className="linkname1">Data about partner</p>
                 <br />
                 <div className="Inline">
-                  <input className={"link2"} />
+                  <input value={searchId} onChange={(e)=>setsearchId(e.target.value)} className={"link2"} />
                   <span>
-                    <button className="copybtn">Search</button>
+                    <button  onClick={()=>SearchAboutPartner()}
+                    className="copybtn">Search</button>
                   </span>
                 </div>
               </>
@@ -487,9 +558,13 @@ function Partners() {
               <div style={{ width: "100%" }}>
                 <p className="linkname1">Data about partner</p>
                 <br />
-                <input style={{ width: "100%" }} className={"link1"} />
+                <input value={searchId} onChange={(e)=>setsearchId(e.target.value)} style={{ width: "100%" }} className={"link1"} />
                 <span>
-                  <button style={{ marginTop: "10px" }} className="copybtn">
+                  <button
+                    onClick={()=>SearchAboutPartner()}
+                    style={{ marginTop: "10px" }}
+                    className="copybtn"
+                  >
                     Search
                   </button>
                 </span>
@@ -498,18 +573,19 @@ function Partners() {
 
             <br />
             <div className="PartnerList">
-              {/* <span>Id:45845</span><span style={{marginLeft:"25px"}} >Level:1</span><span style={{marginLeft:"25px"}} >Address:0xfewfwfwfwfefewfwe<span><i class="fa fa-external-link-alt"></i></span></span> */}
-              <div class="partner__info">
-                ID: <b>99132</b> &nbsp;&nbsp;&nbsp; Level: <b>1</b>{" "}
-                &nbsp;&nbsp;&nbsp; Address:
-                0xa7d7043df066a9fd0fc277a1d48bc07d43714557{" "}
-                <a
-                  href="https://etherscan.io/address/0xa7d7043df066a9fd0fc277a1d48bc07d43714557 "
-                  target="_blank"
-                >
-                  <i class="fa fa-external-link-alt"></i>
-                </a>
-              </div>
+              {searchPartnerData?.id && (
+                <div class="partner__info">
+                  ID: <b>{searchPartnerData?.id}</b> &nbsp;&nbsp;&nbsp; Level:{" "}
+                  <b>{searchPartnerData?.level}</b> &nbsp;&nbsp;&nbsp; Address:
+                  {searchPartnerData?.address}{" "}
+                  <a
+                    href="https://etherscan.io/address/0xa7d7043df066a9fd0fc277a1d48bc07d43714557 "
+                    target="_blank"
+                  >
+                    <i class="fa fa-external-link-alt"></i>
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

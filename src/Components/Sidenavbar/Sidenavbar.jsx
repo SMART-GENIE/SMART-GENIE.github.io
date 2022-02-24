@@ -15,7 +15,6 @@ function Sidenavbar() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-
   const PATHNAME = () => location?.pathname?.toLowerCase();
 
   const VALIDROUTE = (path) => (PATHNAME(path) == path ? true : false);
@@ -149,7 +148,7 @@ function Sidenavbar() {
                 Lost profits
               </li>
             </Link>
-            <li
+            {/* <li
               style={{ color: VALIDROUTE("/promo") ? "white" : null }}
               className="sidebaritems"
             >
@@ -157,7 +156,7 @@ function Sidenavbar() {
                 <IoIosSend size={24} />
               </span>
               promo
-            </li>
+            </li> */}
 
             <Link
               onClick={Logout}

@@ -63,7 +63,7 @@ function Topbar(opensidebar, opened) {
         </div>
 
         <div className="div3">
-          <div className="LanguageDiv">
+          {/* <div className="LanguageDiv">
             <img
               className="image"
               style={{ width: "100%", height: "100%" }}
@@ -71,7 +71,7 @@ function Topbar(opensidebar, opened) {
               alt="aa"
               width="40px"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
