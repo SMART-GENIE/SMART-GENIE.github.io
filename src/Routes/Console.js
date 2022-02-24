@@ -25,8 +25,8 @@ function Console() {
   useEffect(() => {
     document.title = "Console";
 
-    if(previewId){
-      return
+    if (previewId) {
+      return;
     }
 
     const DISCONNECT_EMIT = setInterval(() => {
@@ -49,7 +49,6 @@ function Console() {
   return (
     <div className="App">
       <ScrollMemory$1 />
-
 
       {width >= 850 ? <Sidenavbar /> : <Sidenavbarmobile />}
 

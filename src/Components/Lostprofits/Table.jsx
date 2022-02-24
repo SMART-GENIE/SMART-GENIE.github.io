@@ -21,11 +21,11 @@ const Table = ({ data, coinprice }) => {
         <div className="recdiv">
           <table>
             <tr>
-              <th>Date</th>
-              <th>From whom</th>
-              <th>ID</th>
-              <th>The amount of ETH</th>
-              <th>USD</th>
+              <th style={{minWidth:"50px"}}>Date</th>
+              <th style={{minWidth:"380px"}}>From whom</th>
+              <th style={{minWidth:"50px"}}>ID</th>
+              <th style={{minWidth:"220px"}}>The amount of ETH</th>
+              <th style={{minWidth:"50px"}}>USD</th>
             </tr>
 
             {tableData.map((item, index) => (

@@ -24,6 +24,7 @@ import { toogleAuth, getAuth } from "../Redux/Reducer/AuthReducer";
 import { FaBullseye } from "react-icons/fa";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import { tooglePreviewModeId } from "../Redux/Reducer/PreviewMode";
+import UserId, { toogleuserId } from "../Redux/Reducer/UserId";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
@@ -62,6 +63,7 @@ const Login = () => {
         .call();
       const userexist = await Promise.resolve(LoadUserExist);
       if (userexist[0] == true) {
+        await FetchUserId(window.tronLink.tronWeb.defaultAddress.base58)
         dispatch(toogleAuth("LOGGEDIN"));
       } else {
         window.location.href = "/register";
@@ -89,7 +91,8 @@ const Login = () => {
           return toast.error("User does not exist");
         }
 
-        dispatch(tooglePreviewModeId(await Hex_to_base58(previewId)))
+        dispatch(tooglePreviewModeId(await Hex_to_base58(previewId)));
+        await FetchUserId(previewId)
         dispatch(toogleAuth("LOGGEDIN"));
 
         console.log(userexist[0]);
@@ -105,9 +108,9 @@ const Login = () => {
           setLoader(false);
           return toast.error("User does not exist");
         }
-        dispatch(tooglePreviewModeId(await Hex_to_base58(userAddress)))
+        dispatch(tooglePreviewModeId(await Hex_to_base58(userAddress)));
+        await FetchUserId(userAddress)
         dispatch(toogleAuth("LOGGEDIN"));
-
 
         setLoader(false);
       }
@@ -124,6 +127,12 @@ const Login = () => {
       console.log(e);
       setLoader(false);
     }
+  };
+
+  const FetchUserId = async (userAddress) => {
+    const LoadUserId = await Utils.contract.users(userAddress).call();
+    const userId = await Promise.resolve(LoadUserId);
+    dispatch(toogleuserId(JSON.parse(userId[1])));
   };
 
   // useEffect(() => {

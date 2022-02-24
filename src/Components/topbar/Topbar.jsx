@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Topbar.css";
 import logo from "./logo.png";
 import { RiProfileLine } from "react-icons/ri";
@@ -7,17 +7,20 @@ import britain from "./britain.png";
 import useWindowDimensions from "../../Tools/WindowDimensions";
 import { useSelector, useDispatch } from "react-redux";
 import { toogleMenu, getTooglemenu } from "../Redux/Reducer/MenuReducer";
+import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
+import { getuserId } from "../Redux/Reducer/UserId";
 
-function Topbar(opensidebar,opened) {
+function Topbar(opensidebar, opened) {
   const { height, width } = useWindowDimensions();
 
+  const previewId = useSelector(getPreviewModeId);
+  const userID = useSelector(getuserId);
+
+  let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
   const menu = useSelector(getTooglemenu);
   const dispatch = useDispatch();
 
-
-
-  var val = 1234;
   return (
     <div className="topbar">
       <div className="topbarcontainer">
@@ -27,20 +30,22 @@ function Topbar(opensidebar,opened) {
 
         {width <= 850 && (
           <div className="div0">
-            <div onClick={()=>dispatch(toogleMenu(!menu))} className="menu">
+            <div onClick={() => dispatch(toogleMenu(!menu))} className="menu">
               <img src="https://img.icons8.com/material-outlined/48/000000/menu--v1.png" />{" "}
             </div>
           </div>
         )}
         <div className="div1">
           <div className="contentDiv">
-            <span className="address">Id : 58889</span>
+            <span className="address">Id : {userID}</span>
           </div>
         </div>
 
         <div className="div2">
           <div className="contentDiv">
-            <span style={{width:"calc(100% - 25px)"}} className="address">Address: {window?.tronLink?.tronWeb?.defaultAddress?.base58}</span>
+            <span style={{ width: "calc(100% - 25px)" }} className="address">
+              Address: {walletId}
+            </span>
             <span style={{ float: "right", position: "absolute", right: 10 }}>
               <div
                 style={{ overflow: "hidden", width: 30, height: 30 }}

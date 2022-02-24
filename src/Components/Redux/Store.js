@@ -3,6 +3,7 @@ import MenuReducer from './Reducer/MenuReducer';
 import AuthReducer from './Reducer/AuthReducer';
 import PartnersLevelJson from './Reducer/PartnersLevelJson';
 import PreviewMode from './Reducer/PreviewMode';
+import UserId from './Reducer/UserId';
 
 
 export default configureStore({
@@ -10,7 +11,8 @@ export default configureStore({
     menu: MenuReducer,
     auth:AuthReducer,
     partnersLevelJson:PartnersLevelJson,
-    previewModeId:PreviewMode
+    previewModeId:PreviewMode,
+    userId:UserId
 
   },
 });

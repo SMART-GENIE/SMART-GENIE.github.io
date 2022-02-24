@@ -17,10 +17,10 @@ const Table = ({ data }) => {
         <div className="recdiv">
           <table>
             <tr>
-              <th>Line</th>
-              <th>ID</th>
-              <th>Wallet</th>
-              <th>Level</th>
+              <th style={{minWidth:"50px"}} >Line</th>
+              <th style={{minWidth:"50px"}}>ID</th>
+              <th style={{minWidth:"380px"}}>Wallet</th>
+              <th style={{minWidth:"50px"}}>Level</th>
             </tr>
             {tableData.map((item, index) => (
               <tr>
