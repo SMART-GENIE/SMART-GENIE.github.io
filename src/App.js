@@ -11,13 +11,13 @@ const App = () => {
   const authStatus = useSelector(getAuth);
   console.log(authStatus);
 
-  useEffect(() => {
-    if (authStatus == "LOGGEDOUT") {
-      if (window.location.pathname != "/") {
-        window.location.href = "/";
-      }
-    }
-  }, [authStatus]);
+  // useEffect(() => {
+  //   if (authStatus == "LOGGEDOUT") {
+  //     if (window.location.pathname != "/") {
+  //       window.location.href = "/";
+  //     }
+  //   }
+  // }, [authStatus]);
 
   if (window?.tronWeb) {
     window?.tronWeb.on("addressChanged", (e) => {

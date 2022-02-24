@@ -343,6 +343,10 @@
   border-radius: 4px;
 }
 
+p{
+  cursor: pointer !important;
+}
+
 .Login-Main .Button-Div {
   width: inherit;
   height: auto;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 import "./Register.css";
 import { GrSend } from "react-icons/gr";
@@ -13,6 +14,11 @@ import { Form, Button } from "react-bootstrap";
 import ConnectWallet from "../Wallets/ConnectWallet";
 import useWindowDimensions from "../../Tools/WindowDimensions";
 import { FaBullseye } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+
+import TronWeb from "tronweb";
+import Utils from "../../Utils/index";
+import { getAuth, toogleAuth } from "../Redux/Reducer/AuthReducer";
 
 const Register = () => {
   const { height, width } = useWindowDimensions();
@@ -20,10 +26,16 @@ const Register = () => {
   const [Register, setRegister] = useState(FaBullseye);
 
   const [loginId, setloginId] = useState("");
-  const [password, setpassword] = useState("");
-  const [alert, setalert] = useState(false);
+  const [refId, setrefId] = useState(null);
   const [alertdata, setalertdata] = useState(null);
   const [Loader, setLoader] = useState(false);
+
+  const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
+
+  const authStatus = useSelector(getAuth);
+  const dispatch = useDispatch();
+
+  const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
 
   let TOKEN = localStorage.getItem("access_token");
 
@@ -39,8 +51,134 @@ const Register = () => {
     e.preventDefault();
   };
 
+  const CONNECT_WALLET = async () => {
+    try {
+      if (!window.tronWeb.ready) {
+        window.location.href = "/";
+      }
+
+      new Promise((resolve) => {
+        const tronWebState = {
+          installed: !!window.tronWeb,
+          loggedIn: window.tronWeb && window.tronWeb.ready,
+        };
+
+        if (tronWebState.installed) {
+          settronWeb(tronWebState);
+
+          return resolve();
+        }
+
+        let tries = 0;
+
+        const timer = setInterval(() => {
+          if (tries >= 10) {
+            const TRONGRID_API = "https://api.trongrid.io";
+
+            window.tronWeb = new TronWeb(
+              TRONGRID_API,
+              TRONGRID_API,
+              TRONGRID_API
+            );
+
+            settronWeb({
+              installed: false,
+              loggedIn: false,
+            });
+
+            clearInterval(timer);
+            return resolve();
+          }
+
+          tronWebState.installed = !!window.tronWeb;
+          tronWebState.loggedIn = window.tronWeb && window.tronWeb.ready;
+
+          if (!tronWebState.installed) return tries++;
+
+          settronWeb(tronWebState);
+
+          resolve();
+        }, 100);
+      });
+
+      if (!tronWeb.loggedIn) {
+        // Set default address (foundation address) used for contract calls
+        // Directly overwrites the address object as TronLink disabled the
+        // function call
+        window.tronWeb.defaultAddress = {
+          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
+          base58: FOUNDATION_ADDRESS,
+        };
+
+        window.tronWeb.on("addressChanged", (e) => {
+          if (tronWeb.loggedIn) return;
+
+          settronWeb({
+            tronWeb: {
+              installed: true,
+              loggedIn: true,
+            },
+          });
+        });
+      }
+      await Utils.setTronWeb(window.tronWeb).then(async () => {
+        if (refId != null) {
+          await Buy(refId);
+        } else {
+          const CurrentIdLoad = await Utils.contract.currUserID().call();
+          const CurrentId = await Promise.resolve(CurrentIdLoad);
+          await Buy(JSON.parse(CurrentId.toString()));
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const Buy = async (refID) => {
+    window.tronWeb.defaultAddress = {
+      hex: window.tronLink.tronWeb.defaultAddress.hex,
+      base58: window.tronLink.tronWeb.defaultAddress.base58,
+    };
+
+    return await Utils.setTronWeb(window.tronWeb).then(async () => {
+      const toastId = toast.loading("Waiting for transction confirmation");
+      setLoader(true);
+      try {
+        await Utils.contract
+          .regUser(refID)
+          .send({
+            feeLimit: 100_000_000,
+            callValue: 1000000 * 300,
+            shouldPollResponse: true,
+          })
+          .then((res) => {
+            toast.remove(toastId);
+            toast.success("Transaction done successfully");
+            dispatch(toogleAuth("LOGGEDIN"));
+
+            return res;
+          })
+          .catch((err) => {
+            console.log(err);
+            setLoader(false);
+
+            toast.remove(toastId);
+            toast.error("Transaction Failed");
+          });
+      } catch (error) {
+        console.log(error);
+        toast.error("Transaction Failed");
+        setLoader(false);
+        toast.remove(toastId);
+      }
+    });
+  };
+
   return (
     <div className="Login-Main">
+      <Toaster />
+
       <div className="Triangle"></div>
 
       <div className="Vertical-Line" />
@@ -54,25 +192,11 @@ const Register = () => {
                   <p>Registration</p>
                   {/* <img style={{ width: "221px", height: "67px" }} src={Logo} /> */}
                 </div>
-                <div hidden={!alert} className="Form-Alert-Div">
-                  <svg
-                    aria-hidden="true"
-                    height="15"
-                    width="15"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.115 1.308l5.635 11.269A2.365 2.365 0 0 1 13.634 16H2.365A2.365 2.365 0 0 1 .25 12.577L5.884 1.308a2.365 2.365 0 0 1 4.231 0zM8 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM8 9c.552 0 1-.32 1-.714V4.714C9 4.32 8.552 4 8 4s-1 .32-1 .714v3.572C7 8.68 7.448 9 8 9z"
-                      fill="#ed5f74"
-                    ></path>
-                  </svg>
-                </div>
 
                 <ConnectWallet />
 
                 <div style={{ paddingInline: "20px" }} className="Divider">
-                  Enter Address/Referer Id of Upline or leave it empty to get
+                  Enter Refereral Id of Upline or leave it empty to get
                   automatically
                 </div>
                 <div className="Inside-Form-Div">
@@ -81,32 +205,33 @@ const Register = () => {
                       <Form.Control
                         name="email"
                         className="Input"
-                        placeholder="Enter Address or Referal Id Upline"
-                        value={loginId}
+                        placeholder="Enter Referal Id of Upline"
+                        value={refId}
                         onChange={(e) => {
-                          setloginId(e.target.value);
+                          setrefId(e.target.value);
                         }}
-                        required
+                        required={false}
                       />
                     </Form.Group>
 
                     <div className="Button-Div">
                       <button
+                        onClick={CONNECT_WALLET}
                         disabled={Loader}
                         style={{ opacity: Loader ? 0.5 : 1 }}
                         className="Button"
                       >
-                        {false ? null : ( // /> //   margin={3} //   size={8} //   css={Loadercss} //   loading={true} //   color={"white"} // <PulseLoader
+                        {Loader ? (
+                          <p>Transction Loading...</p>
+                        ) : (
                           <p>Purchase Level 1 to Register</p>
                         )}
                       </button>
                     </div>
 
                     <div className="Back-Button-Div">
-                      <Link to={"/login"} style={{textDecoration:"none"}}>
-                      <button className="Back-Button">
-                       Back
-                      </button>
+                      <Link to={"/"} style={{ textDecoration: "none" }}>
+                        <button className="Back-Button">Back</button>
                       </Link>
                     </div>
                   </Form>

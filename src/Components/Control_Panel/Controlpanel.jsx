@@ -562,9 +562,7 @@ function Controlpanel() {
       .buyLevel(1)
       .send({
         feeLimit: 100_000_000,
-        callValue: 0,
-        tokenId: 1000036,
-        tokenValue: value,
+        callValue: 1000000*value,
         shouldPollResponse: true,
       })
       .then((res) => console.log(res))

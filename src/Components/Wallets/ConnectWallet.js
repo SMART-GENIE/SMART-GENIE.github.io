@@ -8,7 +8,7 @@ const ConnectWallet = ({Connect}) => {
           src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg"
         />
       </div>
-      <div className="Wallet-Circle">
+      {/* <div className="Wallet-Circle">
         <img
           width={28}
           src="https://trustwallet.com/assets/images/media/assets/TWT.png"
@@ -19,7 +19,7 @@ const ConnectWallet = ({Connect}) => {
           width={28}
           src="https://app.compound.finance/compound-components/assets/icn-coinbase-wallet.svg"
         />
-      </div>
+      </div> */}
       {/* <div onClick={()=>CONNECT_WALLET()} className="Wallet-Circle">
                     <img
                       width={25}
