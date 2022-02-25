@@ -183,7 +183,7 @@ const Login = () => {
   const CONNECT_WALLET = async () => {
     try {
       if (!window.tronWeb.ready || window.tronLink.tronWeb == false) {
-        window.location.href = "/";
+        window.location.reload();
       }
 
       new Promise((resolve) => {
