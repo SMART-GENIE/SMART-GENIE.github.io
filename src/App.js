@@ -27,8 +27,7 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL} >
       <Toaster/>
         {/* {access ? <Redirect to={"/"} /> : <Redirect to={"/login"} />} */}
         <Route
@@ -36,7 +35,6 @@ const App = () => {
           render={() => (authStatus == "LOGGEDIN" ? <Console /> : <Auth />)}
         />
       </BrowserRouter>
-    </BrowserRouter>
   );
 };
 
