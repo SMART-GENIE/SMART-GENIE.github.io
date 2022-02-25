@@ -1,11 +1,13 @@
 import React from "react";
+import logo from '../../Assets/tronlink.png';
+
 const ConnectWallet = ({Connect}) => {
   return (
     <div className="Wallet-Div">
       <div onClick={()=>Connect()} className="Wallet-Circle">
         <img
           width={30}
-          src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg"
+          src={logo}
         />
       </div>
       {/* <div className="Wallet-Circle">
