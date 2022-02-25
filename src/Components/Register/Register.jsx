@@ -45,7 +45,10 @@ const Register = () => {
   // }
 
   useEffect(() => {
-    document.title = "Classfresh:Log in";
+    document.title = "Smart Genie|Register";
+if(window.location?.pathname?.split("/")[2]){
+  setrefId(window.location?.pathname?.split("/")[2])
+}
   }, []);
 
   const HandleSubmit = async (e) => {

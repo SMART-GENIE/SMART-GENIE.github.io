@@ -14,6 +14,7 @@ import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
 import { getPreviewModeId } from "../Redux/Reducer/PreviewMode";
 import { Spinner } from "react-bootstrap";
+import { getuserId } from "../Redux/Reducer/UserId";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
@@ -23,7 +24,7 @@ function Partners() {
   let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
   const [coinPrice, setcoinPrice] = useState(0);
-  const [searchId,setsearchId] = useState("")
+  const [searchId, setsearchId] = useState("");
 
   const [LoadingStruct, setLoadingStruct] = useState(true);
   const [LoadingTable, setLoadingTable] = useState(true);
@@ -33,6 +34,7 @@ function Partners() {
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
   const [treeData, settreeData] = useState([]);
   const [TableData, setTableData] = useState([]);
+  const userID = useSelector(getuserId);
 
   // const levelJson = useSelector(getPartnersLevelJson);
 
@@ -448,12 +450,11 @@ function Partners() {
 
   const SearchAboutPartner = async () => {
     try {
-      
-
       if (searchId.trim().length == 0) {
-        return toast.error("Please enter valid RefId/address",{style:{marginTop:"70px"}});
+        return toast.error("Please enter valid RefId/address", {
+          style: { marginTop: "70px" },
+        });
       }
-
 
       // if string is address
       if (/[a-zA-Z]/.test(searchId)) {
@@ -480,7 +481,9 @@ function Partners() {
         const LoadUserExist = await Utils.contract.users(userAddress).call();
         const userexist = await Promise.resolve(LoadUserExist);
         if (userexist[0] == false) {
-          return toast.error("User does not exist",{style:{marginTop:"70px"}});
+          return toast.error("User does not exist", {
+            style: { marginTop: "70px" },
+          });
         }
         const currentLevel = await getcurrentLevel(userAddress);
         setsearchPartnerData({
@@ -513,7 +516,7 @@ function Partners() {
 
   return (
     <div className="panel">
-      <Toaster/>
+      <Toaster />
       <div>
         <p className="header">Partners</p>
       </div>
@@ -527,10 +530,10 @@ function Partners() {
             <input
               className="link1"
               readOnly={true}
-              value={"https://lk.million.money/a/95623/"}
+              value={`${window.location.origin}/register/${userID}`}
             />
             <br />
-            <button className="copybtn">Copy Link</button>
+            <button onClick={()=>{navigator.clipboard.writeText(`${window.location.origin}/register/${userID}`);toast.success("Copied to clipboard",{style:{marginTop:"65px"}})}} className="copybtn">Copy Link</button>
           </div>
         </div>
 
@@ -547,10 +550,18 @@ function Partners() {
                 <p className="linkname1">Data about partner</p>
                 <br />
                 <div className="Inline">
-                  <input value={searchId} onChange={(e)=>setsearchId(e.target.value)} className={"link2"} />
+                  <input
+                    value={searchId}
+                    onChange={(e) => setsearchId(e.target.value)}
+                    className={"link2"}
+                  />
                   <span>
-                    <button  onClick={()=>SearchAboutPartner()}
-                    className="copybtn">Search</button>
+                    <button
+                      onClick={() => SearchAboutPartner()}
+                      className="copybtn"
+                    >
+                      Search
+                    </button>
                   </span>
                 </div>
               </>
@@ -558,10 +569,15 @@ function Partners() {
               <div style={{ width: "100%" }}>
                 <p className="linkname1">Data about partner</p>
                 <br />
-                <input value={searchId} onChange={(e)=>setsearchId(e.target.value)} style={{ width: "100%" }} className={"link1"} />
+                <input
+                  value={searchId}
+                  onChange={(e) => setsearchId(e.target.value)}
+                  style={{ width: "100%" }}
+                  className={"link1"}
+                />
                 <span>
                   <button
-                    onClick={()=>SearchAboutPartner()}
+                    onClick={() => SearchAboutPartner()}
                     style={{ marginTop: "10px" }}
                     className="copybtn"
                   >
