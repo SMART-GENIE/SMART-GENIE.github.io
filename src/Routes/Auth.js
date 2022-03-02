@@ -12,7 +12,7 @@ function Auth() {
 
   useEffect(() => {
     if (authStatus == "LOGGEDOUT") {
-      if(window.location.pathname != "/register"){
+      if(window.location.pathname.split("/")[1] != "register"){
         if (window.location.pathname != "/") {
           window.location.href = "/";
         }

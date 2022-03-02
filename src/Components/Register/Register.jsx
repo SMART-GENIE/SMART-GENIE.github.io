@@ -191,8 +191,9 @@ if(window.location?.pathname?.split("/")[2]){
         dispatch(toogleAuth("LOGGEDIN"));
         window.location.href = "/";
       } else {
-        window.location.href = "/register";
+        // window.location.href = "/register";
         dispatch(toogleAuth("LOGGEDOUT"));
+
         setLoader(false);
         toast.remove(toastId);
         toast.error("Transaction Failed");
