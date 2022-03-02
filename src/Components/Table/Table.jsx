@@ -33,7 +33,7 @@ const Table = ({ data ,coinprice}) => {
               <tr>
                 <td className="tbval">{index + 1}</td>
                 <td className="tbval">
-                  <a href="#">{item.address}</a>
+                  <a href={`https://tronscan.org/#/address/${item.address}`}>{item.address}</a>
                 </td>
                 <td className="tbval">{item.id}</td>
                 <td className="tbval">{item.coins}</td>

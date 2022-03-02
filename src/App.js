@@ -34,6 +34,7 @@ const App = () => {
           to={"/"}
           render={() => (authStatus == "LOGGEDIN" ? <Console /> : <Auth />)}
         />
+
       </BrowserRouter>
   );
 };

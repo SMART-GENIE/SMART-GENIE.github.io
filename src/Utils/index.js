@@ -1,10 +1,13 @@
-const contractAddress = "TVtd6PSWS9qfW9RBYkwinoSAVD56zAzSMK";
-// "TP3knTX2vSsPxpffb5Fe8XMgMCuqhXZdms" Version = 2
-// 'TLoV6Qr7tqDnHi641jG2hXZLQYUd4RTTAs' Version = 1
+const contractAddress = "TLHbZrdCGXn9KLvb6qvygYWHJZ7ucLyRy8"
+// "TLHbZrdCGXn9KLvb6qvygYWHJZ7ucLyRy8" Version 1 (MAIN NET)
+// "TVtd6PSWS9qfW9RBYkwinoSAVD56zAzSMK"; Version = 3 (TEST)
+// "TP3knTX2vSsPxpffb5Fe8XMgMCuqhXZdms" Version = 2(TEST)
+// 'TLoV6Qr7tqDnHi641jG2hXZLQYUd4RTTAs' Version = 1(TEST)
 
 const utils = {
     tronWeb: false,
     contract: false,
+    contractAddress:contractAddress,
 
     async setTronWeb(tronWeb) {
         this.tronWeb = tronWeb;

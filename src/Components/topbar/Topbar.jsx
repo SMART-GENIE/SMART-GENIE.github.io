@@ -43,8 +43,8 @@ function Topbar(opensidebar, opened) {
 
         <div className="div2">
           <div className="contentDiv">
-            <span style={{ width: "calc(100% - 25px)" }} className="address">
-              Address: {walletId}
+            <span  style={{ width: "calc(100% - 25px)" }} className="address">
+              Address: <a href={`https://tronscan.org/#/address/${walletId}`} >{walletId}</a>
             </span>
             <span style={{ float: "right", position: "absolute", right: 10 }}>
               <div

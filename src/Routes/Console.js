@@ -24,6 +24,7 @@ function Console() {
 
   useEffect(() => {
     document.title = "Console";
+  
 
     if (previewId) {
       return;

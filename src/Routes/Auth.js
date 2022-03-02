@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import "../App.css";
 import Login from "../Components/Login/Login";
+import { getAuth } from "../Components/Redux/Reducer/AuthReducer";
 import Register from "../Components/Register/Register";
 
 function Auth() {
+  const authStatus = useSelector(getAuth);
+
+
+  useEffect(() => {
+    if (authStatus == "LOGGEDOUT") {
+      if (window.location.pathname != "/") {
+        window.location.href = "/";
+      }
+    }
+  }, [authStatus]);
+
   return (
     <div>
       <Route component={Login} exact path="/" />

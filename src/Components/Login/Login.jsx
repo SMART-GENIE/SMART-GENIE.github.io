@@ -373,13 +373,14 @@ const Login = () => {
 
                     <div className="Bottom">
                       <p className="log2con">SMART GENIE smart-contract:</p>
-                      <p className="open">
-                        0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7
+                      <a href={`https://tronscan.org/#/contract/${Utils?.contractAddress}`} style={{color:"white"}} className="open">
+                        {Utils?.contractAddress}
+                        {/* 0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7 */}
                         <BsBoxArrowUpRight
                           style={{ marginLeft: 10, marginBottom: 1 }}
                           size="12px"
                         />
-                      </p>
+                      </a>
                     </div>
                   </div>
                 </div>
