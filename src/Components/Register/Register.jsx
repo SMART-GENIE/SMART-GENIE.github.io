@@ -307,7 +307,7 @@ if(window.location?.pathname?.split("/")[2]){
 
                     <div className="Bottom">
                       <p className="log2con">SMART GENIE smart-contract:</p>
-                      <a href={`https://tronscan.org/#/contract/${Utils?.contractAddress}`} style={{color:"white"}} className="open">
+                      <a target="_blank" href={`https://tronscan.org/#/contract/${Utils?.contractAddress}`} style={{color:"white"}} className="open">
                         {Utils?.contractAddress}
                         {/* 0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7 */}
                         <BsBoxArrowUpRight

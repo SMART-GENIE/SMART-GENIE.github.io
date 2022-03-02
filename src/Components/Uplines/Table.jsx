@@ -29,7 +29,7 @@ const Table = ({ data,LoadingTable }) => {
                 <td className="tbval">{index + 1}</td>
                 <td className="tbval">{item.id}</td>
                 <td className="tbval">
-                <a href={`https://tronscan.org/#/address/${item.address}`}>{item.address}</a>
+                <a target="_blank" href={`https://tronscan.org/#/address/${item.address}`}>{item.address}</a>
                 </td>
                 <td className="tbval">{item.currentLevel}</td>
               </tr>
