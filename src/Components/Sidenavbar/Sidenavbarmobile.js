@@ -12,6 +12,7 @@ import { Offcanvas } from "react-bootstrap";
 
 import { useSelector, useDispatch } from "react-redux";
 import { toogleMenu, getTooglemenu } from "../Redux/Reducer/MenuReducer";
+import { toogleAuth } from "../Redux/Reducer/AuthReducer";
 
 function Sidenavbarmobile() {
   const [openMenu, setopenMenu] = useState(false);
@@ -24,6 +25,14 @@ function Sidenavbarmobile() {
   const PATHNAME = () => location?.pathname?.toLowerCase();
 
   const VALIDROUTE = (path) => (PATHNAME(path) == path ? true : false);
+
+
+ 
+
+  const Logout = () => {
+    window.tronLink.tronWeb = false;
+    dispatch(toogleAuth("LOGGEDOUT"));
+  };
 
   return (
     <Offcanvas show={menu} onHide={() => dispatch(toogleMenu(!menu))}>
@@ -173,7 +182,7 @@ function Sidenavbarmobile() {
                 </li> */}
 
                 <Link
-                  onClick={() => dispatch(toogleMenu(!menu))}
+                  onClick={Logout}
                   className={"Link"}
                   to="/auth"
                   style={{

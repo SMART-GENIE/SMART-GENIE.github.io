@@ -26,11 +26,13 @@ import { Hex_to_base58 } from "../../Utils/Converter";
 import { tooglePreviewModeId } from "../Redux/Reducer/PreviewMode";
 import UserId, { toogleuserId } from "../Redux/Reducer/UserId";
 
-const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
+const TEMP_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
 
 const Login = () => {
   const { height, width } = useWindowDimensions();
+  let id =  window?.tronLink?.tronWeb?.defaultAddress?.base58;
+
 
   const authStatus = useSelector(getAuth);
   const dispatch = useDispatch();
@@ -38,6 +40,9 @@ const Login = () => {
   const [loginId, setloginId] = useState("");
   const [previewId, setpreviewId] = useState("");
   const [Loader, setLoader] = useState(false);
+
+  const [FOUNDATION_ADDRESS, setFOUNDATION_ADDRESS] = useState(TEMP_ADDRESS);
+
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
 
@@ -153,7 +158,7 @@ const Login = () => {
   const FetchData = async () => {
     try {
       await FetchPartners(
-        window.tronLink.tronWeb.defaultAddress.base58,
+        id,
         []
       ).then((e) => {
         alert(e.length);
@@ -232,10 +237,16 @@ const Login = () => {
       // Set default address (foundation address) used for contract calls
       // Directly overwrites the address object as TronLink disabled the
       // function call
+      // window.tronWeb.defaultAddress = {
+      //   hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
+      //   base58: FOUNDATION_ADDRESS,
+      // };
+
       window.tronWeb.defaultAddress = {
-        hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
-        base58: FOUNDATION_ADDRESS,
+        hex: window.tronWeb?.address?.toHex(id),
+        base58: id,
       };
+
 
       window.tronWeb.on("addressChanged", (e) => {
         // alert("CHNAGES");
@@ -249,8 +260,9 @@ const Login = () => {
       });
 
       await Utils.setTronWeb(window.tronWeb).then(async () => {
+        // alert(id)
         await checkUser2();
-        // alert(window.tronLink.tronWeb.defaultAddress.base58);
+        // alert(id);
         // dispatch(toogleAuth("LOGGEDIN"));
       });
     } catch (e) {
@@ -266,11 +278,11 @@ const Login = () => {
     // console.log(window.tronWeb);
     await Utils.setTronWeb(window.tronWeb).then(async () => {
       const LoadUserExist = await Utils.contract
-        .users(window.tronLink.tronWeb.defaultAddress.base58)
+        .users(id)
         .call();
       const userexist = await Promise.resolve(LoadUserExist);
-      if (userexist[0] == true) {
-        await FetchUserId(window.tronLink.tronWeb.defaultAddress.base58);
+      if (userexist.isExist == true) {
+        await FetchUserId(id);
         dispatch(toogleAuth("LOGGEDIN"));
       } else {
         // window.location.href = "/register";
@@ -281,14 +293,16 @@ const Login = () => {
   };
 
   const checkUser2 = async () => {
+
     // console.log(window.tronWeb);
     await Utils.setTronWeb(window.tronWeb).then(async () => {
       const LoadUserExist = await Utils.contract
-        .users(window.tronLink.tronWeb.defaultAddress.base58)
+        .users(id)
         .call();
       const userexist = await Promise.resolve(LoadUserExist);
-      if (userexist[0] == true) {
-        await FetchUserId(window.tronLink.tronWeb.defaultAddress.base58);
+
+      if (userexist.isExist == true) {
+        await FetchUserId(id);
         dispatch(toogleAuth("LOGGEDIN"));
       } else {
         window.location.href = "/register";
