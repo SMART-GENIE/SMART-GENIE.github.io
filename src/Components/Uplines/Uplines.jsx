@@ -30,8 +30,9 @@ function Uplines() {
     const id_to_num = await Utils.contract.users(address).call();
     const data = await Promise.resolve(id_to_num);
 
+
     // const id = data[1].toNumber()
-    const refId = data[2].toNumber();
+    const refId = data.referrerID.toNumber();
     console.log(refId);
 
     let userAddress = (await Utils.contract.userList(refId).call()).toString();

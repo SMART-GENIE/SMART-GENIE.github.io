@@ -162,7 +162,7 @@ function Sidenavbarmobile() {
                     Lost profits
                   </li>
                 </Link>
-                <li
+                {/* <li
                   style={{ color: VALIDROUTE("/promo") ? "white" : null }}
                   className="sidebaritems"
                 >
@@ -170,7 +170,7 @@ function Sidenavbarmobile() {
                     <IoIosSend size={24} />
                   </span>
                   promo
-                </li>
+                </li> */}
 
                 <Link
                   onClick={() => dispatch(toogleMenu(!menu))}

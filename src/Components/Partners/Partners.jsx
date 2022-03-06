@@ -60,6 +60,7 @@ function Partners() {
       .viewUserReferral(id)
       .call()
       .then(async (items) => {
+        console.log(items,"NOPE");
         TotalPartnersCount += items.length;
 
         var item = {};
@@ -92,7 +93,9 @@ function Partners() {
 
   const ProccessTreeData = async (data, id, temp) => {
     const id_to_num = await Utils.contract.users(id).call();
-    const resId = await Promise.resolve(id_to_num[1].toNumber());
+    const resId = await Promise.resolve(id_to_num.id.toNumber());
+    console.log(resId,"NEW");
+
     temp = {
       name: resId,
     };
@@ -315,7 +318,7 @@ function Partners() {
       const id_to_num = await Utils.contract.users(item.address).call();
       const data = await Promise.resolve(id_to_num);
 
-      const id = data[1].toNumber();
+      const id = data.id.toNumber();
       temp.push({ address: item.address, id: id, coins: item.coins });
     }
     return temp;
@@ -329,6 +332,7 @@ function Partners() {
       // console.log(LevelJSON);
       // console.log(LEVEL);
       return await calculate_CoinsFromLevels(LevelJSON).then(async (res) => {
+        console.log(res,"NEWWW");
         await PreProcessData(res).then((result) => {
           setTableData(result);
           setLoadingTable(false);
@@ -460,18 +464,18 @@ function Partners() {
       if (/[a-zA-Z]/.test(searchId)) {
         const LoadUserExist = await Utils.contract.users(searchId).call();
         const userexist = await Promise.resolve(LoadUserExist);
-        if (userexist[0] == false) {
+        if (userexist.isExist == false) {
           return toast.error("User does not exist");
         }
 
         const currentLevel = await getcurrentLevel(searchId);
         setsearchPartnerData({
-          id: userexist[1].toString(),
+          id: userexist.id.toString(),
           address: searchId,
           level: currentLevel,
         });
 
-        console.log(userexist[0]);
+        // console.log(userexist[0]);
       } else {
         const LoadUserAddress = await Utils.contract
           .userList(JSON.parse(searchId))
@@ -480,15 +484,15 @@ function Partners() {
 
         const LoadUserExist = await Utils.contract.users(userAddress).call();
         const userexist = await Promise.resolve(LoadUserExist);
-        if (userexist[0] == false) {
+        if (userexist.isExist == false) {
           return toast.error("User does not exist", {
             style: { marginTop: "70px" },
           });
         }
         const currentLevel = await getcurrentLevel(userAddress);
         setsearchPartnerData({
-          id: userexist[1].toString(),
-          address: userAddress,
+          id: userexist.id.toString(),
+          address: await Hex_to_base58(userAddress),
           level: currentLevel,
         });
       }

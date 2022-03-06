@@ -62,7 +62,8 @@ function Controlpanel() {
 
     for await (const address of data) {
       const joinedData = await Utils.contract.users(address).call();
-      let joined = await Promise.resolve(joinedData[3].toNumber());
+
+      let joined = await Promise.resolve(joinedData.joined.toNumber());
       joined = moment.unix(joined).format("DD/MM/YYYY");
       if (Temp == joined) {
         graphData[labels.length - 1] += 1;
@@ -91,6 +92,7 @@ function Controlpanel() {
         // console.log(e);
         return await FetchEarning(id, e.length).then(async () => {
           await ProccessRefralGraphData(e).then(async (res) => {
+            console.log(res,"GRAPH");
             setchartData(res);
             await FetchLevels(id).then((data) => {
               setLevelsData(data);

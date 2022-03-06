@@ -68,7 +68,6 @@ const Login = () => {
       setLoader(true);
       // if string is address
       if (/[a-zA-Z]/.test(previewId)) {
-        alert("2")
 
         const LoadUserExist = await Utils.contract.users(previewId).call();
 
@@ -84,7 +83,6 @@ const Login = () => {
         await FetchUserId(previewId);
         dispatch(toogleAuth("LOGGEDIN"));
 
-        console.log(userexist[0]);
       } else {
 
         const LoadUserAddress = await Utils.contract

@@ -84,7 +84,7 @@ function Lostprofits() {
 
   const ProccessTreeData = async (data, id, temp) => {
     const id_to_num = await Utils.contract.users(id).call();
-    const resId = await Promise.resolve(id_to_num[1].toNumber());
+    const resId = await Promise.resolve(id_to_num.id.toNumber());
     temp = {
       name: resId,
     };
@@ -309,7 +309,7 @@ function Lostprofits() {
       const id_to_num = await Utils.contract.users(item.address).call();
       const data = await Promise.resolve(id_to_num);
 
-      const id = data[1].toNumber();
+      const id = data.id.toNumber();
       
       temp.push({ address: item.address, id: id, coins: item.coins });
     }
