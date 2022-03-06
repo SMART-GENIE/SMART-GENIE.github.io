@@ -28,6 +28,7 @@ import UserId, { toogleuserId } from "../Redux/Reducer/UserId";
 
 const FOUNDATION_ADDRESS = "TG31Eya5GywMYV2rwq3rwGbep4eoykWREP";
 
+
 const Login = () => {
   const { height, width } = useWindowDimensions();
 
@@ -47,6 +48,7 @@ const Login = () => {
   useEffect(() => {
     document.title = "Login|SmartGenie";
 
+
     const checklogin = setInterval(async () => {
       if (window?.tronLink?.tronWeb) {
         clearInterval(checklogin);
@@ -57,6 +59,8 @@ const Login = () => {
 
   const PreviewMode = async () => {
     try {
+
+
       if (previewId.trim().length == 0) {
         return toast.error("Please enter valid RefId/address");
       }
@@ -64,7 +68,10 @@ const Login = () => {
       setLoader(true);
       // if string is address
       if (/[a-zA-Z]/.test(previewId)) {
+        alert("2")
+
         const LoadUserExist = await Utils.contract.users(previewId).call();
+
         const userexist = await Promise.resolve(LoadUserExist);
         setLoader(false);
         if (userexist[0] == false) {
@@ -79,22 +86,32 @@ const Login = () => {
 
         console.log(userexist[0]);
       } else {
+
         const LoadUserAddress = await Utils.contract
           .userList(JSON.parse(previewId))
           .call();
-        const userAddress = await Promise.resolve(LoadUserAddress);
+
+          
+        let userAddress = await Promise.resolve(LoadUserAddress);
+
+        
+        // userAddress = (await Utils.tronWeb.address.fromHex(userAddress))
+
 
         const LoadUserExist = await Utils.contract.users(userAddress).call();
+
+
         const userexist = await Promise.resolve(LoadUserExist);
-        if (userexist[0] == false) {
+
+        if (userexist.isExist == false) {
           setLoader(false);
           return toast.error("User does not exist");
         }
         dispatch(tooglePreviewModeId(await Hex_to_base58(userAddress)));
-        await FetchUserId(userAddress);
+        await FetchUserId(await Hex_to_base58(userAddress));
         dispatch(toogleAuth("LOGGEDIN"));
 
-        setLoader(false);
+        // setLoader(false);
       }
 
       // const userexist = await Promise.resolve(LoadUserExist);
@@ -106,7 +123,7 @@ const Login = () => {
       //   dispatch(toogleAuth("LOGGEDOUT"));
       // }
     } catch (e) {
-      console.log(e);
+      console.log(e,"yes");
       setLoader(false);
     }
   };
@@ -114,7 +131,8 @@ const Login = () => {
   const FetchUserId = async (userAddress) => {
     const LoadUserId = await Utils.contract.users(userAddress).call();
     const userId = await Promise.resolve(LoadUserId);
-    dispatch(toogleuserId(JSON.parse(userId[1])));
+    // console.log(userId.id.toNumber(),"HI");
+    dispatch(toogleuserId(userId.id.toNumber()));
   };
 
   // useEffect(() => {
@@ -211,7 +229,7 @@ const Login = () => {
         }, 100);
       });
 
-      console.log(window.tronWeb);
+      console.log(window.tronWeb,"CONNECT");
 
       // Set default address (foundation address) used for contract calls
       // Directly overwrites the address object as TronLink disabled the
