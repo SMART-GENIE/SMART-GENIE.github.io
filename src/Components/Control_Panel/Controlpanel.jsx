@@ -85,6 +85,7 @@ function Controlpanel() {
   };
 
   const FetchData = async () => {
+
     try {
       return await FetchPartners(id, []).then(async (e) => {
         setpartnersList(e);
@@ -505,14 +506,7 @@ function Controlpanel() {
         }, 100);
       });
 
-      if (!tronWeb.loggedIn) {
-        // Set default address (foundation address) used for contract calls
-        // Directly overwrites the address object as TronLink disabled the
-        // function call
-        window.tronWeb.defaultAddress = {
-          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
-          base58: FOUNDATION_ADDRESS,
-        };
+     
 
         window.tronWeb.on("addressChanged", (e) => {
           if (tronWeb.loggedIn) return;
@@ -524,7 +518,7 @@ function Controlpanel() {
             },
           });
         });
-      }
+      
 
       window.tronWeb.defaultAddress = {
         hex: window.tronWeb?.address?.toHex(id),

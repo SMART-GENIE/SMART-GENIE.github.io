@@ -331,7 +331,7 @@ const Login = () => {
                 <ConnectWallet Connect={CONNECT_WALLET} />
 
                 <div className="Divider">
-                  Or you can enter manually, enter the number of your ETH purse
+                  Or you can enter manually, enter the number of your TRX purse
                 </div>
                 <div className="Inside-Form-Div">
                   <Form onSubmit={(e) => HandleSubmit(e)}>

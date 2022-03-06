@@ -21,7 +21,6 @@ import Utils from "../../Utils/index";
 import { getAuth, toogleAuth } from "../Redux/Reducer/AuthReducer";
 import { toogleuserId } from "../Redux/Reducer/UserId";
 
-
 const Register = () => {
   const { height, width } = useWindowDimensions();
 
@@ -45,11 +44,13 @@ const Register = () => {
   //   window.location = "http://console.localhost:3000/"
   // }
 
+  let id = window?.tronLink?.tronWeb?.defaultAddress?.base58;
+
   useEffect(() => {
     document.title = "Smart Genie|Register";
-if(window.location?.pathname?.split("/")[2]){
-  setrefId(window.location?.pathname?.split("/")[2])
-}
+    if (window.location?.pathname?.split("/")[2]) {
+      setrefId(window.location?.pathname?.split("/")[2]);
+    }
   }, []);
 
   const HandleSubmit = async (e) => {
@@ -106,26 +107,22 @@ if(window.location?.pathname?.split("/")[2]){
         }, 100);
       });
 
-      if (!tronWeb.loggedIn) {
-        // Set default address (foundation address) used for contract calls
-        // Directly overwrites the address object as TronLink disabled the
-        // function call
-        window.tronWeb.defaultAddress = {
-          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
-          base58: FOUNDATION_ADDRESS,
-        };
+      window.tronWeb.defaultAddress = {
+        hex: window.tronWeb?.address?.toHex(id),
+        base58: id,
+      };
 
-        window.tronWeb.on("addressChanged", (e) => {
-          if (tronWeb.loggedIn) return;
+      window.tronWeb.on("addressChanged", (e) => {
+        if (tronWeb.loggedIn) return;
 
-          settronWeb({
-            tronWeb: {
-              installed: true,
-              loggedIn: true,
-            },
-          });
+        settronWeb({
+          tronWeb: {
+            installed: true,
+            loggedIn: true,
+          },
         });
-      }
+      });
+
       await Utils.setTronWeb(window.tronWeb).then(async () => {
         if (refId != null) {
           await Buy(refId);
@@ -142,8 +139,8 @@ if(window.location?.pathname?.split("/")[2]){
 
   const Buy = async (refID) => {
     window.tronWeb.defaultAddress = {
-      hex: window.tronLink.tronWeb.defaultAddress.hex,
-      base58: window.tronLink.tronWeb.defaultAddress.base58,
+      hex: window.tronWeb?.address?.toHex(id),
+      base58: id,
     };
 
     return await Utils.setTronWeb(window.tronWeb).then(async () => {
@@ -157,10 +154,10 @@ if(window.location?.pathname?.split("/")[2]){
             callValue: 1000000 * 300,
             shouldPollResponse: true,
           })
-          .then(async(res) => {
+          .then(async (res) => {
             toast.remove(toastId);
             toast.success("Transaction done successfully");
-            await FetchUserId(window.tronLink.tronWeb.defaultAddress.base58);
+            await FetchUserId(id);
             dispatch(toogleAuth("LOGGEDIN"));
 
             return res;
@@ -180,14 +177,14 @@ if(window.location?.pathname?.split("/")[2]){
     console.log(window.tronWeb);
     await Utils.setTronWeb(window.tronWeb).then(async () => {
       const LoadUserExist = await Utils.contract
-        .users(window.tronLink.tronWeb.defaultAddress.base58)
+        .users(id)
         .call();
       const userexist = await Promise.resolve(LoadUserExist);
-      if (userexist[0] == true) {
+      if (userexist.isExist == true) {
         toast.remove(toastId);
         toast.success("Transaction done successfully");
         setLoader(false);
-        await FetchUserId(window.tronLink.tronWeb.defaultAddress.base58);
+        await FetchUserId(id);
         dispatch(toogleAuth("LOGGEDIN"));
         window.location.href = "/";
       } else {
@@ -206,7 +203,8 @@ if(window.location?.pathname?.split("/")[2]){
   const FetchUserId = async (userAddress) => {
     const LoadUserId = await Utils.contract.users(userAddress).call();
     const userId = await Promise.resolve(LoadUserId);
-    dispatch(toogleuserId(JSON.parse(userId[1])));
+    // alert(userId.id.toNumber(),"hi")
+    dispatch(toogleuserId(userId.id.toNumber()));
   };
 
   return (
@@ -307,7 +305,12 @@ if(window.location?.pathname?.split("/")[2]){
 
                     <div className="Bottom">
                       <p className="log2con">SMART GENIE smart-contract:</p>
-                      <a target="_blank" href={`https://tronscan.org/#/contract/${Utils?.contractAddress}`} style={{color:"white"}} className="open">
+                      <a
+                        target="_blank"
+                        href={`https://tronscan.org/#/contract/${Utils?.contractAddress}`}
+                        style={{ color: "white" }}
+                        className="open"
+                      >
                         {Utils?.contractAddress}
                         {/* 0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7 */}
                         <BsBoxArrowUpRight
