@@ -34,6 +34,8 @@ function Controlpanel() {
 
   let Total = 0;
 
+  
+
   let partners = [];
 
   console.log(previewId);
@@ -88,6 +90,7 @@ function Controlpanel() {
 
     try {
       return await FetchPartners(id, []).then(async (e) => {
+        console.log("MMYY");
         setpartnersList(e);
         await getcurrentLevel(id);
         // console.log(e);
@@ -518,6 +521,7 @@ function Controlpanel() {
             },
           });
         });
+
       
 
       window.tronWeb.defaultAddress = {

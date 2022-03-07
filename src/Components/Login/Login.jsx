@@ -56,8 +56,11 @@ const Login = () => {
 
     const checklogin = setInterval(async () => {
       if (window?.tronLink?.tronWeb) {
+        // alert(window?.tronLink?.tronWeb?.defaultAddress?.base58)
         clearInterval(checklogin);
-        await checkUser();
+
+        await checkUser(window?.tronLink?.tronWeb?.defaultAddress?.base58);
+
       }
     }, 1000);
   }, []);
@@ -274,22 +277,27 @@ const Login = () => {
     e.preventDefault();
   };
 
-  const checkUser = async () => {
+  const checkUser = async (id) => {
     // console.log(window.tronWeb);
-    await Utils.setTronWeb(window.tronWeb).then(async () => {
-      const LoadUserExist = await Utils.contract
-        .users(id)
-        .call();
-      const userexist = await Promise.resolve(LoadUserExist);
-      if (userexist.isExist == true) {
-        await FetchUserId(id);
-        dispatch(toogleAuth("LOGGEDIN"));
-      } else {
-        // window.location.href = "/register";
-        dispatch(toogleAuth("LOGGEDOUT"));
-      }
-      // console.log(userexist[0]);
-    });
+    try{
+      await Utils.setTronWeb(window.tronWeb).then(async () => {
+        const LoadUserExist = await Utils.contract
+          .users(id)
+          .call();
+        const userexist = await Promise.resolve(LoadUserExist);
+        if (userexist.isExist == true) {
+          await FetchUserId(id);
+          dispatch(toogleAuth("LOGGEDIN"));
+        } else {
+          // window.location.href = "/register";
+          dispatch(toogleAuth("LOGGEDOUT"));
+        }
+        // console.log(userexist[0]);
+      });
+    }catch(e){
+      console.log(e);
+    }
+    
   };
 
   const checkUser2 = async () => {
