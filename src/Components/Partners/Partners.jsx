@@ -421,8 +421,8 @@ function Partners() {
         // Directly overwrites the address object as TronLink disabled the
         // function call
         window.tronWeb.defaultAddress = {
-          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
-          base58: FOUNDATION_ADDRESS,
+          hex: window.tronWeb?.address?.toHex(walletId),
+          base58: walletId,
         };
 
         window.tronWeb.on("addressChanged", (e) => {

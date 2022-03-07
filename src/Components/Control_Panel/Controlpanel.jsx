@@ -24,6 +24,7 @@ function Controlpanel() {
   const previewId = useSelector(getPreviewModeId);
   let id = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
+
   const [partnersList, setpartnersList] = useState(0);
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
@@ -90,7 +91,6 @@ function Controlpanel() {
 
     try {
       return await FetchPartners(id, []).then(async (e) => {
-        console.log("MMYY");
         setpartnersList(e);
         await getcurrentLevel(id);
         // console.log(e);
@@ -112,6 +112,7 @@ function Controlpanel() {
   };
 
   const FetchPartners = async (id, partners) => {
+    
     // console.log(id);
     return await Utils.contract
       .viewUserReferral(id)
@@ -528,6 +529,7 @@ function Controlpanel() {
         hex: window.tronWeb?.address?.toHex(id),
         base58: id,
       };
+
 
       window.tronWeb.on("addressChanged", (e) => {
         if (tronWeb.loggedIn) return;

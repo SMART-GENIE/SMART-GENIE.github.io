@@ -127,10 +127,9 @@ function Uplines() {
         }, 100);
       });
 
-      if (!tronWeb.loggedIn) {
         window.tronWeb.defaultAddress = {
-          hex: window.tronWeb?.address?.toHex(FOUNDATION_ADDRESS),
-          base58: FOUNDATION_ADDRESS,
+          hex: window.tronWeb?.address?.toHex(walletId),
+          base58: walletId,
         };
 
         window.tronWeb.on("addressChanged", (e) => {
@@ -143,7 +142,7 @@ function Uplines() {
             },
           });
         });
-      }
+      
       await Utils.setTronWeb(window.tronWeb).then(async () => {
         await FetchData(walletId, {}).then(
           async (e) => {}
