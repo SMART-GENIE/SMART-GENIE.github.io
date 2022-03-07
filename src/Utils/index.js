@@ -1,4 +1,4 @@
-const contractAddress = "TVtd6PSWS9qfW9RBYkwinoSAVD56zAzSMK"
+const contractAddress = "TLHbZrdCGXn9KLvb6qvygYWHJZ7ucLyRy8"
 // "TLHbZrdCGXn9KLvb6qvygYWHJZ7ucLyRy8" Version 1 (MAIN NET)
 // "TVtd6PSWS9qfW9RBYkwinoSAVD56zAzSMK"; Version = 3 (TEST)
 // "TP3knTX2vSsPxpffb5Fe8XMgMCuqhXZdms" Version = 2(TEST)

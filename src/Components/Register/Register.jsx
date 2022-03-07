@@ -144,7 +144,7 @@ const Register = () => {
     };
 
     return await Utils.setTronWeb(window.tronWeb).then(async () => {
-      const toastId = toast.loading("Waiting for transction confirmation");
+      const toastId = toast.loading("Waiting for transaction confirmation");
       setLoader(true);
       try {
         await Utils.contract
