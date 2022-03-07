@@ -9,6 +9,8 @@ import useWindowDimensions from "../../Tools/WindowDimensions";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import { getPartnersLevelJson } from "../Redux/Reducer/PartnersLevelJson";
 import toast, { Toaster } from "react-hot-toast";
+import copy from 'copy-to-clipboard';
+
 
 import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
@@ -518,6 +520,20 @@ function Partners() {
     return currentLevel;
   };
 
+  const copyLink = ()=>{
+    try{
+      copy(`${window.location.origin}/register/${userID}`)
+      // navigator.clipboard.writeText(`${window.location.origin}/register/${userID}`);
+      toast.success("Copied to clipboard",{style:{marginTop:"65px"}})
+  
+    }catch(e){
+      toast.error("Failed to Copy to clipboard",{style:{marginTop:"65px"}})
+      // window.clipboardData.setData("Text", 'Copy this text to clipboard')
+
+      console.log(e);
+    }
+  }
+
   return (
     <div className="panel">
       <Toaster />
@@ -537,7 +553,7 @@ function Partners() {
               value={`${window.location.origin}/register/${userID}`}
             />
             <br />
-            <button onClick={()=>{navigator.clipboard.writeText(`${window.location.origin}/register/${userID}`);toast.success("Copied to clipboard",{style:{marginTop:"65px"}})}} className="copybtn">Copy Link</button>
+            <button onClick={copyLink} className="copybtn">Copy Link</button>
           </div>
         </div>
 
