@@ -184,7 +184,7 @@ function Sidenavbarmobile() {
                 <Link
                   onClick={Logout}
                   className={"Link"}
-                  to="/auth"
+                  to="/"
                   style={{
                     width: "240px !important",
                     textDecoration: "none",

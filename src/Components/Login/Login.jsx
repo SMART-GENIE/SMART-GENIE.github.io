@@ -288,8 +288,10 @@ const Login = () => {
         if (userexist.isExist == true) {
           await FetchUserId(id);
           dispatch(toogleAuth("LOGGEDIN"));
+
         } else {
           // window.location.href = "/register";
+
           dispatch(toogleAuth("LOGGEDOUT"));
         }
         // console.log(userexist[0]);
