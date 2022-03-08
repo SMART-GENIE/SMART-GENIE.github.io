@@ -16,7 +16,6 @@ function Uplines() {
   const previewId = useSelector(getPreviewModeId);
   let walletId = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
-
   const [LoadingTable, setLoadingTable] = useState(true);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
@@ -27,21 +26,39 @@ function Uplines() {
   }, []);
 
   const FetchData = async (address) => {
-    const id_to_num = await Utils.contract.users(address).call();
-    const data = await Promise.resolve(id_to_num);
+    let temp_address = address;
+let TempArray = []
+    for await (const i of Array.from({ length: 5 }, (_, i) => i + 1)) {
+      const id_to_num = await Utils.contract.users(temp_address).call();
+      const data = await Promise.resolve(id_to_num);
+
+      // const id = data[1].toNumber()
+      const refId = data.referrerID.toNumber();
+
+      const refererAddressPromise = await Utils.contract.userList(refId).call();
+      const refererAddress = await Promise.resolve(refererAddressPromise);
+      if(temp_address != await Hex_to_base58(refererAddress.toString() )){
+        temp_address = await Hex_to_base58(refererAddress.toString());
+
+        await currentLevel(temp_address).then((res) => {
+          TempArray.push({ id: refId, address: temp_address, currentLevel: res })
+          // console.log(temp_address);
+          // setdata([{ id: refId, address: temp_address, currentLevel: res }]);
+          // setLoadingTable(false);
+        });
+      }
 
 
-    // const id = data[1].toNumber()
-    const refId = data.referrerID.toNumber();
-    console.log(refId);
+   
+    }
 
-    let userAddress = (await Utils.contract.userList(refId).call()).toString();
+    if(TempArray.length > 1){
+      TempArray = TempArray.filter(e=>e.id != 0)
+    }
 
-    userAddress = await Hex_to_base58(userAddress);
-    await currentLevel(userAddress).then((res) => {
-      setdata([{ id: refId, address: userAddress, currentLevel: res }]);
-      setLoadingTable(false)
-    });
+
+    setdata(TempArray)
+    setLoadingTable(false)
 
     return;
   };
@@ -53,7 +70,10 @@ function Uplines() {
         .viewUserLevelExpired(address, level)
         .call();
       const currentTimestamp = await Promise.resolve(checkLevel);
-      if (currentTimestamp.toNumber() < Date.now() && currentTimestamp.toNumber() != 0) {
+      if (
+        currentTimestamp.toNumber() < Date.now() &&
+        currentTimestamp.toNumber() != 0
+      ) {
         ++currentLevel;
       }
     }
@@ -127,26 +147,24 @@ function Uplines() {
         }, 100);
       });
 
-        window.tronWeb.defaultAddress = {
-          hex: window.tronWeb?.address?.toHex(walletId),
-          base58: walletId,
-        };
+      window.tronWeb.defaultAddress = {
+        hex: window.tronWeb?.address?.toHex(walletId),
+        base58: walletId,
+      };
 
-        window.tronWeb.on("addressChanged", (e) => {
-          if (tronWeb.loggedIn) return;
+      window.tronWeb.on("addressChanged", (e) => {
+        if (tronWeb.loggedIn) return;
 
-          settronWeb({
-            tronWeb: {
-              installed: true,
-              loggedIn: true,
-            },
-          });
+        settronWeb({
+          tronWeb: {
+            installed: true,
+            loggedIn: true,
+          },
         });
-      
+      });
+
       await Utils.setTronWeb(window.tronWeb).then(async () => {
-        await FetchData(walletId, {}).then(
-          async (e) => {}
-        );
+        await FetchData(walletId, {}).then(async (e) => {});
       });
     } catch (e) {
       console.log(e);
