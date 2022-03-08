@@ -125,10 +125,17 @@ const Register = () => {
 
       await Utils.setTronWeb(window.tronWeb).then(async () => {
         if (refId != null) {
-          await Buy(refId);
+          if(JSON.parse(refId) <= 9){
+            let CurrentIdLoad = await Utils.contract.currUserID().call();
+            let CurrentId = await Promise.resolve(CurrentIdLoad);
+            await Buy(JSON.parse(CurrentId.toString()));
+          }else{
+            await Buy(refId);
+          }
+
         } else {
-          const CurrentIdLoad = await Utils.contract.currUserID().call();
-          const CurrentId = await Promise.resolve(CurrentIdLoad);
+          let CurrentIdLoad = await Utils.contract.currUserID().call();
+          let CurrentId = await Promise.resolve(CurrentIdLoad);
           await Buy(JSON.parse(CurrentId.toString()));
         }
       });
