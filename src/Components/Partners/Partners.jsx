@@ -592,6 +592,8 @@ function Partners() {
                 <p className="linkname1">Data about partner</p>
                 <br />
                 <input
+                                  placeholder="Enter Id or Address"
+
                   value={searchId}
                   onChange={(e) => setsearchId(e.target.value)}
                   style={{ width: "100%" }}

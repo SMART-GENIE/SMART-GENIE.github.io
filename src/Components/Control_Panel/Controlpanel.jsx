@@ -101,7 +101,6 @@ function Controlpanel() {
         return await getcurrentLevel(id).then(async () => {
           return await FetchEarning(id, e.length).then(async () => {
             await ProccessRefralGraphData(e).then(async (res) => {
-              console.log(res, "GRAPH");
               setchartData(res);
               await FetchLevels(id).then((data) => {
                 setLevelsData(data);
@@ -294,7 +293,7 @@ function Controlpanel() {
       });
       // return;
     } else {
-      Utils.contract
+      await Utils.contract
         .viewUserReferral(id)
         .call()
         .then(async (items) => {
