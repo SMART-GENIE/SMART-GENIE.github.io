@@ -342,7 +342,7 @@ function Partners() {
       });
       // return;
     } else {
-      Utils.contract
+      await Utils.contract
         .viewUserReferral(id)
         .call()
         .then(async (items) => {
@@ -450,6 +450,7 @@ function Partners() {
         });
       });
     } catch (e) {
+      CONNECT_WALLET()
       console.log(e);
     }
   };

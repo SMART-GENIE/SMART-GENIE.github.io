@@ -71,6 +71,7 @@ function TreeItem({ item, funcs }) {
   return (
     <li>
       <TreeLine
+      key={item.name}
         onClick={() => toggleOpen(item)}
         onDoubleClick={() => makeParent(item)}
       >
@@ -85,10 +86,11 @@ function TreeItem({ item, funcs }) {
 }
 
 function TreeList({ item, tree, funcs }) {
+  console.log(tree);
   return (
     <ul>
-      {tree.map((child) => (
-        <TreeItem item={child} funcs={funcs} />
+      {tree.map((child,i) => (
+        <TreeItem key={i} item={child} funcs={funcs} />
       ))}
       {/* <AddItem parent={item} funcs={funcs} /> */}
     </ul>

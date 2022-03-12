@@ -25,7 +25,8 @@ const Table = ({ data,LoadingTable }) => {
               <th style={{minWidth:"50px"}}>Level</th>
             </tr>
             {tableData.map((item, index) => (
-              <tr>
+              index == 0 && (
+                <tr>
                 <td className="tbval">{index + 1}</td>
                 <td className="tbval">{item.id}</td>
                 <td className="tbval">
@@ -33,6 +34,8 @@ const Table = ({ data,LoadingTable }) => {
                 </td>
                 <td className="tbval">{item.currentLevel}</td>
               </tr>
+              )
+             
             ))}
           </table>
 

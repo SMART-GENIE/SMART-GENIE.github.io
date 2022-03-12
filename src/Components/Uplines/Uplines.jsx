@@ -27,7 +27,7 @@ function Uplines() {
 
   const FetchData = async (address) => {
     let temp_address = address;
-let TempArray = []
+    let TempArray = [];
     for await (const i of Array.from({ length: 5 }, (_, i) => i + 1)) {
       const id_to_num = await Utils.contract.users(temp_address).call();
       const data = await Promise.resolve(id_to_num);
@@ -37,28 +37,29 @@ let TempArray = []
 
       const refererAddressPromise = await Utils.contract.userList(refId).call();
       const refererAddress = await Promise.resolve(refererAddressPromise);
-      if(temp_address != await Hex_to_base58(refererAddress.toString() )){
+      if (temp_address != (await Hex_to_base58(refererAddress.toString()))) {
         temp_address = await Hex_to_base58(refererAddress.toString());
 
         await currentLevel(temp_address).then((res) => {
-          TempArray.push({ id: refId, address: temp_address, currentLevel: res })
+          TempArray.push({
+            id: refId,
+            address: temp_address,
+            currentLevel: res,
+          });
           // console.log(temp_address);
           // setdata([{ id: refId, address: temp_address, currentLevel: res }]);
           // setLoadingTable(false);
         });
       }
-
-
-   
     }
 
-    if(TempArray.length > 1){
-      TempArray = TempArray.filter(e=>e.id != 0)
+    if (TempArray.length > 1) {
+      TempArray = TempArray.filter((e) => e.id != 0);
     }
 
-
-    setdata(TempArray)
-    setLoadingTable(false)
+    
+    setdata(TempArray);
+    setLoadingTable(false);
 
     return;
   };

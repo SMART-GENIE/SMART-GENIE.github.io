@@ -58,20 +58,31 @@ function Controlpanel() {
   const ProccessRefralGraphData = async (data) => {
     let labels = [];
     let graphData = [];
-    let Temp = "";
-
+    let Temp = {};
     for await (const address of data) {
       const joinedData = await Utils.contract.users(address).call();
 
       let joined = await Promise.resolve(joinedData.joined.toNumber());
       joined = moment.unix(joined).format("DD/MM/YYYY");
-      if (Temp == joined) {
-        graphData[labels.length - 1] += 1;
+      if (Temp[`${joined}`] != undefined) {
+        Temp[`${joined}`] = Temp[`${joined}`] + 1;
       } else {
-        labels.push(joined);
-        graphData[labels.length - 1] = 1;
-        Temp = joined;
+        Temp[`${joined}`] = 1;
       }
+    }
+
+    let SortedObject =  Object.fromEntries(
+      Object.entries(Temp).sort(function (a, b) {
+        var aa = a[0].split("/").reverse().join(),
+          bb = b[0].split("/").reverse().join();
+        return aa < bb ? -1 : aa > bb ? 1 : 0;
+      })
+  );
+
+
+    for await (const [key, value] of Object.entries(SortedObject)) {
+      labels.push(key);
+      graphData.push(value);
     }
 
     let resData = {
@@ -541,6 +552,7 @@ function Controlpanel() {
         }
       });
     } catch (e) {
+      CONNECT_WALLET()
       console.log(e);
     }
   };
@@ -752,7 +764,13 @@ function Controlpanel() {
                   class="contentcard_tabs_active_circle--green"
                 />
                 <div class="contentcard_tabs_active_text_price">
-                  <strong class="bold-text-2">{currentLevel}</strong>
+                  <strong class="bold-text-2">
+                  <CountUp
+                      duration={1}
+                      className="bold-text-2"
+                      end={currentLevel}
+                    />
+                    </strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Current Level</div>

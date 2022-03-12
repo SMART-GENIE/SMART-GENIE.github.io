@@ -30,7 +30,7 @@ const Table = ({ data ,coinprice}) => {
               <th style={{minWidth:"80px"}}>USD</th>
             </tr>
             {tableData.map((item, index) => (
-              <tr>
+              <tr key={index} >
                 <td className="tbval">{index + 1}</td>
                 <td className="tbval">
                   <a target="_blank" href={`https://tronscan.org/#/address/${item.address}`}>{item.address}</a>
