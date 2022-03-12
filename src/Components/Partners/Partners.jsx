@@ -572,6 +572,7 @@ function Partners() {
                 <br />
                 <div className="Inline">
                   <input
+                  placeholder="Enter Id or Address"
                     value={searchId}
                     onChange={(e) => setsearchId(e.target.value)}
                     className={"link2"}

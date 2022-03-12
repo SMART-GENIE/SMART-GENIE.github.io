@@ -26,7 +26,7 @@ const Table = ({ data, coinprice,LoadingTable }) => {
               <th style={{minWidth:"50px"}}>Date</th>
               <th style={{minWidth:"380px"}}>From whom</th>
               <th style={{minWidth:"50px"}}>ID</th>
-              <th style={{minWidth:"220px"}}>The amount of ETH</th>
+              <th style={{minWidth:"220px"}}>The amount of TRX</th>
               <th style={{minWidth:"50px"}}>USD</th>
             </tr>
 
