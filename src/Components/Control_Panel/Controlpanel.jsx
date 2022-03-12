@@ -71,14 +71,13 @@ function Controlpanel() {
       }
     }
 
-    let SortedObject =  Object.fromEntries(
+    let SortedObject = Object.fromEntries(
       Object.entries(Temp).sort(function (a, b) {
         var aa = a[0].split("/").reverse().join(),
           bb = b[0].split("/").reverse().join();
         return aa < bb ? -1 : aa > bb ? 1 : 0;
       })
-  );
-
+    );
 
     for await (const [key, value] of Object.entries(SortedObject)) {
       labels.push(key);
@@ -99,17 +98,17 @@ function Controlpanel() {
     try {
       return await FetchPartners(id, []).then(async (e) => {
         setpartnersList(e);
-        await getcurrentLevel(id);
-        // console.log(e);
-        return await FetchEarning(id, e.length).then(async () => {
-          await ProccessRefralGraphData(e).then(async (res) => {
-            console.log(res, "GRAPH");
-            setchartData(res);
-            await FetchLevels(id).then((data) => {
-              setLevelsData(data);
-              setLoadingLevels(false);
+        return await getcurrentLevel(id).then(async () => {
+          return await FetchEarning(id, e.length).then(async () => {
+            await ProccessRefralGraphData(e).then(async (res) => {
+              console.log(res, "GRAPH");
+              setchartData(res);
+              await FetchLevels(id).then((data) => {
+                setLevelsData(data);
+                setLoadingLevels(false);
+              });
+              // console.log(res);
             });
-            // console.log(res);
           });
         });
       });
@@ -552,7 +551,7 @@ function Controlpanel() {
         }
       });
     } catch (e) {
-      CONNECT_WALLET()
+      CONNECT_WALLET();
       console.log(e);
     }
   };
@@ -765,12 +764,12 @@ function Controlpanel() {
                 />
                 <div class="contentcard_tabs_active_text_price">
                   <strong class="bold-text-2">
-                  <CountUp
+                    <CountUp
                       duration={1}
                       className="bold-text-2"
                       end={currentLevel}
                     />
-                    </strong>
+                  </strong>
                 </div>
               </div>
               <div class="contentcard_tabs_label">Current Level</div>
