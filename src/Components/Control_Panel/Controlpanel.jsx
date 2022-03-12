@@ -24,7 +24,6 @@ function Controlpanel() {
   const previewId = useSelector(getPreviewModeId);
   let id = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
-
   const [partnersList, setpartnersList] = useState(0);
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
@@ -34,8 +33,6 @@ function Controlpanel() {
   const [LoadingLevels, setLoadingLevels] = useState(true);
 
   let Total = 0;
-
-  
 
   let partners = [];
 
@@ -88,7 +85,6 @@ function Controlpanel() {
   };
 
   const FetchData = async () => {
-
     try {
       return await FetchPartners(id, []).then(async (e) => {
         setpartnersList(e);
@@ -96,11 +92,11 @@ function Controlpanel() {
         // console.log(e);
         return await FetchEarning(id, e.length).then(async () => {
           await ProccessRefralGraphData(e).then(async (res) => {
-            console.log(res,"GRAPH");
+            console.log(res, "GRAPH");
             setchartData(res);
             await FetchLevels(id).then((data) => {
               setLevelsData(data);
-              setLoadingLevels(false)
+              setLoadingLevels(false);
             });
             // console.log(res);
           });
@@ -112,7 +108,6 @@ function Controlpanel() {
   };
 
   const FetchPartners = async (id, partners) => {
-    
     // console.log(id);
     return await Utils.contract
       .viewUserReferral(id)
@@ -135,9 +130,10 @@ function Controlpanel() {
         .viewUserLevelExpired(address, level)
         .call();
       const currentTimestamp = await Promise.resolve(checkLevel);
+
       if (
-        currentTimestamp.toNumber() < Date.now() &&
-        currentTimestamp.toNumber() != 0
+        currentTimestamp.toNumber() * 1000 > Date.now() &&
+        currentTimestamp.toNumber() * 1000 != 0
       ) {
         ++currentLevel;
       }
@@ -510,26 +506,21 @@ function Controlpanel() {
         }, 100);
       });
 
-     
+      window.tronWeb.on("addressChanged", (e) => {
+        if (tronWeb.loggedIn) return;
 
-        window.tronWeb.on("addressChanged", (e) => {
-          if (tronWeb.loggedIn) return;
-
-          settronWeb({
-            tronWeb: {
-              installed: true,
-              loggedIn: true,
-            },
-          });
+        settronWeb({
+          tronWeb: {
+            installed: true,
+            loggedIn: true,
+          },
         });
-
-      
+      });
 
       window.tronWeb.defaultAddress = {
         hex: window.tronWeb?.address?.toHex(id),
         base58: id,
       };
-
 
       window.tronWeb.on("addressChanged", (e) => {
         if (tronWeb.loggedIn) return;
@@ -612,27 +603,28 @@ function Controlpanel() {
         .viewUserLevelExpired(address, level)
         .call();
       const currentTimestamp = await Promise.resolve(checkLevel);
+      console.log(currentTimestamp.toNumber() * 1000, Date.now());
       if (
-        currentTimestamp.toNumber() > Date.now() &&
-        currentTimestamp.toNumber() != 0
+        Date.now() > currentTimestamp.toNumber() * 1000 &&
+        currentTimestamp.toNumber() * 1000 != 0
       ) {
         Temp[`${level}`] = {
           expired: true,
-          exipredAgo:
-            (new Date(currentTimestamp.toNumber()).getTime() -
+          expiredAgo:
+            (new Date(currentTimestamp.toNumber() * 1000).getTime() -
               new Date(Date.now()).getTime()) /
             (1000 * 60 * 60 * 24),
           active: false,
           disabled: level == 1 ? false : true,
         };
       } else if (
-        currentTimestamp.toNumber() < Date.now() &&
-        currentTimestamp.toNumber() != 0
+        currentTimestamp.toNumber() * 1000 > Date.now() &&
+        currentTimestamp.toNumber() * 1000 != 0
       ) {
         Temp[`${level}`] = {
           expired: false,
-          exipredAgo:
-            (new Date(currentTimestamp.toNumber()).getTime() -
+          expiredAgo:
+            (new Date(currentTimestamp.toNumber() * 1000).getTime() -
               new Date(Date.now()).getTime()) /
             (1000 * 60 * 60 * 24),
           active: true,
@@ -641,8 +633,8 @@ function Controlpanel() {
       } else {
         Temp[`${level}`] = {
           expired: false,
-          exipredAgo:
-            (new Date(currentTimestamp.toNumber()).getTime() -
+          expiredAgo:
+            (new Date(currentTimestamp.toNumber() * 1000).getTime() -
               new Date(Date.now()).getTime()) /
             (1000 * 60 * 60 * 24),
           active: false,
@@ -653,6 +645,7 @@ function Controlpanel() {
 
     let TempActive = 0;
     for await (const i of Array.from({ length: 10 }, (_, i) => i + 1)) {
+      Temp[`${i}`].expiredAgo = Math.round(Temp[`${i}`].expiredAgo, 0);
       if (Temp[`${i}`].active == true) {
         TempActive = i + 1;
         if (Temp[`${TempActive}`] != undefined) {
@@ -785,338 +778,349 @@ function Controlpanel() {
       </div>
       <br />
 
-  
-      <div style={{justifyContent:LoadingLevels ? "center" : null,alignItems:LoadingLevels ? "center" : null,height:LoadingLevels ? "18vw":null}} className="level">
-        
-        {!LoadingLevels?
-        <div className="row1">
-          <div className={LevelsData["1"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 1</div>
+      <div
+        style={{
+          justifyContent: LoadingLevels ? "center" : null,
+          alignItems: LoadingLevels ? "center" : null,
+          height: LoadingLevels ? "18vw" : null,
+        }}
+        className="level"
+      >
+        {!LoadingLevels ? (
+          <div className="row1">
+            <div className={LevelsData["1"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 1</div>
 
-              <div className="days">
-                {LevelsData["1"]?.active
-                  ? "Active"
-                  : "Expired" + `-${LevelsData["2"]?.expiredAgo} days ago`}
-              </div>
-
-              <hr className="line" />
-
-              <div class="levelval">300 TRX</div>
-
-              <button
-                disabled={LevelsData["1"]?.disabled}
-                style={{ opacity: LevelsData["1"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(300, 1)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["1"]?.active
-                    ? "Extend"
-                    : LevelsData["1"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-          <div className={LevelsData["2"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 2</div>
+                    ? "Active" + ` - ${LevelsData["1"]?.expiredAgo} days left`
+                    : "Expired" + ` - ${LevelsData["1"]?.expiredAgo} days ago`}
+                </div>
 
-              <div className="days">
-                {LevelsData["2"]?.active
-                  ? "Active"
-                  : LevelsData["2"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["2"]?.expiredAgo} days ago`}
-              </div>
+                <hr className="line" />
 
-              <hr className="line" />
+                <div class="levelval">300 TRX</div>
 
-              <div class="levelval">600 TRX</div>
+                <button
+                  disabled={LevelsData["1"]?.disabled}
+                  style={{ opacity: LevelsData["1"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(300, 1)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["1"]?.active
+                      ? "Extend"
+                      : LevelsData["1"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+            <div className={LevelsData["2"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 2</div>
 
-              <button
-                disabled={LevelsData["2"]?.disabled}
-                style={{ opacity: LevelsData["2"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(600, 2)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["2"]?.active
-                    ? "Extend"
-                    : LevelsData["2"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-          <div className={LevelsData["3"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 3</div>
+                    ? "Active" + ` - ${LevelsData["2"]?.expiredAgo} days left`
+                    : LevelsData["2"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["2"]?.expiredAgo} days ago`}
+                </div>
 
-              <div className="days">
-                {LevelsData["3"]?.active
-                  ? "Active"
-                  : LevelsData["3"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["3"]?.expiredAgo} days ago`}
-              </div>
+                <hr className="line" />
 
-              <hr className="line" />
+                <div class="levelval">600 TRX</div>
 
-              <div class="levelval">1250 TRX</div>
+                <button
+                  disabled={LevelsData["2"]?.disabled}
+                  style={{ opacity: LevelsData["2"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(600, 2)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["2"]?.active
+                      ? "Extend"
+                      : LevelsData["2"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+            <div className={LevelsData["3"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 3</div>
 
-              <button
-                disabled={LevelsData["3"]?.disabled}
-                style={{ opacity: LevelsData["3"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(1250, 3)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["3"]?.active
-                    ? "Extend"
-                    : LevelsData["3"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-          <div className={LevelsData["4"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 4</div>
+                    ? "Active" + ` - ${LevelsData["3"]?.expiredAgo} days left`
+                    : LevelsData["3"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["3"]?.expiredAgo} days ago`}
+                </div>
 
-              <div className="days">
-                {LevelsData["4"]?.active
-                  ? "Active"
-                  : LevelsData["4"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["4"]?.expiredAgo} days ago`}
-              </div>
+                <hr className="line" />
 
-              <hr className="line" />
+                <div class="levelval">1250 TRX</div>
 
-              <div class="levelval">2500 TRX</div>
+                <button
+                  disabled={LevelsData["3"]?.disabled}
+                  style={{ opacity: LevelsData["3"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(1250, 3)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["3"]?.active
+                      ? "Extend"
+                      : LevelsData["3"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+            <div className={LevelsData["4"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 4</div>
 
-              <button
-                disabled={LevelsData["4"]?.disabled}
-                style={{ opacity: LevelsData["4"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(2500, 4)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["4"]?.active
-                    ? "Extend"
-                    : LevelsData["4"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
+                    ? "Active" + ` - ${LevelsData["4"]?.expiredAgo} days left`
+                    : LevelsData["4"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["4"]?.expiredAgo} days ago`}
+                </div>
 
-          <div className={LevelsData["5"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 5</div>
+                <hr className="line" />
 
-              <div className="days">
-                {LevelsData["5"]?.active
-                  ? "Active"
-                  : LevelsData["5"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["5"]?.expiredAgo} days ago`}
-              </div>
+                <div class="levelval">2500 TRX</div>
 
-              <hr className="line" />
+                <button
+                  disabled={LevelsData["4"]?.disabled}
+                  style={{ opacity: LevelsData["4"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(2500, 4)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["4"]?.active
+                      ? "Extend"
+                      : LevelsData["4"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
 
-              <div class="levelval">5000 TRX</div>
+            <div className={LevelsData["5"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 5</div>
 
-              <button
-                disabled={LevelsData["5"]?.disabled}
-                style={{ opacity: LevelsData["5"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(5000, 5)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["5"]?.active
-                    ? "Extend"
-                    : LevelsData["5"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
+                    ? "Active" + ` - ${LevelsData["5"]?.expiredAgo} days left`
+                    : LevelsData["5"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["5"]?.expiredAgo} days ago`}
+                </div>
 
-          <div className={LevelsData["6"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 6</div>
+                <hr className="line" />
 
-              <div className="days">
-                {LevelsData["6"]?.active
-                  ? "Active"
-                  : LevelsData["6"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["6"]?.expiredAgo} days ago`}
-              </div>
+                <div class="levelval">5000 TRX</div>
 
-              <hr className="line" />
+                <button
+                  disabled={LevelsData["5"]?.disabled}
+                  style={{ opacity: LevelsData["5"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(5000, 5)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["5"]?.active
+                      ? "Extend"
+                      : LevelsData["5"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
 
-              <div class="levelval">10000 TRX</div>
+            <div className={LevelsData["6"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 6</div>
 
-              <button
-                disabled={LevelsData["6"]?.disabled}
-                style={{ opacity: LevelsData["6"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(10000, 6)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["6"]?.active
-                    ? "Extend"
-                    : LevelsData["6"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-          <div className={LevelsData["7"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 7</div>
+                    ? "Active" + ` - ${LevelsData["6"]?.expiredAgo} days left`
+                    : LevelsData["6"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["6"]?.expiredAgo} days ago`}
+                </div>
 
-              <div className="days">
-                {LevelsData["7"]?.active
-                  ? "Active"
-                  : LevelsData["7"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["7"]?.expiredAgo} days ago`}
-              </div>
+                <hr className="line" />
 
-              <hr className="line" />
+                <div class="levelval">10000 TRX</div>
 
-              <div class="levelval">25000 TRX</div>
+                <button
+                  disabled={LevelsData["6"]?.disabled}
+                  style={{ opacity: LevelsData["6"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(10000, 6)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["6"]?.active
+                      ? "Extend"
+                      : LevelsData["6"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+            <div className={LevelsData["7"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 7</div>
 
-              <button
-                disabled={LevelsData["7"]?.disabled}
-                style={{ opacity: LevelsData["7"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(25000, 7)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["7"]?.active
-                    ? "Extend"
-                    : LevelsData["7"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-          <div className={LevelsData["8"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 8</div>
+                    ? "Active" + ` - ${LevelsData["7"]?.expiredAgo} days left`
+                    : LevelsData["7"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["7"]?.expiredAgo} days ago`}
+                </div>
 
-              <div className="days">
-                {LevelsData["8"]?.active
-                  ? "Active"
-                  : LevelsData["8"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["8"]?.expiredAgo} days ago`}
-              </div>
+                <hr className="line" />
 
-              <hr className="line" />
+                <div class="levelval">25000 TRX</div>
 
-              <div class="levelval">50000 TRX</div>
+                <button
+                  disabled={LevelsData["7"]?.disabled}
+                  style={{ opacity: LevelsData["7"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(25000, 7)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["7"]?.active
+                      ? "Extend"
+                      : LevelsData["7"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+            <div className={LevelsData["8"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 8</div>
 
-              <button
-                disabled={LevelsData["8"]?.disabled}
-                style={{ opacity: LevelsData["8"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(50000, 8)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["8"]?.active
-                    ? "Extend"
-                    : LevelsData["8"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-          <div className={LevelsData["9"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 9</div>
+                    ? "Active" + ` - ${LevelsData["8"]?.expiredAgo} days left`
+                    : LevelsData["8"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["8"]?.expiredAgo} days ago`}
+                </div>
 
-              <div className="days">
-                {LevelsData["9"]?.active
-                  ? "Active"
-                  : LevelsData["9"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["9"]?.expiredAgo} days ago`}
-              </div>
+                <hr className="line" />
 
-              <hr className="line" />
+                <div class="levelval">50000 TRX</div>
 
-              <div class="levelval">100000 TRX</div>
+                <button
+                  disabled={LevelsData["8"]?.disabled}
+                  style={{ opacity: LevelsData["8"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(50000, 8)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["8"]?.active
+                      ? "Extend"
+                      : LevelsData["8"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+            <div className={LevelsData["9"]?.expired ? "card-expired" : "card"}>
+              <center>
+                <div className="lvl">Level 9</div>
 
-              <button
-                disabled={LevelsData["9"]?.disabled}
-                style={{ opacity: LevelsData["9"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(100000, 9)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["9"]?.active
-                    ? "Extend"
-                    : LevelsData["9"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-          <div className={LevelsData["10"]?.expired ? "card-expired" : "card"}>
-            <center>
-              <div className="lvl">Level 10</div>
+                    ? "Active" + ` - ${LevelsData["9"]?.expiredAgo} days left`
+                    : LevelsData["9"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["9"]?.expiredAgo} days ago`}
+                </div>
 
-              <div className="days">
-                {LevelsData["10"]?.active
-                  ? "Active"
-                  : LevelsData["10"]?.expired == false
-                  ? "Inactive"
-                  : "Expired" + `-${LevelsData["10"]?.expiredAgo} days ago`}
-              </div>
+                <hr className="line" />
 
-              <hr className="line" />
+                <div class="levelval">100000 TRX</div>
 
-              <div class="levelval">200000 TRX</div>
+                <button
+                  disabled={LevelsData["9"]?.disabled}
+                  style={{ opacity: LevelsData["9"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(100000, 9)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["9"]?.active
+                      ? "Extend"
+                      : LevelsData["9"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+            <div
+              className={LevelsData["10"]?.expired ? "card-expired" : "card"}
+            >
+              <center>
+                <div className="lvl">Level 10</div>
 
-              <button
-                disabled={LevelsData["10"]?.disabled}
-                style={{ opacity: LevelsData["10"]?.disabled ? 0.5 : 1 }}
-                onClick={() => Buy(200000, 10)}
-                className="btn"
-              >
-                <p>
+                <div className="days">
                   {LevelsData["10"]?.active
-                    ? "Extend"
-                    : LevelsData["10"]?.expired
-                    ? "Restore"
-                    : "Buy"}
-                </p>
-              </button>
-            </center>
-          </div>
-        </div>
+                    ? "Active" + ` - ${LevelsData["10"]?.expiredAgo} days left`
+                    : LevelsData["10"]?.expired == false
+                    ? "Inactive"
+                    : "Expired" + ` - ${LevelsData["10"]?.expiredAgo} days ago`}
+                </div>
 
-        :
-        <Spinner variant="primary" size="100px" animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-      }
+                <hr className="line" />
+
+                <div class="levelval">200000 TRX</div>
+
+                <button
+                  disabled={LevelsData["10"]?.disabled}
+                  style={{ opacity: LevelsData["10"]?.disabled ? 0.5 : 1 }}
+                  onClick={() => Buy(200000, 10)}
+                  className="btn"
+                >
+                  <p>
+                    {LevelsData["10"]?.active
+                      ? "Extend"
+                      : LevelsData["10"]?.expired
+                      ? "Restore"
+                      : "Buy"}
+                  </p>
+                </button>
+              </center>
+            </div>
+          </div>
+        ) : (
+          <Spinner
+            variant="primary"
+            size="100px"
+            animation="border"
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        )}
       </div>
     </div>
   );
