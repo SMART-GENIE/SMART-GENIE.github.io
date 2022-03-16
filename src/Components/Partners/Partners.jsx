@@ -9,8 +9,7 @@ import useWindowDimensions from "../../Tools/WindowDimensions";
 import { Hex_to_base58 } from "../../Utils/Converter";
 import { getPartnersLevelJson } from "../Redux/Reducer/PartnersLevelJson";
 import toast, { Toaster } from "react-hot-toast";
-import copy from 'copy-to-clipboard';
-
+import copy from "copy-to-clipboard";
 
 import TronWeb from "tronweb";
 import { useSelector } from "react-redux";
@@ -55,15 +54,12 @@ function Partners() {
       });
   };
 
-  let TotalPartnersCount = 0;
 
   const FetchTree = async (id, TREEDATA) => {
     await Utils.contract
       .viewUserReferral(id)
       .call()
       .then(async (items) => {
-        console.log(items,"NOPE");
-        TotalPartnersCount += items.length;
 
         var item = {};
 
@@ -96,7 +92,6 @@ function Partners() {
   const ProccessTreeData = async (data, id, temp) => {
     const id_to_num = await Utils.contract.users(id).call();
     const resId = await Promise.resolve(id_to_num.id.toNumber());
-    console.log(resId,"NEW");
 
     temp = {
       name: resId,
@@ -111,7 +106,6 @@ function Partners() {
       temp["name"] = resId;
     }
 
-    console.log(temp);
 
     return temp;
     // if(data[0]?.children){
@@ -329,13 +323,14 @@ function Partners() {
   const FetchPayments = async (id, count) => {
     ++LEVEL;
 
+    // console.log(count, PartnersArray.length)
+
     if (count == PartnersArray.length) {
-      // console.log(count, PartnersArray.length);
-      // console.log(LevelJSON);
-      // console.log(LEVEL);
+      
       return await calculate_CoinsFromLevels(LevelJSON).then(async (res) => {
-        console.log(res,"NEWWW");
-        await PreProcessData(res).then((result) => {
+        return await PreProcessData(res).then((result) => {
+
+
           setTableData(result);
           setLoadingTable(false);
         });
@@ -438,21 +433,41 @@ function Partners() {
           });
         });
       }
-      await Utils.setTronWeb(window.tronWeb).then(async () => {
-        await FetchTree(walletId, {}).then(async (e) => {
-          await ProccessTreeData(e, walletId, {}).then(async (res) => {
+      return await Utils.setTronWeb(window.tronWeb).then(async () => {
+        return await FetchTree(walletId, {}).then(async (e) => {
+          return await ProccessTreeData(e, walletId, {}).then(async (res) => {
             settreeData([res]);
             setLoadingStruct(false);
 
-            await FetchPayments(walletId, TotalPartnersCount);
-            // console.log(res);
+            return await FetchPartners(walletId,[]).then(async(TotalPartnersCount)=>{
+              // console.log(TotalPartnersCount);
+              return await FetchPayments(walletId, TotalPartnersCount.length);
+
+            })
+
           });
         });
       });
     } catch (e) {
-      CONNECT_WALLET()
+      CONNECT_WALLET();
       console.log(e);
     }
+  };
+
+  const FetchPartners = async (id, partners) => {
+    // console.log(id);
+    return await Utils.contract
+      .viewUserReferral(id)
+      .call()
+      .then(async (items) => {
+        for await (const item of items) {
+          let e = await Hex_to_base58(item);
+          if (e == undefined || !e) return;
+          partners.push(e);
+          await FetchPartners(e, partners);
+        }
+        return partners;
+      });
   };
 
   const SearchAboutPartner = async () => {
@@ -521,19 +536,20 @@ function Partners() {
     return currentLevel;
   };
 
-  const copyLink = ()=>{
-    try{
-      copy(`${window.location.origin}/register/${userID}`)
+  const copyLink = () => {
+    try {
+      copy(`${window.location.origin}/register/${userID}`);
       // navigator.clipboard.writeText(`${window.location.origin}/register/${userID}`);
-      toast.success("Copied to clipboard",{style:{marginTop:"65px"}})
-  
-    }catch(e){
-      toast.error("Failed to Copy to clipboard",{style:{marginTop:"65px"}})
+      toast.success("Copied to clipboard", { style: { marginTop: "65px" } });
+    } catch (e) {
+      toast.error("Failed to Copy to clipboard", {
+        style: { marginTop: "65px" },
+      });
       // window.clipboardData.setData("Text", 'Copy this text to clipboard')
 
       console.log(e);
     }
-  }
+  };
 
   return (
     <div className="panel">
@@ -554,7 +570,9 @@ function Partners() {
               value={`${window.location.origin}/register/${userID}`}
             />
             <br />
-            <button onClick={copyLink} className="copybtn">Copy Link</button>
+            <button onClick={copyLink} className="copybtn">
+              Copy Link
+            </button>
           </div>
         </div>
 
@@ -572,7 +590,7 @@ function Partners() {
                 <br />
                 <div className="Inline">
                   <input
-                  placeholder="Enter Id or Address"
+                    placeholder="Enter Id or Address"
                     value={searchId}
                     onChange={(e) => setsearchId(e.target.value)}
                     className={"link2"}
@@ -592,8 +610,7 @@ function Partners() {
                 <p className="linkname1">Data about partner</p>
                 <br />
                 <input
-                                  placeholder="Enter Id or Address"
-
+                  placeholder="Enter Id or Address"
                   value={searchId}
                   onChange={(e) => setsearchId(e.target.value)}
                   style={{ width: "100%" }}
