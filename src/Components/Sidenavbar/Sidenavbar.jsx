@@ -122,7 +122,7 @@ function Sidenavbar() {
                 Uplines
               </li>
             </Link>
-            <Link
+            {/* <Link
               className={VALIDROUTE("/lostprofits") ? "Link-Active" : "Link"}
               to="/Lostprofits"
               style={{
@@ -147,7 +147,7 @@ function Sidenavbar() {
                 </span>
                 Lost profits
               </li>
-            </Link>
+            </Link> */}
             {/* <li
               style={{ color: VALIDROUTE("/promo") ? "white" : null }}
               className="sidebaritems"

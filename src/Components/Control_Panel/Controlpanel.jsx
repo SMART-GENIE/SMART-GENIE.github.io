@@ -776,9 +776,9 @@ function Controlpanel() {
           </div>
         </div>
 
-        <div className="ChartDiv">
+        {/* <div className="ChartDiv">
           <Chart data={chartData} />
-        </div>
+        </div> */}
 
         {/* <Slidecontent /> */}
 
