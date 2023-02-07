@@ -139,7 +139,7 @@ function Sidenavbarmobile() {
                     Uplines
                   </li>
                 </Link>
-                <Link
+                {/* <Link
                   onClick={() => dispatch(toogleMenu(!menu))}
                   className={
                     VALIDROUTE("/lostprofits") ? "Link-Active" : "Link"
@@ -170,7 +170,7 @@ function Sidenavbarmobile() {
                     </span>
                     Lost profits
                   </li>
-                </Link>
+                </Link> */}
                 {/* <li
                   style={{ color: VALIDROUTE("/promo") ? "white" : null }}
                   className="sidebaritems"
