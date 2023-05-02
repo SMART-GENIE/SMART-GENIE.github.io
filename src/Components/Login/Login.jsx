@@ -33,6 +33,7 @@ const Login = () => {
   const { height, width } = useWindowDimensions();
   let id =  window?.tronLink?.tronWeb?.defaultAddress?.base58;
 
+  let walletId = window?.tronLink?.tronWeb?.defaultAddress?.base58;
 
   const authStatus = useSelector(getAuth);
   const dispatch = useDispatch();
@@ -71,6 +72,12 @@ const Login = () => {
 
       if (previewId.trim().length == 0) {
         return toast.error("Please enter valid RefId/address");
+      }
+
+       // if string is address
+       if (previewId == 1 && walletId != "TD1Vognrgkm6nxoFRD9ATabbYFHqzhEu9V") {
+        toast.error("Invalid Request")
+        return
       }
 
       setLoader(true);

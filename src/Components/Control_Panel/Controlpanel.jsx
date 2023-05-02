@@ -24,7 +24,7 @@ function Controlpanel() {
   const previewId = useSelector(getPreviewModeId);
   let id = previewId || window.tronLink.tronWeb.defaultAddress.base58;
 
-  const [partnersList, setpartnersList] = useState(0);
+  const [partnersList, setpartnersList] = useState([]);
   const [coinsCount, setcoinsCount] = useState(0);
   const [coinPrice, setcoinPrice] = useState(0);
   const [chartData, setchartData] = useState({ labels: [], data: [] });
@@ -36,7 +36,7 @@ function Controlpanel() {
 
   let partners = [];
 
-  console.log(previewId);
+  // console.log(previewId);
 
   const [tronWeb, settronWeb] = useState({ installed: false, loggedIn: false });
 
@@ -90,31 +90,26 @@ function Controlpanel() {
     };
 
     // console.log(labels, graphData);
+    setchartData(resData)
 
     return resData;
   };
 
   const FetchData = async () => {
     try {
-      return await FetchPartners(id, []).then(async (e) => {
-        setpartnersList(e);
-        return await getcurrentLevel(id).then(async () => {
-          return await FetchEarning(id, e.length).then(async () => {
-            await ProccessRefralGraphData(e).then(async (res) => {
-              setchartData(res);
-              await FetchLevels(id).then((data) => {
-                setLevelsData(data);
-                setLoadingLevels(false);
-              });
-              // console.log(res);
-            });
-          });
-        });
-      });
+      Promise.all([FetchPartners(id, []),FetchEarning(id), getcurrentLevel(id)]).then(([partners]) => {
+        FetchLevels(id)
+        // setpartnersList(partners)
+        Promise.all([ProccessRefralGraphData(partners)])
+      })
+
     } catch (e) {
       console.log(e);
     }
   };
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 
   const FetchPartners = async (id, partners) => {
     // console.log(id);
@@ -126,10 +121,13 @@ function Controlpanel() {
           let e = await Hex_to_base58(item);
           if (e == undefined || !e) return;
           partners.push(e);
+          setpartnersList(x => [...x, e])
           await FetchPartners(e, partners);
         }
+        setpartnersList(partners)
+
         return partners;
-      });
+      })
   };
 
   const getcurrentLevel = async (address) => {
@@ -144,6 +142,7 @@ function Controlpanel() {
         currentTimestamp.toNumber() * 1000 > Date.now() &&
         currentTimestamp.toNumber() * 1000 != 0
       ) {
+        setcurrentLevel(x => x + 1)
         ++currentLevel;
       }
     }
@@ -281,46 +280,42 @@ function Controlpanel() {
 
   let countLoading = 0;
 
-  const FetchEarning = async (id, count) => {
+  const FetchEarning = async (id) => {
     ++LEVEL;
 
-    if (count == PartnersArray.length) {
-      // console.log(count, PartnersArray.length);
-      // console.log(LevelJSON);
-      // console.log(LEVEL);
-      return await calculate_CoinsFromLevels(LevelJSON).then((res) => {
-        setcoinsCount(res);
+    await Utils.contract
+      .viewUserReferral(id)
+      .call()
+      .then(async (items) => {
+
+        
+        if (LEVEL == 1) {
+          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+        } else if (LEVEL == 2) {
+          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+        } else if (LEVEL == 3) {
+          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+        } else if (LEVEL == 4) {
+          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+        } else if (LEVEL == 5) {
+          LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
+        }
+
+        if (items.length > 0 && LEVEL < 5) {
+          for await (const item of items) {
+            let e = await Hex_to_base58(item);
+            if (e == undefined || !e) return;
+
+            await FetchEarning(e);
+          }
+        } else {
+          return
+        }
       });
-      // return;
-    } else {
-      await Utils.contract
-        .viewUserReferral(id)
-        .call()
-        .then(async (items) => {
-          PartnersArray = [...PartnersArray, ...items];
+    return await calculate_CoinsFromLevels(LevelJSON).then((res) => {
+      setcoinsCount(res);
+    });
 
-          if (LEVEL == 1) {
-            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-          } else if (LEVEL == 2) {
-            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-          } else if (LEVEL == 3) {
-            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-          } else if (LEVEL == 4) {
-            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-          } else if (LEVEL == 5) {
-            LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
-          }
-
-          if (items.length > 0) {
-            for await (const item of items) {
-              let e = await Hex_to_base58(item);
-              if (e == undefined || !e) return;
-
-              await FetchEarning(e, count);
-            }
-          }
-        });
-    }
   };
 
   const calculate_CoinsFromLevels = async (data) => {
@@ -331,7 +326,7 @@ function Controlpanel() {
     let LEVEL3 = data["3"];
     let LEVEL4 = data["4"];
     let LEVEL5 = data["5"];
-
+    
     if (LEVEL1 != undefined) {
       for await (const id of LEVEL1) {
         // LEVEL 1
@@ -672,7 +667,10 @@ function Controlpanel() {
       }
     }
 
-    console.log(Temp);
+    // console.log(Temp);
+
+    setLevelsData(Temp);
+    setLoadingLevels(false);
 
     return Temp;
   };
@@ -741,11 +739,7 @@ function Controlpanel() {
                 <div class="contentcard_tabs_active_text_price">
                   <strong class="bold-text-2">
                     {" "}
-                    <CountUp
-                      duration={1}
-                      className="bold-text-2"
-                      end={partnersList?.length}
-                    />
+                    {partnersList?.length}
                   </strong>
                 </div>
               </div>
@@ -763,11 +757,7 @@ function Controlpanel() {
                 />
                 <div class="contentcard_tabs_active_text_price">
                   <strong class="bold-text-2">
-                    <CountUp
-                      duration={1}
-                      className="bold-text-2"
-                      end={currentLevel}
-                    />
+                    {currentLevel}
                   </strong>
                 </div>
               </div>
@@ -811,7 +801,7 @@ function Controlpanel() {
                 <div className="days">
                   {LevelsData["1"]?.active
                     ? "Active" + ` - ${LevelsData["1"]?.expiredAgo} days left`
-                    : "Expired" + ` - ${LevelsData["1"]?.expiredAgo} days ago`}
+                    : "Expired" + `  ${LevelsData["1"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -828,8 +818,8 @@ function Controlpanel() {
                     {LevelsData["1"]?.active
                       ? "Extend"
                       : LevelsData["1"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -842,8 +832,8 @@ function Controlpanel() {
                   {LevelsData["2"]?.active
                     ? "Active" + ` - ${LevelsData["2"]?.expiredAgo} days left`
                     : LevelsData["2"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["2"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["2"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -860,8 +850,8 @@ function Controlpanel() {
                     {LevelsData["2"]?.active
                       ? "Extend"
                       : LevelsData["2"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -874,8 +864,8 @@ function Controlpanel() {
                   {LevelsData["3"]?.active
                     ? "Active" + ` - ${LevelsData["3"]?.expiredAgo} days left`
                     : LevelsData["3"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["3"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["3"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -892,8 +882,8 @@ function Controlpanel() {
                     {LevelsData["3"]?.active
                       ? "Extend"
                       : LevelsData["3"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -906,8 +896,8 @@ function Controlpanel() {
                   {LevelsData["4"]?.active
                     ? "Active" + ` - ${LevelsData["4"]?.expiredAgo} days left`
                     : LevelsData["4"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["4"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["4"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -924,8 +914,8 @@ function Controlpanel() {
                     {LevelsData["4"]?.active
                       ? "Extend"
                       : LevelsData["4"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -939,8 +929,8 @@ function Controlpanel() {
                   {LevelsData["5"]?.active
                     ? "Active" + ` - ${LevelsData["5"]?.expiredAgo} days left`
                     : LevelsData["5"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["5"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["5"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -957,8 +947,8 @@ function Controlpanel() {
                     {LevelsData["5"]?.active
                       ? "Extend"
                       : LevelsData["5"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -972,8 +962,8 @@ function Controlpanel() {
                   {LevelsData["6"]?.active
                     ? "Active" + ` - ${LevelsData["6"]?.expiredAgo} days left`
                     : LevelsData["6"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["6"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["6"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -990,8 +980,8 @@ function Controlpanel() {
                     {LevelsData["6"]?.active
                       ? "Extend"
                       : LevelsData["6"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -1004,8 +994,8 @@ function Controlpanel() {
                   {LevelsData["7"]?.active
                     ? "Active" + ` - ${LevelsData["7"]?.expiredAgo} days left`
                     : LevelsData["7"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["7"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["7"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -1022,8 +1012,8 @@ function Controlpanel() {
                     {LevelsData["7"]?.active
                       ? "Extend"
                       : LevelsData["7"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -1036,8 +1026,8 @@ function Controlpanel() {
                   {LevelsData["8"]?.active
                     ? "Active" + ` - ${LevelsData["8"]?.expiredAgo} days left`
                     : LevelsData["8"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["8"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["8"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -1054,8 +1044,8 @@ function Controlpanel() {
                     {LevelsData["8"]?.active
                       ? "Extend"
                       : LevelsData["8"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -1068,8 +1058,8 @@ function Controlpanel() {
                   {LevelsData["9"]?.active
                     ? "Active" + ` - ${LevelsData["9"]?.expiredAgo} days left`
                     : LevelsData["9"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["9"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["9"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -1086,8 +1076,8 @@ function Controlpanel() {
                     {LevelsData["9"]?.active
                       ? "Extend"
                       : LevelsData["9"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
@@ -1102,8 +1092,8 @@ function Controlpanel() {
                   {LevelsData["10"]?.active
                     ? "Active" + ` - ${LevelsData["10"]?.expiredAgo} days left`
                     : LevelsData["10"]?.expired == false
-                    ? "Inactive"
-                    : "Expired" + ` - ${LevelsData["10"]?.expiredAgo} days ago`}
+                      ? "Inactive"
+                      : "Expired" + ` - ${LevelsData["10"]?.expiredAgo} days ago`}
                 </div>
 
                 <hr className="line" />
@@ -1120,8 +1110,8 @@ function Controlpanel() {
                     {LevelsData["10"]?.active
                       ? "Extend"
                       : LevelsData["10"]?.expired
-                      ? "Restore"
-                      : "Buy"}
+                        ? "Restore"
+                        : "Buy"}
                   </p>
                 </button>
               </center>
