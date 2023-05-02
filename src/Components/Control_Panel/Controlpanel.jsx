@@ -97,10 +97,12 @@ function Controlpanel() {
 
   const FetchData = async () => {
     try {
-      Promise.all([FetchPartners(id, []),FetchEarning(id), getcurrentLevel(id)]).then(([partners]) => {
-        FetchLevels(id)
+      Promise.all([FetchPartners(id, []), FetchEarning(id)]).then(([partners]) => {
+        Promise.all([getcurrentLevel(id), FetchLevels(id)]).then(() => {
+          Promise.all([ProccessRefralGraphData(partners)])
+        })
+
         // setpartnersList(partners)
-        Promise.all([ProccessRefralGraphData(partners)])
       })
 
     } catch (e) {
@@ -288,7 +290,7 @@ function Controlpanel() {
       .call()
       .then(async (items) => {
 
-        
+
         if (LEVEL == 1) {
           LevelJSON[`${LEVEL}`] = await ConverttoHexArray(items);
         } else if (LEVEL == 2) {
@@ -326,7 +328,7 @@ function Controlpanel() {
     let LEVEL3 = data["3"];
     let LEVEL4 = data["4"];
     let LEVEL5 = data["5"];
-    
+
     if (LEVEL1 != undefined) {
       for await (const id of LEVEL1) {
         // LEVEL 1
