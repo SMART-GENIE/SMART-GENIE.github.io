@@ -97,13 +97,22 @@ function Controlpanel() {
 
   const FetchData = async () => {
     try {
-      Promise.all([FetchPartners(id, []), FetchEarning(id)]).then(([partners]) => {
-        Promise.all([getcurrentLevel(id), FetchLevels(id)]).then(() => {
-          Promise.all([ProccessRefralGraphData(partners)])
+      FetchPartners(id, []).then((partners)=>{
+        FetchEarning(id).then(()=>{
+          getcurrentLevel(id).then(()=>{
+            FetchLevels(id).then(()=>{
+              ProccessRefralGraphData(partners)
+            })
+          })
         })
-
-        // setpartnersList(partners)
       })
+      // Promise.all([FetchPartners(id, []), FetchEarning(id)]).then(([partners]) => {
+      //   Promise.all([getcurrentLevel(id), FetchLevels(id)]).then(() => {
+      //     Promise.all([ProccessRefralGraphData(partners)])
+      //   })
+
+      //   // setpartnersList(partners)
+      // })
 
     } catch (e) {
       console.log(e);
